@@ -1,0 +1,148 @@
+/* Google font vibe */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+}
+
+/* Top Navbar */
+.navbar {
+    background: #ffe0ef;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 3px solid #66a7ff;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #7ec4f7;
+}
+.logo span {
+    color: #ff7dac;
+}
+
+.icons {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-circle,
+.icon-user {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #ccc;
+}
+
+/* Login Card */
+.login-container {
+    display: flex;
+    justify-content: center;
+    padding: 80px 0;
+}
+
+.login-card {
+    width: 420px;
+    background: #f4d7e9;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #dabcd2;
+}
+
+.login-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #634e66;
+}
+
+label {
+    font-size: 14px;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 20px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Link Row */
+.links-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.links-row a {
+    text-decoration: none;
+    color: #7a1254;
+    font-weight: bold;
+}
+
+.right {
+    text-align: right;
+}
+
+/* Login Button */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #d589a9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.login-btn:hover {
+    background: #c06e95;
+}
+
+/* Footer */
+footer {
+    background: #6e4a78;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.footer-brand {
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+footer p {
+    max-width: 600px;
+    margin: 0 auto 25px auto;
+    font-size: 14px;
+}
+
+.socials {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffffff33;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+copyright {
+    font-size: 12px;
+}

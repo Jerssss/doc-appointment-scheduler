@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+}
+
+/* Navbar */
+.navbar {
+    background: #ffe0ef;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 3px solid #66a7ff;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #7ec4f7;
+}
+.logo span {
+    color: #ff7dac;
+}
+
+.icons {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-circle,
+.icon-user {
+    width: 35px;
+    height: 35px;
+    background: #ccc;
+    border-radius: 50%;
+}
+
+/* Card Layout */
+.register-container {
+    display: flex;
+    justify-content: center;
+    padding: 70px 0;
+}
+
+.register-card {
+    width: 430px;
+    background: #f4d7e9;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #dabcd2;
+}
+
+.register-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #634e66;
+}
+
+label {
+    font-size: 14px;
+    color: #444;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 7px 0 18px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Buttons Row */
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.cancel-btn {
+    width: 48%;
+    padding: 12px;
+    border-radius: 5px;
+    background: #bfa3b3;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.register-btn {
+    width: 48%;
+    padding: 12px;
+    border-radius: 5px;
+    background: #d589a9;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Hover Effects */
+.cancel-btn:hover {
+    background: #a88d9c;
+}
+
+.register-btn:hover {
+    background: #c06e95;
+}

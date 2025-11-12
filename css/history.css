@@ -1,0 +1,158 @@
+/* === Reset (light, non-destructive) === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ffffff;
+  color: #333;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+}
+
+/* === Page Layout === */
+.history-container {
+  max-width: 1200px; /* ⬅️ wider container for less side whitespace */
+  width: 90%; /* stays responsive on smaller screens */
+  margin: 3rem auto;
+  padding: 2rem;
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.history-container h1 {
+  color: #4B2E83;
+  margin-bottom: 2rem;
+  text-align: left;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* === History Box === */
+.history-box {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 2.5rem;
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  min-height: 60vh;
+  width: 100%;
+}
+
+/* === Section Headings === */
+.section {
+  margin-bottom: 3rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: #4B2E83;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.subtext {
+  font-size: 0.95rem;
+  color: #777;
+  margin-bottom: 1rem;
+}
+
+/* === Consultation Cards === */
+.card {
+  display: flex;
+  align-items: center;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 1.2rem;
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-info h3 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.card-info .schedule {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 0.3rem;
+}
+
+.card-info .note {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* === Rate Button === */
+.rate-btn {
+  background-color: #4B2E83;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.rate-btn:hover {
+  background-color: #3a2063;
+}
+
+/* === General Layout Balance === */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main.history-container {
+  flex: 1;
+}
+
+/* === Responsive Tweaks === */
+@media (max-width: 768px) {
+  .history-container {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card img {
+    margin-bottom: 1rem;
+  }
+
+  .rate-btn {
+    align-self: flex-end;
+  }
+}

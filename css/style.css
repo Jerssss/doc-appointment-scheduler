@@ -1,3 +1,80 @@
+/* ===== Navbar ===== */
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 6%;
+  background-color: #ffe6f1;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 2.1rem;
+  font-weight: 700;
+}
+
+.logo .blue {
+  color: #89c8ff;
+}
+
+.logo .pink {
+  color: #f7a5c8;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  margin: 0 1.2rem;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+nav a.active,
+nav a:hover {
+  font-weight: 600;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+/* ===== Navbar Icons ===== */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  filter: grayscale(100%) brightness(55%);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover Effect – darker pink (#c06c91) */
+.icon:hover {
+  filter: brightness(0) saturate(100%) invert(74%) sepia(22%) saturate(903%) hue-rotate(290deg) brightness(88%) contrast(95%);
+  transform: scale(1.1);
+}
+
+/* Optional: rounded profile icon */
+.icon.profile {
+  border-radius: 50%;
+}
+
 /* ===== FOOTER ===== */
 .site-footer {
   background-color: #1A1A1A;

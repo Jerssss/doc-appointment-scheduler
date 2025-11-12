@@ -73,6 +73,7 @@ body {
   font-size: 1.1rem;
   cursor: pointer;
   transition: 0.3s;
+  text-decoration: none;
 }
 
 .consult-btn:hover {

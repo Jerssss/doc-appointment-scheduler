@@ -8,6 +8,13 @@
   <link rel="stylesheet" href="/css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
+<script>
+  document.getElementById("consult-btn").addEventListener("click", () => {
+    window.location.href = "book.html";
+  });
+</script>
+
 <body>
   <!-- Navigation -->
   <header>
@@ -29,24 +36,12 @@
 
   <!-- Hero Section -->
   <section class="hero">
-  <div class="hero-text">
-    <h1><span class="blue">Medi</span><span class="pink">Ko</span></h1>
-    <p>Book and consult with a trusted Doctor for<br>your underlying condition now</p>
-    <button class="consult-btn" id="consultBtn">Consult →</button>
-  </div>
-</section>
+    <div class="hero-text">
+      <h1><span class="blue">Medi</span><span class="pink">Ko</span></h1>
+      <p>Book and consult with a trusted Doctor for<br>your underlying condition now</p>
+      <a href="book.html" class="consult-btn">Consult →</a>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const btn = document.getElementById("consultBtn");
-    if (btn) {
-      btn.addEventListener("click", function() {
-        window.location.href = "book.html";
-      });
-    }
-  });
-</script>
-
+    </div>
 
     <div class="hero-image">
       <!-- Replace this path with your PNG -->

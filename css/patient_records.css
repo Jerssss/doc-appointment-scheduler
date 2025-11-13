@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #ffe4ef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  border-bottom: 2px solid #f5cfe3;
+}
+
+.logo {
+  color: #6d4ab1;
+  font-weight: 700;
+}
+.logo-accent {
+  color: #f37a9b;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #444;
+  margin: 0 20px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #c25c83;
+  border-bottom: 2px solid #c25c83;
+  padding-bottom: 4px;
+}
+
+.profile img {
+  width: 45px;
+  border-radius: 50%;
+}
+
+/* Layout */
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px 80px;
+  min-height: 70vh;
+  background: url('images/abstract-bg.png') no-repeat center/cover;
+}
+
+/* Patient List */
+.patient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 30%;
+  background-color: #fde5ef;
+  border-radius: 15px;
+  padding: 30px;
+}
+
+.patient-card {
+  background-color: #f3cfe0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 10px;
+  padding: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.patient-card.active,
+.patient-card:hover {
+  background-color: #f0bcd3;
+}
+
+.patient-card img {
+  width: 60px;
+  border-radius: 50%;
+}
+.patient-card p {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Record Section */
+.record-section {
+  width: 55%;
+  background-color: #5b3b68;
+  border-radius: 10px;
+  padding: 40px;
+  color: white;
+}
+
+.record-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.record-form label {
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.record-form input {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f3f3f3;
+  color: #333;
+  font-size: 1rem;
+}
+
+/* Footer */
+footer {
+  background-color: #5b3b68;
+  color: white;
+  text-align: center;
+  padding: 30px 50px;
+}
+
+footer h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.socials i {
+  margin: 0 8px;
+  font-size: 1.3rem;
+}

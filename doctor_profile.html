@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile | Mediko</title>
+    <link rel="stylesheet" href="css/doctor_profile.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Mediko</div>
+                <div class="nav-links">
+                    <a href="#">Home</a>
+                    <a href="#">Bookings</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="profile-header">
+                <div class="doctor-avatar">DR</div>
+                <div class="doctor-info">
+                    <h1>Dr. Bernard</h1>
+                    <p>Cardiologist</p>
+                </div>
+            </div>
+
+            <!-- Doctor Profile Form -->
+            <section class="profile-section">
+                <h2 class="section-title">Doctor Profile</h2>
+                <form id="doctorProfileForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" class="form-control" placeholder="Dr. Bernard Sebastian Molina">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="workingHours">Working Hours</label>
+                            <input type="text" id="workingHours" class="form-control" placeholder="08:00 AM - 08:00 PM">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactNumber">Contact Number</label>
+                            <input type="text" id="contactNumber" class="form-control" placeholder="+123 456 7890">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="specialization">Specialization</label>
+                            <input type="text" id="specialization" class="form-control" placeholder="Cardiology">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="titles">Titles</label>
+                            <input type="text" id="titles" class="form-control" placeholder="MD, Cardiologist">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="checkupFee">Checkup Fee</label>
+                            <input type="text" id="checkupFee" class="form-control" placeholder="P 600.00">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="languages">Languages</label>
+                            <input type="text" id="languages" class="form-control" placeholder="English, Tagalog, Bisaya">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hospital">Hospital</label>
+                            <input type="text" id="hospital" class="form-control" placeholder="Baguio General Hospital and Medical Center">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Service Options</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="onlineConsultation" checked>
+                                <label for="onlineConsultation">Online Consultation</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="homeCheckup" checked>
+                                <label for="homeCheckup">Home Checkup</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn" onclick="saveProfile()">Save Profile</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Mediko</div>
+                    <p class="footer-text">
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit. 
+                        Quisque faucibus ex sapien vitae pellentesque sem placerat. 
+                        In id cursus mi pretium tellus duis convallis.
+                    </p>
+                </div>
+            </div>
+            <div class="copyright">
+                © Your Company 2022. We love you!
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

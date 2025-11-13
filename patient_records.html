@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediKo | Patient Records</title>
+  <link rel="stylesheet" href="css/patient_records.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo-container">
+      <img src="images/mediko-logo.png" alt="MediKo Logo" class="logo-img">
+      <h2><span class="logo">Medi</span><span class="logo-accent">Ko</span></h2>
+    </div>
+    <nav class="nav-links">
+      <a href="patient_records.html" class="active">Patient Records</a>
+      <a href="doctor_appointment_list.html">Appointment List</a>
+      <a href="doctor_profile.html">Doctor's Profile</a>
+    </nav>
+    <div class="profile">
+      <img src="images/default-doctor.png" alt="Doctor Profile">
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Patient List -->
+    <aside class="patient-list">
+      <!-- Patient cards will be dynamically inserted by JS -->
+    </aside>
+
+    <!-- Patient Details Form -->
+    <section class="record-section">
+      <form class="record-form">
+        <label>Past medical conditions</label>
+        <input type="text" id="pastConditions" placeholder="Loading..." readonly>
+
+        <label>Past surgeries</label>
+        <input type="text" id="pastSurgeries" placeholder="Loading..." readonly>
+
+        <label>Current medical conditions</label>
+        <input type="text" id="currentConditions" placeholder="Loading..." readonly>
+
+        <label>Last appointment date</label>
+        <input type="text" id="lastAppointment" placeholder="Loading..." readonly>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <h3>MediKo</h3>
+      <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus sapien vitae pellentesque placerat.</p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/patient_records.js"></script>
+</body>
+</html>

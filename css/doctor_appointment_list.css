@@ -1,0 +1,210 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #f9f7fa;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #ffe4ef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  border-bottom: 2px solid #f5cfe3;
+}
+
+.logo {
+  color: #6d4ab1;
+  font-weight: 700;
+}
+.logo-accent {
+  color: #f37a9b;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #444;
+  margin: 0 20px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #c25c83;
+  border-bottom: 2px solid #c25c83;
+  padding-bottom: 4px;
+}
+
+.profile img {
+  width: 45px;
+  border-radius: 50%;
+}
+
+/* Layout */
+.main-container {
+  display: flex;
+  height: calc(100vh - 160px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 30%;
+  background: white;
+  padding: 30px;
+  border-right: 1px solid #eee;
+}
+
+.sidebar h2 {
+  color: #6d4ab1;
+  margin-bottom: 5px;
+}
+.sidebar h4 {
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+}
+
+.appointment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  height: 60%;
+  overflow-y: auto;
+}
+
+.appointment-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  border-radius: 15px;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.appointment-item.active,
+.appointment-item:hover {
+  background-color: #f2ecfc;
+}
+
+.appointment-item img {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.details h4 {
+  color: #333;
+}
+.details p {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.back-btn {
+  background-color: #f9d6e6;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px;
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+/* Patient Details */
+.patient-details {
+  flex: 1;
+  padding: 30px 50px;
+}
+
+.patient-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.patient-header img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+
+.info h3 {
+  font-size: 1.5rem;
+  color: #222;
+}
+.info p {
+  color: #555;
+  margin-top: 3px;
+}
+
+.consult-btn {
+  background-color: #c25c83;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.consult-btn:hover {
+  background-color: #a2486c;
+}
+
+/* Vitals */
+.vitals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.vital-box {
+  display: flex;
+  flex-direction: column;
+}
+.vital-box label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 5px;
+}
+.vital-box input {
+  border: none;
+  background-color: #f3f3f3;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Footer */
+footer {
+  background-color: #5b3b68;
+  color: white;
+  text-align: center;
+  padding: 30px 50px;
+}
+
+footer h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.socials i {
+  margin: 0 8px;
+  font-size: 1.3rem;
+}

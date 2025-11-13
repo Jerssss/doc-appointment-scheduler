@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediKo | Doctor Dashboard</title>
+  <link rel="stylesheet" href="css/doctor_appointment_list.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo-container">
+      <img src="images/mediko-logo.png" alt="MediKo Logo" class="logo-img">
+      <h2><span class="logo">Medi</span><span class="logo-accent">Ko</span></h2>
+    </div>
+    <nav class="nav-links">
+      <a href="patient_records.html">Patient Records</a>
+      <a href="doctor_appointment_list.html" class="active">Appointment List</a>
+      <a href="doctor_profile.html">Doctor's Profile</a>
+    </nav>
+    <div class="profile">
+      <img src="images/doctor-taejin.png" alt="Doctor Profile" />
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Hello, Dr. Taejin</h2>
+      <h4>Upcoming Appointments</h4>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search patient..." />
+      </div>
+
+      <div class="appointment-list" id="appointmentList"></div>
+
+      <button class="back-btn">Go back</button>
+    </div>
+
+    <!-- Patient Info -->
+    <div class="patient-details">
+      <div class="patient-header">
+        <img src="images/default-patient.png" alt="Patient Image" />
+        <div class="info">
+          <h3 id="patientName">Loading...</h3>
+          <p id="patientAge">-</p>
+          <p id="patientGender">-</p>
+          <p id="patientAddress">-</p>
+        </div>
+        <button class="consult-btn">Start Consultation</button>
+      </div>
+
+      <div class="vitals">
+        <div class="vital-box">
+          <label>Temperature</label>
+          <input type="text" id="vitalTemp" value="-" readonly />
+        </div>
+        <div class="vital-box">
+          <label>Blood Pressure</label>
+          <input type="text" id="vitalBP" value="-" readonly />
+        </div>
+        <div class="vital-box">
+          <label>Heart Rate</label>
+          <input type="text" id="vitalHR" value="-" readonly />
+        </div>
+        <div class="vital-box">
+          <label>Height and Weight</label>
+          <input type="text" id="vitalHW" value="-" readonly />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <h3>MediKo</h3>
+      <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus sapien vitae pellentesque placerat.</p>
+      <div class="socials">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-instagram"></i>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/doctor_appointments.js"></script>
+</body>
+</html>

@@ -96,3 +96,97 @@
 .details button:hover {
   background-color: #e66491;
 }
+
+/* Modal confirmation box UI */
+/* === MODAL STYLING === */
+.modal {
+    display: none; /* hidden by default */
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+
+/* Modal box */
+.modal-content {
+    background-color: #fff;
+    margin: 12% auto;
+    padding: 30px 40px;
+    border-radius: 15px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+/* Close (X) button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #444;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #f37ba5;
+}
+
+/* Title */
+.modal-content h2 {
+    margin-bottom: 15px;
+    color: #3a2f54;
+    font-weight: 700;
+}
+
+/* Message */
+.modal-content p {
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Buttons */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal a {
+    text-decoration: none;
+    color: white;
+}
+
+.cancel-btn, .confirm-btn {
+    padding: 10px 25px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cancel-btn {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.cancel-btn:hover {
+    background-color: #ddd;
+}
+
+.confirm-btn {
+    background-color: #6f5aa0;
+    color: white;
+}
+
+.confirm-btn:hover {
+    background-color: #594785;
+}

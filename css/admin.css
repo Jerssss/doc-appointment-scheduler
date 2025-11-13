@@ -1,0 +1,283 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+
+body {
+    background-color: #fff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+/* ===== Navbar ===== */
+.navbar {
+    background-color: #ffe6f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    border-bottom: 3px solid #8ecae6;
+}
+
+
+.navbar h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #5a4b81;
+}
+
+
+.logout-btn {
+    background-color: #f47ea1;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+
+.logout-btn:hover {
+    background-color: #e86b91;
+}
+
+
+/* ===== Dashboard Section ===== */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    justify-items: center;
+    padding: 40px 20px;
+}
+
+
+.card {
+    background-color: #f8f3fa;
+    border: 2px solid #e6d9f2;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 250px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+
+.card h3 {
+    color: #5a4b81;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+
+.card p {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+
+.card-btn {
+    background-color: #f47ea1;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+
+.card-btn:hover {
+    background-color: #e86b91;
+}
+
+
+/* ===== Popup Modal ===== */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.popup-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    width: 85%;
+    max-width: 750px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
+.popup-content h3 {
+    text-align: center;
+    color: #5a4b81;
+    margin-bottom: 20px;
+}
+
+
+.popup-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+
+.popup-content th,
+.popup-content td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+
+.popup-content th {
+    background-color: #f8e1eb;
+    color: #5a4b81;
+    font-weight: 600;
+}
+
+
+.close-btn {
+    display: block;
+    margin: 20px auto 0;
+    background-color: #f47ea1;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+
+.close-btn:hover {
+    background-color: #e86b91;
+}
+
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ===== Footer ===== */
+footer {
+    background-color: #6b4f83;
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+
+/* admin.css */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+}
+
+
+.popup-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+.popup-content table th, .popup-content table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+
+.close-btn {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background-color: #ff6b81;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+
+.popup-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.popup-content input, .popup-content select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.submit-btn {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.submit-btn:hover {
+    background-color: #218838;
+}

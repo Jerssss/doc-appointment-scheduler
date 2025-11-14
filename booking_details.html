@@ -1,112 +1,116 @@
 <!DOCTYPE html>
 <html>
-    <!-- Used for the booking process after user books a doctor -->
-     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MediKo | Book a Doctor</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/book.css">
-        <link rel="stylesheet" href="css/booking_details.css">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <!-- ===== Navbar ===== -->
-         <header>
-            <div class="logo">
-                <span class="blue">Medi</span><span class="pink">Ko</span>
+<!-- Used for the booking process after user books a doctor -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediKo | Book a Doctor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/book.css">
+    <link rel="stylesheet" href="css/booking_details.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- ===== Navbar ===== -->
+    <header>
+        <div class="logo">
+            <span class="blue">Medi</span><span class="pink">Ko</span>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="list_of_doctors.html" class="active">Book</a>
+            <a href="history.html">History</a>
+            <a href="aboutus.html">About Us</a>
+        </nav>
+        <div class="icons">
+            <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
+            <img src="images/user.png" alt="Profile" class="icon profile">
+        </div>
+    </header>
+
+    <!-- Booking information container -->
+    <main class="booking-container">
+        <!-- Doctor Card -->
+        <div class="doctor-card">
+            <div class="doctor-image">
+                <img id="doctorImage" src="" alt="Doctor Picture">
             </div>
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="list_of_doctors.html" class="active">Book</a>
-                <a href="history.html">History</a>
-                <a href="aboutus.html">About Us</a>
-            </nav>
-            <div class="icons">
-                <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
-                <img src="images/user.png" alt="Profile" class="icon profile">
-            </div>
-        </header>
-        
-        <!-- Booking information container. TODO: Make non-static -->
-        <main class="booking-container">
-            <!-- Doctor Card -->
-            <div class="doctor-card">
-                <div class="doctor-image">
-                    <img src="images/sebdoctyor.png" alt="Doctor Picture">
+            <h3 id="doctorSpecialty" class="doctor-specialty"></h3>
+            <h2 id="doctorName" class="doctor-name"></h2>
+            <p id="doctorMessage" class="doctor-message">
+            </p>
+        </div>
+
+
+        <!-- Booking Form -->
+        <div class="booking-form-card">
+            <h3 class="form-title">Please input the required * fields</h3>
+
+            <form id="bookingForm">
+                <!-- Consultation Type -->
+                <div class="form-group">
+                    <label>Choose type of consultation</label>
+                    <div class="button-group">
+                        <button type="button" class="toggle-btn active" data-type="virtual">Virtual</button>
+                        <button type="button" class="toggle-btn" data-type="home">Home Visit</button>
+                        <button type="button" class="toggle-btn" data-type="f2f">F2F Meet</button>
+                    </div>
                 </div>
-                <h3 class="doctor-specialty">BGH Consultant</h3>
-                <h2 class="doctor-name">Bernard Sebasthian Molina</h2>
-                <p class="doctor-message">
-                    Hi! I am Dr. Molina. Before we officially get you booked for an appointment, please enter the necessary information!
-                </p>
-            </div>
 
-            <!-- Booking Form -->
-            <div class="booking-form-card">
-                <h3 class="form-title">Please input the required * fields</h3>
-                
-                <form id="bookingForm">
-                    <!-- Consultation Type -->
-                    <div class="form-group">
-                        <label>Choose type of consultation</label>
-                        <div class="button-group">
-                            <button type="button" class="toggle-btn active" data-type="virtual">Virtual</button>
-                            <button type="button" class="toggle-btn" data-type="home">Home Visit</button>
-                            <button type="button" class="toggle-btn" data-type="f2f">F2F Meet</button>
-                        </div>
+                <!-- Schedule -->
+                <div class="form-group">
+                    <label>Choose a schedule*</label>
+                    <div class="input-with-icon">
+                        <input type="datetime-local" id="schedule" required>
+                        <span class="input-icon">📅</span>
                     </div>
+                    <small class="help-text">Example: 11/14/2025 11:00 AM/PM</small>
+                </div>
 
-                    <!-- Schedule -->
-                    <div class="form-group">
-                        <label>Choose a schedule*</label>
-                        <div class="input-with-icon">
-                            <input type="datetime-local" id="schedule" required>
-                            <span class="input-icon">📅</span>
-                        </div>
-                        <small class="help-text">Example: 11/14/2025 11:00 AM/PM</small>
-                    </div>
+                <!-- Reason for Checkup -->
+                <div class="form-group">
+                    <label>State reasons for checkup*</label>
+                    <textarea id="reason" rows="4" required placeholder="Enter your reasons here..."></textarea>
+                </div>
 
-                    <!-- Reason for Checkup -->
-                    <div class="form-group">
-                        <label>State reasons for checkup*</label>
-                        <textarea id="reason" rows="4" required placeholder="Enter your reasons here..."></textarea>
-                    </div>
+                <!-- Current Prescriptions -->
+                <div class="form-group">
+                    <label>Any current prescriptions? If none, leave this blank...</label>
+                    <textarea id="prescriptions" rows="4"
+                        placeholder="List any current medications or prescriptions..."></textarea>
+                </div>
 
-                    <!-- Current Prescriptions -->
-                    <div class="form-group">
-                        <label>Any current prescriptions? If none, leave this blank...</label>
-                        <textarea id="prescriptions" rows="4" placeholder="List any current medications or prescriptions..."></textarea>
-                    </div>
+                <!-- Form Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-confirm">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </main>
 
-                    <!-- Form Buttons -->
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-cancel">Cancel</button>
-                        <button type="submit" class="btn btn-confirm">Confirm</button>
-                    </div>
-                </form>
-            </div>
-        </main>
+    <!-- ===== FOOTER SECTION ===== -->
+    <footer class="site-footer">
+        <div class="social-icons">
+            <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
+            <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+            <a href="#"><img src="images/google.png" alt="Google"></a>
+            <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+        </div>
+        <ul class="footer-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="list_of_doctors.html">Book</a></li>
+            <li><a href="about.html">History</a></li>
+            <li><a href="team.html">About Us</a></li>
+        </ul>
+        <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
+    </footer>
 
-        <!-- ===== FOOTER SECTION ===== -->
-         <footer class="site-footer">
-            <div class="social-icons">
-                <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
-                <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
-                <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
-                <a href="#"><img src="images/google.png" alt="Google"></a>
-                <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
-            </div>
-            <ul class="footer-nav">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="news.html">Book</a></li>
-                <li><a href="about.html">History</a></li>
-                <li><a href="team.html">About Us</a></li>
-            </ul>
-            <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
-        </footer>
+    <!-- Script for frontend logic -->
+    <script src="js/frontend_js/booking_details.js"></script>
+</body>
 
-        <!-- Script for frontend logic -->
-         <script src="js/frontend_js/booking_details.js"></script>
-    </body>
 </html>

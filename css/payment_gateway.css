@@ -1,0 +1,257 @@
+/* Main Container */
+.payment-container {
+    max-width: 900px;
+    margin: 100px auto 60px;
+    padding: 20px;
+    min-height: calc(100vh - 300px);
+}
+
+/* Payment Card */
+.payment-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.payment-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Payment Method Tabs */
+.payment-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #E0E0E0;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px 30px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    border-bottom: 3px solid transparent;
+    position: relative;
+    bottom: -2px;
+}
+
+.tab-btn:hover {
+    color: #333;
+}
+
+.tab-btn.active {
+    color: #333;
+    border-bottom-color: #7B6B9E;
+}
+
+/* Payment Content Layout */
+.payment-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: linear-gradient(135deg, #F8F5FF 0%, #FFF0F8 100%);
+    padding: 40px;
+    border-radius: 15px;
+}
+
+/* Payment Form */
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="file"] {
+    padding: 12px 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    background: white;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.form-field input[type="text"]:read-only,
+.form-field input[type="email"]:read-only {
+    background: #F9F9F9;
+    cursor: not-allowed;
+}
+
+.form-field input:focus {
+    outline: none;
+    border-color: #7B6B9E;
+}
+
+.form-field input[type="file"] {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.form-field input[type="file"]::file-selector-button {
+    padding: 8px 15px;
+    border: none;
+    background: #7B6B9E;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: background 0.3s ease;
+}
+
+.form-field input[type="file"]::file-selector-button:hover {
+    background: #6A5A8D;
+}
+
+/* Confirm Button */
+.btn-confirm {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 8px;
+    background: #C58BA6;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 10px;
+}
+
+.btn-confirm:hover {
+    background: #B37A95;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(197, 139, 166, 0.3);
+}
+
+/* QR Section */
+.qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.qr-code {
+    width: 250px;
+    height: 250px;
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-code img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.qr-number {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 10px 0 5px;
+}
+
+.qr-doctor {
+    font-size: 16px;
+    font-weight: 500;
+    color: #7B6B9E;
+}
+
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .payment-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .payment-card {
+        padding: 30px 20px;
+    }
+
+    .qr-code {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 600px) {
+    .payment-container {
+        margin-top: 80px;
+        padding: 15px;
+    }
+
+    .payment-card {
+        padding: 25px 15px;
+    }
+
+    .payment-content {
+        padding: 25px 20px;
+    }
+
+    .payment-title {
+        font-size: 20px;
+    }
+
+    .tab-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    .qr-code {
+        width: 180px;
+        height: 180px;
+        padding: 15px;
+    }
+
+    .btn-confirm {
+        width: 100%;
+    }
+}
+
+/* Cash Payment Tab Styles */
+.payment-content[data-active="cash"] .qr-section {
+    display: none;
+}
+
+.payment-content[data-active="cash"] {
+    grid-template-columns: 1fr;
+}
+
+.payment-content[data-active="cash"] .payment-form {
+    max-width: 100%;
+}

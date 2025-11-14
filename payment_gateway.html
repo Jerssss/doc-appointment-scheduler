@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MediKo</title>
+        <link rel="stylesheet" href="css/index.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/payment_gateway.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <!-- Navbar -->
+         <header>
+            <div class="logo">
+                <span class="blue">Medi</span><span class="pink">Ko</span>
+            </div>
+            <nav>
+                <a href="#" class="active">Home</a>
+                <a href="list_of_doctors.html">Book</a>
+                <a href="history.html">History</a>
+                <a href="aboutus.html">About us</a>
+            </nav>
+            <div class="icons">
+                <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
+                <img src="images/user.png" alt="Profile" class="icon profile">
+            </div>
+        </header>
+
+        <!-- Payment Gateway Section -->
+         <main class="payment-container">
+            <div class="payment-card">
+                <h2 class="payment-title">Select Payment Method</h2>
+
+                <!-- Payment Method Tabs -->
+                <div class="payment-tabs">
+                    <button class="tab-btn active" data-method="gcash">GCash</button>
+                    <button class="tab-btn" data-method="cash">Cash</button>
+                </div>
+
+                <!-- Payment Content -->
+                <div class="payment-content">
+                    <!-- Left Side: Form Fields -->
+                    <div class="payment-form">
+                        <!-- Contains static data. TODO: Add backend logic -->
+                        <div class="form-field">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" value="Juan P. Dela Cruz" readonly>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" value="Bod Bande" readonly>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" value="juandelajcruz@gmail.com" readonly>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="appointmentTime">Appointment Time</label>
+                            <input type="text" id="appointmentTime" value="01:00 PM" readonly>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="appointmentType">Appointment Type</label>
+                            <input type="text" id="appointmentType" value="Virtual Consultation / Checkup" readonly>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="gcashNumber">Insert GCash Screenshot</label>
+                            <input type="file" id="gcashNumber" accept="image/*">
+                        </div>
+
+                        <button class="btn-confirm">Confirm</button>
+                    </div>
+
+                    <!-- Right Side: QR Code -->
+                    <div class="qr-section">
+                        <div class="qr-code">
+                            <img src="images/qr-placeholder.png" alt="QR Code" id="qrCodeImage">
+                        </div>
+                        <p class="qr-number">0966 120 1231</p>
+                        <p class="qr-doctor">Dr. Sebasthian Molina</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+ 
+        <!-- Footer Section -->
+         <footer class="site-footer">
+            <div class="social-icons">
+                <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
+                <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+                <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+                <a href="#"><img src="images/google.png" alt="Google"></a>
+                <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+            </div>
+            <ul class="footer-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="news.html">Book</a></li>
+                <li><a href="about.html">History</a></li>
+                <li><a href="team.html">About Us</a></li>
+            </ul>
+            <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
+        </footer>
+
+        <!-- Script link -->
+         <script src="js/frontend_js/payment_gateway.js"></script>
+    </body>
+</html>

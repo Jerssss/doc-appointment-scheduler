@@ -1,69 +1,92 @@
-// Frontend codes for bookingdetails.html. Handles mode switching logic
+document.addEventListener('DOMContentLoaded', async function () {
+    // Retrieve selected doctor from localStorage
+    const selectedDoctor = JSON.parse(localStorage.getItem('selectedDoctor'));
 
-document.addEventListener('DOMContentLoaded', function() {
-    
+
+    if (!selectedDoctor) {
+        alert('No doctor selected. Redirecting...');
+        window.location.href = 'list_of_doctors.html';
+        return;
+    }
+
+
+    // Insert doctor name into page if needed
+    const doctorNameElement = document.getElementById('doctorName');
+    if (doctorNameElement) {
+        doctorNameElement.textContent = selectedDoctor.name;
+    }
+
+
     // Toggle buttons for consultation type
     const toggleButtons = document.querySelectorAll('.toggle-btn');
-    
+
+
     toggleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
+        button.addEventListener('click', function () {
             toggleButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked button
             this.classList.add('active');
         });
     });
 
-    // Form submission
+
     const bookingForm = document.getElementById('bookingForm');
-    
-    bookingForm.addEventListener('submit', function(e) {
+
+
+    bookingForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
-        // Get form values
+
+
         const consultationType = document.querySelector('.toggle-btn.active').dataset.type;
         const schedule = document.getElementById('schedule').value;
         const reason = document.getElementById('reason').value;
         const prescriptions = document.getElementById('prescriptions').value;
-        
-        // Validate required fields
+
+
         if (!schedule || !reason) {
-            alert('Please fill in all required fields marked with *');
+            alert('Please fill in all required fields.');
             return;
         }
-        
-        // Create booking object
+
+
         const bookingData = {
             consultationType: consultationType,
             schedule: schedule,
             reason: reason,
             prescriptions: prescriptions,
-            doctor: 'Bernard Sebasthian Molina',
+            doctor_id: selectedDoctor.user_id,
+            doctor_name: selectedDoctor.name,
             timestamp: new Date().toISOString()
         };
-        
-        console.log('Booking Data:', bookingData);
-        
-        // Show confirmation
-        alert('Booking confirmed! You will receive a confirmation email shortly.');
-        
 
-        // TODO ADD BACKEND LOGIC
-    });
 
-    // Cancel button
-    const cancelBtn = document.querySelector('.btn-cancel');
-    
-    cancelBtn.addEventListener('click', function() {
-        if (confirm('Are you sure you want to cancel this booking?')) {
-            window.location.href = 'book.html';
+        try {
+            const response = await fetch('php/create_booking.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookingData)
+            });
+
+
+            const result = await response.json();
+
+
+            if (result.success) {
+                alert('Booking confirmed successfully.');
+                window.location.href = 'history.html';
+            } else {
+                alert('Failed to confirm booking.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while booking.');
         }
     });
 
-    // Set minimum date/time to current date/time
-    const scheduleInput = document.getElementById('schedule');
-    const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    scheduleInput.min = now.toISOString().slice(0, 16);
+
+    const cancelBtn = document.querySelector('.btn-cancel');
+    cancelBtn.addEventListener('click', function () {
+        if (confirm('Are you sure you want to cancel this booking?')) {
+            window.location.href = 'list_of_doctors.html';
+        }
+    });
 });

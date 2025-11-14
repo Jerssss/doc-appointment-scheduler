@@ -114,10 +114,14 @@ nav a:hover { font-weight: 600; }
 .doctor-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  justify-content: center;
   gap: 2rem;
+  padding: 2rem 0;
 }
 
+/* ===== Doctor Card ===== */
 .doctor-card {
+  width: 250px; /* fixed width */
   border: 2px solid #c06c91;
   border-radius: 10px;
   overflow: hidden;
@@ -131,7 +135,7 @@ nav a:hover { font-weight: 600; }
   box-shadow: 0 6px 14px rgba(0,0,0,0.1);
 }
 
-.doctor-card a{
+.doctor-card a {
   text-decoration: none;
   color: white;
 }

@@ -1,85 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>MediKo | Book a Doctor</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/book.css">
-        <link rel="stylesheet" href="css/view_doctor.css">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    </head>
-    <body>
-        <!-- ===== Navbar ===== -->
-         <header>
-            <div class="logo">
-                <span class="blue">Medi</span><span class="pink">Ko</span>
-            </div>
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="book.html" class="active">Book</a>
-                <a href="history.html">History</a>
-                <a href="aboutus.html">About Us</a>
-            </nav>
-            <div class="icons">
-                <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
-                <img src="images/user.png" alt="Profile" class="icon profile">
-            </div>
-        </header>
-        <!-- Doctor Information Container. STATIC. WILL MAKE THIS DYNAMIC LATER -->
-         <div class="doctor-info-container">
-            <!-- LEFT SIDE: Doctor Info -->
-             <div class="profile-card">
-                <img src="images/sebdoctyor.png" alt="Doctor Photo">
-                <p class="title">BGH Consultant</p>
-                <h2>Bernard Sebasthian Molina</h2>
-                <p><span>Titles:</span> MD, Cardiologist</p>
-                <p><span>Checkup Fee:</span> ₱600.00</p>
-                <p><span>Languages:</span> English, Tagalog, Bisaya</p>
-                <p class="rating">⭐ 4.8 / 5 (96 reviews)</p>
-                <p><span>Can do:</span> Online Consultation or Home Checkup</p>
-            </div>
-            <!-- RIGHT SIDE: Hospital Info -->
-             <div class="details">
-                <img src="images/bgh.png" alt="Hospital Photo">
-                <p><b>Hospital:</b> Baguio General Hospital and Medical Center</p>
-                <p><b>Hospital Phone:</b> +123 456 8910</p>
-                <p><b>Hospital Address:</b> Gov. Pack Rd, Baguio, 2600 Benguet</p>
-                <p><b>Clinic Hours:</b> Everyday 08:00 AM to 08:00 PM</p>
-                <p><b>Specialization:</b> Family Medicine, Cardiology</p>
-                <button>Book Me</button>
-            </div>
-            <!-- Confirmation Modal -->
-             <div id="confirmationModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>CONFIRMATION</h2>
-                    <p>You are booking Dr. Molina!</p>
-                    <div class="modal-buttons">
-                        <button class="cancel-btn">Cancel</button>
-                        <button class="confirm-btn"><a href="booking_details.html">Confirm</a></button>
-                    </div>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediKo | Doctor Details</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/book.css">
+    <link rel="stylesheet" href="css/view_doctor.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <span class="blue">Medi</span><span class="pink">Ko</span>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="#" class="active">Book</a>
+        <a href="history.html">History</a>
+        <a href="aboutus.html">About Us</a>
+    </nav>
+    <div class="icons">
+        <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
+        <img src="images/user.png" alt="Profile" class="icon profile">
+    </div>
+</header>
+
+<!-- Dynamic Doctor Info -->
+<div class="doctor-info-container">
+    <div class="profile-card" id="doctorProfile"></div>
+
+    <div class="details" id="hospitalDetails"></div>
+
+    <!-- Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>CONFIRMATION</h2>
+            <p id="confirmText"></p>
+            <div class="modal-buttons">
+                <button class="cancel-btn">Cancel</button>
+                <button class="confirm-btn" id="confirmBookingBtn">Confirm</button>
             </div>
         </div>
-        <!-- ===== FOOTER SECTION ===== -->
-         <footer class="site-footer">
-            <div class="social-icons">
-                <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
-                <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
-                <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
-                <a href="#"><img src="images/google.png" alt="Google"></a>
-                <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
-            </div>
-            <ul class="footer-nav">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="news.html">Book</a></li>
-                <li><a href="about.html">History</a></li>
-                <li><a href="team.html">About Us</a></li>
-            </ul>
-            <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
-        </footer>
-        <!-- Links to associated JS -->
-         <script src="js/frontend_js/confirm_booking.js"></script>
-    </body>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="social-icons">
+        <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
+        <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+        <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+        <a href="#"><img src="images/google.png" alt="Google"></a>
+        <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+    </div>
+
+    <ul class="footer-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="news.html">Book</a></li>
+        <li><a href="about.html">History</a></li>
+        <li><a href="team.html">About Us</a></li>
+    </ul>
+
+    <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
+</footer>
+
+<script>
+// Load doctor data from localStorage
+document.addEventListener("DOMContentLoaded", function () {
+    const doctor = JSON.parse(localStorage.getItem("selectedDoctor"));
+
+    if (!doctor) {
+        alert("No doctor selected. Redirecting...");
+        window.location.href = "book.html";
+        return;
+    }
+
+    // Populate doctor profile
+    document.getElementById("doctorProfile").innerHTML = `
+        <img src="${doctor.profile_image}" alt="Doctor Photo">
+        <p class="title">${doctor.hospital_title || "Hospital Consultant"}</p>
+        <h2>${doctor.full_name}</h2>
+        <p><span>Titles:</span> ${doctor.titles || "MD"}</p>
+        <p><span>Specialization:</span> ${doctor.specialization}</p>
+        <p><span>Checkup Fee:</span> ₱${doctor.fee || "600.00"}</p>
+        <p><span>Languages:</span> ${doctor.languages || "English, Filipino"}</p>
+        <p class="rating">⭐ ${doctor.rating || "4.8"} / 5 (${doctor.reviews || "96"} reviews)</p>
+        <p><span>Can do:</span> ${doctor.services || "Online Consultation"}</p>
+    `;
+
+    // Hospital details
+    document.getElementById("hospitalDetails").innerHTML = `
+        <img src="${doctor.hospital_image || "images/bgh.png"}" alt="Hospital Photo">
+        <p><b>Hospital:</b> ${doctor.hospital_name || "Baguio General Hospital"}</p>
+        <p><b>Hospital Phone:</b> ${doctor.hospital_phone || "+123 456 7890"}</p>
+        <p><b>Hospital Address:</b> ${doctor.hospital_address || "Gov. Pack Rd, Baguio City"}</p>
+        <p><b>Clinic Hours:</b> ${doctor.clinic_hours || "08:00 AM - 08:00 PM"}</p>
+        <p><b>Specialization:</b> ${doctor.specialization}</p>
+        <button id="bookBtn">Book Me</button>
+    `;
+
+    // Modal logic
+    const modal = document.getElementById("confirmationModal");
+    const closeBtn = document.querySelector(".close");
+    const cancelBtn = document.querySelector(".cancel-btn");
+    const bookBtn = document.getElementById("bookBtn");
+
+    bookBtn.addEventListener("click", () => {
+        document.getElementById("confirmText").textContent =
+            "You are booking " + doctor.full_name;
+        modal.style.display = "block";
+    });
+
+    closeBtn.onclick = () => modal.style.display = "none";
+    cancelBtn.onclick = () => modal.style.display = "none";
+
+    window.onclick = function (event) {
+        if (event.target === modal) modal.style.display = "none";
+    };
+
+    // On confirm → redirect to booking page
+    document.getElementById("confirmBookingBtn").addEventListener("click", () => {
+        // Keep doctor selected and go to booking form
+        window.location.href = "booking_details.html";
+    });
+});
+</script>
+
+</body>
 </html>

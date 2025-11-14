@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MediKo | Book a Doctor</title>
-    <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/book.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
 
+<body>
   <!-- ===== Navbar ===== -->
   <header>
-    <div class="logo">
-      <span class="blue">Medi</span><span class="pink">Ko</span>
-    </div>
+    <div class="logo"><span class="blue">Medi</span><span class="pink">Ko</span></div>
     <nav>
       <a href="index.html">Home</a>
       <a href="#" class="active">Book</a>
@@ -22,89 +20,24 @@
       <a href="aboutus.html">About Us</a>
     </nav>
     <div class="icons">
-      <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
-      <img src="images/user.png" alt="Profile" class="icon profile">
+      <img src="images/notification-bell.png" class="icon" alt="Notifications">
+      <img src="images/user.png" class="icon" alt="Profile">
     </div>
   </header>
 
   <!-- ===== Book Section ===== -->
   <section class="book-section">
     <h1>Looking for a doctor?</h1>
+
     <div class="search-bar">
-      <input type="text" placeholder="Search doctor or specialization...">
-      <button><img src="images/search-icon.png" alt="Search"></button>
+      <input id="searchInput" type="text" placeholder="Search doctor or specialization...">
+      <button id="searchBtn"><img src="images/search-icon.png" alt="Search"></button>
     </div>
 
-    <div class="doctor-grid">
-
-      <!-- Doctor Card 1 -->
-      <div class="doctor-card">
-        <div class="doctor-img">
-          <img src="images/sebdoctyor.png" alt="Doctor 1">
-        </div>
-        <div class="doctor-info">
-          <h3>Bernard Sebasthian Molina</h3>
-          <p class="specialty">Cardiologist</p>
-          <p class="desc">Book a consultation to treat underlying health conditions via call</p>
-          <div class="footer">
-            <span class="doc-name">Dr. Molina</span>
-            <button class="view-btn"><a href="view_doctor.html">View</a></button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Doctor Card 2 -->
-      <div class="doctor-card">
-        <div class="doctor-img">
-          <img src="images/yanadr.png" alt="Doctor 2">
-        </div>
-        <div class="doctor-info">
-          <h3>Giana Kristy Grabanzaor</h3>
-          <p class="specialty">Pediatrician</p>
-          <p class="desc">Book a consultation to treat underlying health conditions via call</p>
-          <div class="footer">
-            <span class="doc-name">Dr. Grabanzaor</span>
-            <button class="view-btn"><a href="view_doctor.html">View</a></button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Doctor Card 3 -->
-      <div class="doctor-card">
-        <div class="doctor-img">
-          <img src="images/geoffdr.png" alt="Doctor 3">
-        </div>
-        <div class="doctor-info">
-          <h3>Geoff Denuel Ferrer</h3>
-          <p class="specialty">Pediatrician</p>
-          <p class="desc">Book a consultation to treat underlying health conditions via call</p>
-          <div class="footer">
-            <span class="doc-name">Dr. Ferrer</span>
-            <button class="view-btn"><a href="view_doctor.html">View</a></button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Doctor Card 4 -->
-      <div class="doctor-card">
-        <div class="doctor-img">
-          <img src="images/lolendr.png" alt="Doctor 4">
-        </div>
-        <div class="doctor-info">
-          <h3>Noelle Lorraine Adame</h3>
-          <p class="specialty">Neurologist</p>
-          <p class="desc">Book a consultation to treat underlying health conditions via call</p>
-          <div class="footer">
-            <span class="doc-name">Dr. Adame</span>
-            <button class="view-btn"><a href="view_doctor.html">View</a></button>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <div class="doctor-grid" id="doctorGrid"></div>
   </section>
 
-  <!-- ===== FOOTER SECTION ===== -->
+  <!-- ===== Footer ===== -->
   <footer class="site-footer">
     <div class="social-icons">
       <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
@@ -116,12 +49,16 @@
 
     <ul class="footer-nav">
       <li><a href="index.html">Home</a></li>
-      <li><a href="news.html">Book</a></li>
-      <li><a href="about.html">History</a></li>
-      <li><a href="team.html">About Us</a></li>
+      <li><a href="list_of_doctors.html">Book</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="aboutus.html">About Us</a></li>
     </ul>
 
     <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
   </footer>
+
+  <!-- ===== JS ===== -->
+  <script src="js/frontend_js/list_of_doctors.js"></script>
 </body>
+
 </html>

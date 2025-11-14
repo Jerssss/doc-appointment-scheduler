@@ -15,14 +15,23 @@ document.addEventListener("DOMContentLoaded", () => {
         item.classList.add("appointment-item");
         if (index === 0) item.classList.add("active");
 
-        const patientName = appt.patient_name || `Patient ${appt.patient_id.$oid || ''}`;
-        const imgSrc = "images/default-patient.png";
+        const patientName = appt.patient_name || "Unknown Patient";
+        const imgSrc = appt.patient_image || "images/default-patient.png";
+
+        // convert ISO time to local date/time display if available
+        let displayDate = "Invalid Date";
+        if (appt.time) {
+          const dt = new Date(appt.time);
+          if (!isNaN(dt)) {
+            displayDate = `${dt.toLocaleDateString()} ${dt.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+          }
+        }
 
         item.innerHTML = `
           <img src="${imgSrc}" alt="${patientName}" />
           <div class="details">
             <h4>${patientName}</h4>
-            <p>${new Date(appt.time).toLocaleDateString()}<br>${new Date(appt.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+            <p>${displayDate}</p>
           </div>
         `;
 
@@ -42,16 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const loadPatientInfo = (appt) => {
-    const patientName = appt.patient_name || `Patient ${appt.patient_id.$oid || ''}`;
-    const imgSrc = "images/default-patient.png";
+    const patientName = appt.patient_name || "Unknown Patient";
+    const imgSrc = appt.patient_image || "images/default-patient.png";
 
     patientHeader.innerHTML = `
       <img src="${imgSrc}" alt="${patientName}" />
       <div class="info">
         <h3>${patientName}</h3>
-        <p>${appt.age} years old</p>
-        <p>${appt.gender}</p>
-        <p>${appt.address}</p>
+        <p>${appt.age || 'N/A'} years old</p>
+        <p>${appt.gender || ''}</p>
+        <p>${appt.address || ''}</p>
       </div>
       <button class="consult-btn">Start Consultation</button>
     `;
@@ -59,19 +68,19 @@ document.addEventListener("DOMContentLoaded", () => {
     vitalsContainer.innerHTML = `
       <div class="vital-box">
         <label>Temperature</label>
-        <input type="text" value="${appt.temperature}" readonly />
+        <input type="text" value="${appt.temperature || '-'}" readonly />
       </div>
       <div class="vital-box">
         <label>Blood Pressure</label>
-        <input type="text" value="${appt.blood_pressure}" readonly />
+        <input type="text" value="${appt.blood_pressure || '-'}" readonly />
       </div>
       <div class="vital-box">
         <label>Heart Rate</label>
-        <input type="text" value="${appt.heart_rate}" readonly />
+        <input type="text" value="${appt.heart_rate || '-'}" readonly />
       </div>
       <div class="vital-box">
         <label>Height and Weight</label>
-        <input type="text" value="${appt.height_weight}" readonly />
+        <input type="text" value="${appt.height_weight || '-'}" readonly />
       </div>
     `;
   };

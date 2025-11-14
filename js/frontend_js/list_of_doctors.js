@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
   const searchBtn = document.getElementById('searchBtn');
 
-  // Function to fetch doctors
   const fetchDoctors = async (search = '') => {
     let url = 'includes/get_doctors.php';
     if (search) url += `?search=${encodeURIComponent(search)}`;
@@ -12,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(url);
       const doctors = await res.json();
 
-      doctorGrid.innerHTML = ''; // Clear existing cards
+      doctorGrid.innerHTML = '';
 
       if (!doctors.length) {
         doctorGrid.innerHTML = '<p>No doctors found.</p>';
@@ -23,26 +22,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.classList.add('doctor-card');
 
+        // Safe footer name: use full name, prepend Dr. only if missing
+        let fullName = doc.name || doc.user_name || 'Unknown';
+        let footerName = fullName.toLowerCase().startsWith('dr.') ? fullName : 'Dr. ' + fullName;
+
         card.innerHTML = `
           <div class="doctor-img">
-            <img src="${doc.profile_image}" alt="${doc.name}">
+            <img src="${doc.profile_image || 'images/default-doctor.png'}" alt="${fullName}">
           </div>
           <div class="doctor-info">
-            <h3>${doc.name}</h3>
+            <h3>${fullName}</h3>
             <p class="specialty">${doc.specialization || 'General'}</p>
             <p class="desc">Book a consultation with this doctor</p>
             <div class="footer">
-              <span class="doc-name">Dr. ${doc.name.split(' ')[0]}</span>
+              <span class="doc-name">${footerName}</span>
               <button class="view-btn">View</button>
             </div>
           </div>
         `;
 
-        // Map doctor data for view_doctor.html
         card.querySelector('.view-btn').addEventListener('click', () => {
           const doctorData = {
             user_id: doc.user_id,
-            full_name: doc.name || doc.user_name,
+            full_name: fullName,
             profile_image: doc.profile_image || 'images/default-doctor.png',
             specialization: doc.specialization || 'General',
             fee: doc.fee || '600.00',

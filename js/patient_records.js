@@ -6,27 +6,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   const lastAppointment = document.getElementById("lastAppointment");
 
   try {
-    // Fetch all patients
     const res = await fetch("includes/get_patient_list.php");
     const patients = await res.json();
 
-    patientList.innerHTML = ""; // clear any existing
+    patientList.innerHTML = "";
 
     patients.forEach((patient, index) => {
       const card = document.createElement("div");
       card.classList.add("patient-card");
-      if (index === 0) card.classList.add("active"); // first patient selected by default
-      card.setAttribute("data-id", patient._id);
+      if (index === 0) card.classList.add("active");
+      card.dataset.id = patient._id;
+
+      const imgSrc = patient.image || "images/default-patient.png";
 
       card.innerHTML = `
-        <img src="${patient.image || 'images/default-patient.png'}" alt="${patient.name}">
+        <img src="${imgSrc}" alt="${patient.name}">
         <p>${patient.name}</p>
       `;
 
       patientList.appendChild(card);
 
       card.addEventListener("click", async () => {
-        // Highlight active card
         document.querySelectorAll(".patient-card").forEach(c => c.classList.remove("active"));
         card.classList.add("active");
 
@@ -34,10 +34,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           const detailRes = await fetch(`includes/get_patientdetails.php?id=${patient._id}`);
           const details = await detailRes.json();
 
-          pastConditions.value = details.past_conditions.join(", ") || "N/A";
-          pastSurgeries.value = details.past_surgeries.join(", ") || "N/A";
-          currentConditions.value = details.current_conditions.join(", ") || "N/A";
-          lastAppointment.value = details.last_appointment || "N/A";
+          pastConditions.value = (details.past_medical_conditions && details.past_medical_conditions.length) ? details.past_medical_conditions.join(", ") : "N/A";
+          pastSurgeries.value = (details.past_surgeries && details.past_surgeries.length) ? details.past_surgeries.join(", ") : "N/A";
+          currentConditions.value = (details.current_medical_conditions && details.current_medical_conditions.length) ? details.current_medical_conditions.join(", ") : (details.illness || "N/A");
+          lastAppointment.value = details.last_appointment_date || "N/A";
 
         } catch (err) {
           console.error("Error loading patient details:", err);
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 
-    // Trigger first patient's details load
+    // auto-click first patient to load details
     if (patients.length > 0) {
       document.querySelector(".patient-card.active").click();
     }

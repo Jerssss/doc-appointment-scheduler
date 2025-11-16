@@ -1,95 +1,94 @@
 // ===== PAYMENT GATEWAY PAGE JAVASCRIPT =====
 
-document.addEventListener('DOMContentLoaded', function() {
-    
+document.addEventListener('DOMContentLoaded', async function() {
+
     // Payment Method tab switching logic
     const tabButtons = document.querySelectorAll('.tab-btn');
     const paymentContent = document.querySelector('.payment-content');
     const gcashNumberField = document.querySelector('.form-field:has(#gcashNumber)');
-    
+
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remove active class from all tabs
             tabButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked tab
             this.classList.add('active');
-            
-            // Get payment method
             const method = this.dataset.method;
             paymentContent.setAttribute('data-active', method);
-            
-            // Show/hide QR section and screenshot field based on method
-            if (method === 'cash') {
-                gcashNumberField.style.display = 'none';
-            } else {
-                gcashNumberField.style.display = 'flex';
-            }
+            gcashNumberField.style.display = (method === 'gcash') ? 'flex' : 'none';
         });
     });
 
-    // Form submission. TODO: Add proper backend functionality
-    const confirmButton = document.querySelector('.btn-confirm');
-    
-    confirmButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        
+    // Fetch patient & appointment info from backend
+    try {
+        const res = await fetch('includes/get_payment_info.php');
+        const data = await res.json();
 
-        // TODO: Data should be retrieved from database
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
+        document.getElementById('fullName').value = data.patient_name;
+        document.getElementById('username').value = data.username;
+        document.getElementById('email').value = data.email;
+        document.getElementById('appointmentTime').value = data.appointment_time;
+        document.getElementById('appointmentType').value = data.appointment_type;
+
+        document.querySelector('.qr-doctor').textContent = data.doctor_name;
+
+        // store appointment_id globally for submission
+        window.currentAppointmentId = data.appointment_id;
+
+    } catch (err) {
+        console.error('Error fetching payment info:', err);
+        alert('Unable to load payment information.');
+    }
+
+    // Confirm payment submission
+    const confirmButton = document.querySelector('.btn-confirm');
+    confirmButton.addEventListener('click', async function(e) {
+        e.preventDefault();
         const activeMethod = document.querySelector('.tab-btn.active').dataset.method;
-        const fullName = document.getElementById('fullName').value;
-        const username = document.getElementById('username').value;
-        const email = document.getElementById('email').value;
-        const appointmentTime = document.getElementById('appointmentTime').value;
-        const appointmentType = document.getElementById('appointmentType').value;
-        
-        // Validate screenshot for GCash payment
+        let screenshotFile = null;
+
         if (activeMethod === 'gcash') {
-            const screenshotInput = document.getElementById('gcashNumber');
-            
-            if (!screenshotInput.files || screenshotInput.files.length === 0) {
-                alert('Please upload a screenshot of your GCash payment.');
+            const input = document.getElementById('gcashNumber');
+            if (!input.files || input.files.length === 0) {
+                alert('Please upload a GCash screenshot.');
                 return;
             }
+            screenshotFile = input.files[0];
         }
-        
-        // Create payment data object for DB operation. (prepared in advance)
-        const paymentData = {
-            paymentMethod: activeMethod,
-            fullName: fullName,
-            username: username,
-            email: email,
-            appointmentTime: appointmentTime,
-            appointmentType: appointmentType,
-            timestamp: new Date().toISOString()
-        };
-        
-        console.log('Payment Data:', paymentData);
-        
-        // Show success message
-        alert(`Payment ${activeMethod === 'gcash' ? 'receipt uploaded' : 'confirmed'}! Your appointment is being processed.`);
-        
-        // TODO: ADD BACKEND FUNCTIONALITY
-  
+
+        // Create FormData to send to backend
+        const formData = new FormData();
+        formData.append('appointment_id', window.currentAppointmentId);
+        formData.append('payment_method', activeMethod);
+        if (screenshotFile) formData.append('gcash_screenshot', screenshotFile);
+
+        try {
+            const res = await fetch('includes/create_payment.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await res.json();
+
+            if (result.success) {
+                alert('Payment recorded successfully!');
+            } else {
+                alert(result.error || 'Payment failed.');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error submitting payment.');
+        }
     });
 
-    // File input preview
+    // Optional: Preview uploaded screenshot
     const fileInput = document.getElementById('gcashNumber');
-    
     fileInput.addEventListener('change', function(e) {
         if (this.files && this.files[0]) {
             const fileName = this.files[0].name;
             console.log('Screenshot uploaded:', fileName);
-        
         }
     });
-
-    // Generate QR Code (placeholder functionality. TODO: ADD DATABASE RETRIEVAL)
-    function generateQRCode() {
-        const qrImage = document.getElementById('qrCodeImage');
-        
-    }
-    
-    // Call on page load
-    generateQRCode();
 });

@@ -17,7 +17,7 @@ try {
     $client = new Client("mongodb://localhost:27017/");
     $collection = $client->MediKo->users;
 
-    $result = $collection->deleteOne(['_id' => new MongoDB\BSON\ObjectId($data['user_id'])]);
+    $result = $collection->deleteOne(['user_id' => new MongoDB\BSON\ObjectId($data['user_id'])]);
 
     if ($result->getDeletedCount() > 0) {
         echo json_encode(['status' => 'success', 'message' => 'User deleted successfully.']);

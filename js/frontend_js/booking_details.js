@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Clean doctor name to avoid "Dr. Dr." duplication
-    const cleanName = (doctor.full_name || doctor.user_name || "Doctor").replace(/^Dr\.?\s+/i, '');
+    // Clean doctor name to avoid duplicate "Dr."
+    const cleanName = (doctor.full_name || "Doctor").replace(/^Dr\.?\s+/i, '');
 
     // Populate doctor card
     const doctorImageEl = document.getElementById("doctorImage");
@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
     doctorImageEl.alt = cleanName;
     doctorSpecialtyEl.textContent = doctor.specialization || "General Consultant";
     doctorNameEl.textContent = cleanName;
-    doctorMessageEl.textContent = `Hi! I am Dr. ${cleanName}. Before we officially get you booked for an appointment, please enter the necessary information!`;
+    doctorMessageEl.textContent = `Hi! I am Dr. ${cleanName}. Before we officially book your appointment, please enter the necessary information.`;
 
-    // Consultation type toggle buttons
+    // Toggle buttons for consultation type
     const toggleBtns = document.querySelectorAll(".toggle-btn");
     toggleBtns.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -37,17 +37,30 @@ document.addEventListener("DOMContentLoaded", () => {
     bookingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const selectedMode = document.querySelector(".toggle-btn.active").dataset.type;
+        const selectedBtn = document.querySelector(".toggle-btn.active");
+        if (!selectedBtn) {
+            alert("Please select a consultation type.");
+            return;
+        }
+
+        const selectedMode = selectedBtn.dataset.type;
         const time = document.getElementById("schedule").value;
-        const reason = document.getElementById("reason").value;
-        const prescriptions = document.getElementById("prescriptions").value;
+        const reason = document.getElementById("reason").value.trim();
+        const prescriptions = document.getElementById("prescriptions").value.trim();
+
+        if (!time || !reason) {
+            alert("Please fill in the schedule and reason.");
+            return;
+        }
+
+        const notes = prescriptions ? `${reason} | Prescriptions: ${prescriptions}` : reason;
 
         const payload = {
             patient_id: localStorage.getItem("user_id") || "PATIENT_ID_PLACEHOLDER",
             doctor_id: doctor.user_id,
             mode: selectedMode,
             time: time,
-            notes: reason + (prescriptions ? ` | Prescriptions: ${prescriptions}` : "")
+            notes: notes
         };
 
         try {
@@ -74,31 +87,25 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".btn-cancel").addEventListener("click", () => {
         window.location.href = "list_of_doctors.html";
     });
-    // Disable past dates and restrict to 30-min increments
+
+    // Schedule input: disable past dates and round to nearest 30 minutes
     const scheduleInput = document.getElementById("schedule");
-
     const now = new Date();
-    // Round up to next 30-minute interval
-    const roundedMinutes = now.getMinutes() % 30 === 0 ? now.getMinutes() : now.getMinutes() + (30 - now.getMinutes() % 30);
-    now.setMinutes(roundedMinutes);
-    now.setSeconds(0);
-    now.setMilliseconds(0);
+    now.setMinutes(Math.ceil(now.getMinutes() / 30) * 30, 0, 0); // round up to next 30-min
+    const pad = (num) => String(num).padStart(2, "0");
+    scheduleInput.min = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-
-    scheduleInput.min = `${year}-${month}-${day}T${hours}:${minutes}`;
-
-    // Optional: round any manually entered time to nearest 30-minute step
+    // Round manually entered time to nearest 30-min
     scheduleInput.addEventListener("change", () => {
         const selected = new Date(scheduleInput.value);
         const mins = selected.getMinutes();
         const rounded = Math.round(mins / 30) * 30;
-        selected.setMinutes(rounded);
-        selected.setSeconds(0);
-        scheduleInput.value = selected.toISOString().slice(0, 16);
+        selected.setMinutes(rounded, 0, 0);
+
+        // Format in local YYYY-MM-DDTHH:MM
+        const pad = (n) => String(n).padStart(2, "0");
+        const localFormatted = `${selected.getFullYear()}-${pad(selected.getMonth()+1)}-${pad(selected.getDate())}T${pad(selected.getHours())}:${pad(selected.getMinutes())}`;
+
+        scheduleInput.value = localFormatted;
     });
 });

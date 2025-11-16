@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scheduleInput.addEventListener("change", () => {
         const selected = new Date(scheduleInput.value);
         const mins = selected.getMinutes();
-        const rounded = Math.round(mins / 30) * 30;
+        const rounded = Math.round(mins / 30) * 30 + 30;
         selected.setMinutes(rounded, 0, 0);
 
         // Format in local YYYY-MM-DDTHH:MM

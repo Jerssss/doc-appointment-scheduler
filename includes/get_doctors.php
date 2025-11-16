@@ -1,44 +1,46 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php'; // MongoDB PHP library
-
+require __DIR__ . '/../vendor/autoload.php';
 header('Content-Type: application/json');
 
 try {
-    // Connect to MongoDB
     $client = new MongoDB\Client("mongodb://localhost:27017/");
     $usersCollection = $client->Mediko->users;
 
-    // Fetch all doctors
-    $doctorsCursor = $usersCollection->find(['role' => 'doctor']);
+    // Fetch only doctors
+    $cursor = $usersCollection->find(['role' => 'doctor']);
 
-    $doctors = [];
+    $out = [];
 
-    foreach ($doctorsCursor as $doc) {
-        $doctors[] = [
-            'user_id'        => $doc['user_id'] ?? '',
-            'user_name'      => $doc['user_name'] ?? '',
-            'name'           => $doc['name'] ?? '',
-            'profile_image'  => $doc['profile_image'] ?? 'images/default-doctor.png',
-            'specialization' => $doc['specialization'] ?? '',
-            'fee'            => $doc['fee'] ?? '',
-            'languages'      => $doc['languages'] ?? '',
-            'hospital_name'  => $doc['hospital_name'] ?? '',
-            'hospital_phone' => $doc['hospital_phone'] ?? '',
-            'hospital_address' => $doc['hospital_address'] ?? '',
-            'clinic_hours'   => $doc['clinic_hours'] ?? '',
-            'rating'         => $doc['rating'] ?? '',
-            'reviews'        => $doc['reviews'] ?? '',
-            'services'       => $doc['services'] ?? ''
+    foreach ($cursor as $doc) {
+        $info = $doc['personal_info'] ?? [];
+
+        $out[] = [
+            "user_id"         => $doc['user_id'] ?? '',
+            "user_name"       => $doc['user_name'] ?? '',
+
+            // Flatten personal_info
+            "full_name"       => $info['full_name'] ?? '',
+            "specialization"  => $info['specialization'] ?? '',
+            "fee"             => $info['fee'] ?? '',
+            "rating"          => $info['rating'] ?? '',
+            "reviews"         => $info['reviews'] ?? '',
+            "services"        => $info['services'] ?? '',
+            "languages"       => $info['languages'] ?? '',
+            "titles"          => $info['titles'] ?? '',
+            "hospital_title"  => $info['hospital_title'] ?? '',
+
+            "hospital_name"   => $info['hospital_name'] ?? '',
+            "hospital_phone"  => $info['hospital_phone'] ?? '',
+            "hospital_address"=> $info['hospital_address'] ?? '',
+            "clinic_hours"    => $info['clinic_hours'] ?? '',
+
+            "profile_image"   => $info['profile_image'] ?? 'images/default-doctor.png',
+            "hospital_image"  => $info['hospital_image'] ?? 'images/bgh.png'
         ];
     }
 
-    echo json_encode($doctors);
+    echo json_encode($out);
 
 } catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode([
-        'error' => 'Server error',
-        'message' => $e->getMessage()
-    ]);
+    echo json_encode(["error" => $e->getMessage()]);
 }
-?>

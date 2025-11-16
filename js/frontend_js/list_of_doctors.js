@@ -22,9 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.classList.add('doctor-card');
 
-        // Safe footer name: use full name, prepend Dr. only if missing
-        let fullName = doc.name || doc.user_name || 'Unknown';
-        let footerName = fullName.toLowerCase().startsWith('dr.') ? fullName : 'Dr. ' + fullName;
+        let fullName =
+          (doc.personal_information && doc.personal_information.full_name) ||
+          doc.full_name ||
+          doc.name ||
+          doc.user_name ||
+          "Unknown";
+
+        let footerName = fullName.toLowerCase().startsWith('dr.')
+          ? fullName
+          : 'Dr. ' + fullName;
 
         card.innerHTML = `
           <div class="doctor-img">
@@ -43,22 +50,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         card.querySelector('.view-btn').addEventListener('click', () => {
           const doctorData = {
-            user_id: doc.user_id,
-            full_name: fullName,
-            profile_image: doc.profile_image || 'images/default-doctor.png',
-            specialization: doc.specialization || 'General',
-            fee: doc.fee || '600.00',
-            languages: doc.languages || 'English, Filipino',
-            rating: doc.rating || '4.8',
-            reviews: doc.reviews || '0',
-            services: doc.services || 'Online Consultation',
-            hospital_name: doc.hospital_name || 'Baguio General Hospital',
-            hospital_phone: doc.hospital_phone || '+123 456 7890',
-            hospital_address: doc.hospital_address || 'Gov. Pack Rd, Baguio City',
-            clinic_hours: doc.clinic_hours || '08:00 AM - 08:00 PM',
-            hospital_image: doc.hospital_image || 'images/bgh.png',
-            titles: doc.titles || 'MD',
-            hospital_title: doc.hospital_title || 'Hospital Consultant'
+              user_id: doc.user_id,
+              full_name: doc.full_name || doc.user_name,
+              profile_image: doc.profile_image || 'images/default-doctor.png',
+              specialization: doc.specialization || 'General',
+              fee: doc.fee || '600.00',
+              languages: doc.languages || 'English, Filipino',
+              rating: doc.rating || '4.8',
+              reviews: doc.reviews || '0',
+              services: doc.services || 'Online Consultation',
+              hospital_name: doc.hospital_name || 'Baguio General Hospital',
+              hospital_phone: doc.hospital_phone || '+123 456 7890',
+              hospital_address: doc.hospital_address || 'Gov. Pack Rd, Baguio City',
+              clinic_hours: doc.clinic_hours || '08:00 AM - 08:00 PM',
+              hospital_image: doc.hospital_image || 'images/bgh.png',
+              titles: doc.titles || 'MD',
+              hospital_title: doc.hospital_title || 'Hospital Consultant'
           };
 
           localStorage.setItem('selectedDoctor', JSON.stringify(doctorData));

@@ -73,59 +73,49 @@ document.addEventListener("DOMContentLoaded", function () {
     const doctor = JSON.parse(localStorage.getItem("selectedDoctor"));
 
     if (!doctor) {
-        alert("No doctor selected. Redirecting...");
+        alert("No doctor selected.");
         window.location.href = "book.html";
         return;
     }
 
-    // Populate doctor profile
     document.getElementById("doctorProfile").innerHTML = `
-        <img src="${doctor.profile_image}" alt="Doctor Photo">
-        <p class="title">${doctor.hospital_title || "Hospital Consultant"}</p>
+        <img src="${doctor.profile_image}">
+        <p class="title">${doctor.hospital_title}</p>
         <h2>${doctor.full_name}</h2>
-        <p><span>Titles:</span> ${doctor.titles || "MD"}</p>
+        <p><span>Titles:</span> ${doctor.titles}</p>
         <p><span>Specialization:</span> ${doctor.specialization}</p>
-        <p><span>Checkup Fee:</span> ₱${doctor.fee || "600.00"}</p>
-        <p><span>Languages:</span> ${doctor.languages || "English, Filipino"}</p>
-        <p class="rating">⭐ ${doctor.rating || "4.8"} / 5 (${doctor.reviews || "96"} reviews)</p>
-        <p><span>Can do:</span> ${doctor.services || "Online Consultation"}</p>
+        <p><span>Fee:</span> ₱${doctor.fee}</p>
+        <p><span>Languages:</span> ${doctor.languages}</p>
+        <p class="rating">⭐ ${doctor.rating} / 5 (${doctor.reviews} reviews)</p>
+        <p><span>Services:</span> ${doctor.services}</p>
     `;
 
-    // Hospital details
     document.getElementById("hospitalDetails").innerHTML = `
-        <img src="${doctor.hospital_image || "images/bgh.png"}" alt="Hospital Photo">
-        <p><b>Hospital:</b> ${doctor.hospital_name || "Baguio General Hospital"}</p>
-        <p><b>Hospital Phone:</b> ${doctor.hospital_phone || "+123 456 7890"}</p>
-        <p><b>Hospital Address:</b> ${doctor.hospital_address || "Gov. Pack Rd, Baguio City"}</p>
-        <p><b>Clinic Hours:</b> ${doctor.clinic_hours || "08:00 AM - 08:00 PM"}</p>
-        <p><b>Specialization:</b> ${doctor.specialization}</p>
+        <img src="${doctor.hospital_image}">
+        <p><b>Hospital:</b> ${doctor.hospital_name}</p>
+        <p><b>Phone:</b> ${doctor.hospital_phone}</p>
+        <p><b>Address:</b> ${doctor.hospital_address}</p>
+        <p><b>Clinic Hours:</b> ${doctor.clinic_hours}</p>
         <button id="bookBtn">Book Me</button>
     `;
 
-    // Modal logic
     const modal = document.getElementById("confirmationModal");
-    const closeBtn = document.querySelector(".close");
-    const cancelBtn = document.querySelector(".cancel-btn");
-    const bookBtn = document.getElementById("bookBtn");
 
-    bookBtn.addEventListener("click", () => {
+    document.getElementById("bookBtn").onclick = () => {
         document.getElementById("confirmText").textContent =
             "You are booking " + doctor.full_name;
         modal.style.display = "block";
-    });
-
-    closeBtn.onclick = () => modal.style.display = "none";
-    cancelBtn.onclick = () => modal.style.display = "none";
-
-    window.onclick = function (event) {
-        if (event.target === modal) modal.style.display = "none";
     };
 
-    // On confirm → redirect to booking page
-    document.getElementById("confirmBookingBtn").addEventListener("click", () => {
-        // Keep doctor selected and go to booking form
+    document.querySelector(".close").onclick =
+        () => modal.style.display = "none";
+
+    document.querySelector(".cancel-btn").onclick =
+        () => modal.style.display = "none";
+
+    document.getElementById("confirmBookingBtn").onclick = () => {
         window.location.href = "booking_details.html";
-    });
+    };
 });
 </script>
 

@@ -1,0 +1,143 @@
+/* ===== Navbar ===== */
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 6%;
+  background-color: #ffe6f1;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 2.1rem;
+  font-weight: 700;
+}
+
+.logo .blue {
+  color: #89c8ff;
+}
+
+.logo .pink {
+  color: #f7a5c8;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  margin: 0 1.2rem;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+nav a.active,
+nav a:hover {
+  font-weight: 600;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+/* ===== Navbar Icons ===== */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  filter: grayscale(100%) brightness(55%);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover Effect – darker pink (#c06c91) */
+.icon:hover {
+  filter: brightness(0) saturate(100%) invert(74%) sepia(22%) saturate(903%) hue-rotate(290deg) brightness(88%) contrast(95%);
+  transform: scale(1.1);
+}
+
+/* Optional: rounded profile icon */
+.icon.profile {
+  border-radius: 50%;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background-color: #1A1A1A;
+  color: #ccc;
+  text-align: center;
+  padding: 40px 0 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.site-footer .social-icons {
+  margin-bottom: 20px;
+}
+
+.site-footer .social-icons a {
+  display: inline-block;
+  margin: 0 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 10px;
+  width: 45px;
+  height: 45px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.site-footer .social-icons a:hover {
+  transform: scale(1.1);
+  background-color: #ff0062;
+}
+
+.site-footer .social-icons img {
+  width: 25px;
+  height: 25px;
+}
+
+.site-footer .footer-nav {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.site-footer .footer-nav li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.site-footer .footer-nav li a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.site-footer .footer-nav li a:hover {
+  color: #fff;
+}
+
+.site-footer .footer-copy {
+  font-size: 15px;
+  margin-top: 15px;
+  color: #bfbfbf;
+}
+
+.site-footer .footer-copy span {
+  color: #ff0062;
+  font-weight: 600;
+}

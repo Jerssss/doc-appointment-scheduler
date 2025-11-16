@@ -4,14 +4,15 @@ require __DIR__ . '/../vendor/autoload.php';
 try {
     $client = new MongoDB\Client("mongodb://localhost:27017");
     $patientCollection = $client->MediKo->patientdetails;
+    $usersCollection = $client->MediKo->users;
 
-    // Join patientdetails -> users using user_id
+    // patientdetails.user_id → users._id
     $pipeline = [
         [
             '$lookup' => [
                 'from' => 'users',
                 'localField' => 'user_id',
-                'foreignField' => 'user_id',
+                'foreignField' => '_id',   // correct relation
                 'as' => 'user_info'
             ]
         ],
@@ -27,10 +28,22 @@ try {
     $result = [];
 
     foreach ($cursor as $doc) {
+
+        // Fix: Get patient full name
+        $fullName =
+            $doc['user_info']['personal_info']['full_name']
+                ?? $doc['user_info']['user_name']
+                ?? "Unknown Patient";
+
+        // Fix: Get patient image
+        $image =
+            $doc['user_info']['profile_image']
+                ?? "images/default-patient.png";
+
         $result[] = [
             '_id' => (string)$doc['_id'],
-            'name' => $doc['user_info']['name'] ?? "Unknown Patient",
-            'image' => $doc['user_info']['profile_image'] ?? "images/default-patient.png"
+            'name' => $fullName,
+            'image' => $image
         ];
     }
 

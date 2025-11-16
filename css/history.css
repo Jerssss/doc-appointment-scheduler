@@ -14,8 +14,8 @@ body {
 
 /* === Page Layout === */
 .history-container {
-  max-width: 1200px; /* ⬅️ wider container for less side whitespace */
-  width: 90%; /* stays responsive on smaller screens */
+  max-width: 1200px;
+  width: 90%;
   margin: 3rem auto;
   padding: 2rem;
   min-height: 75vh;

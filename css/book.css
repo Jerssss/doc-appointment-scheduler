@@ -8,7 +8,12 @@
 
 body {
   background-color: #fff;
+  color: #333;
+  font-size: 16px; /* uniform base font size */
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* ===== Navbar ===== */
@@ -22,6 +27,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 10;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .logo {
@@ -32,46 +38,78 @@ header {
 .logo .blue { color: #89c8ff; }
 .logo .pink { color: #f7a5c8; }
 
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem; /* uniform spacing */
+}
+
 nav a {
   text-decoration: none;
   color: #333;
-  margin: 0 1.2rem;
   font-weight: 500;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
   transition: 0.3s;
 }
 
 nav a.active,
-nav a:hover { font-weight: 600; }
+nav a:hover {
+  font-weight: 600;
+}
 
+/* ===== ICONS ===== */
 .icons {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.icon {
-  width: 26px;
-  height: 26px;
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
   cursor: pointer;
-  filter: grayscale(100%) brightness(55%);
-  transition: filter 0.3s ease, transform 0.3s ease;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
 }
 
-.icon:hover {
-  filter: brightness(0) saturate(100%) invert(74%) sepia(22%) saturate(903%) hue-rotate(290deg) brightness(88%) contrast(95%);
-  transform: scale(1.1);
+.icon-btn:hover { transform: scale(1.1); }
+
+.notification-btn {
+  background-color: #000;
+  -webkit-mask-image: url('../images/notification-bell.png');
+          mask-image: url('../images/notification-bell.png');
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+}
+
+.profile-btn {
+  background-image: url('../images/user.png');
+  background-size: cover;
+  background-position: center;
 }
 
 /* ===== Book Section ===== */
 .book-section {
   text-align: center;
   padding: 4rem 8%;
+  flex: 1; /* allow content to push footer down */
 }
 
 .book-section h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #5a4b53;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
 }
 
 /* ===== Search Bar ===== */
@@ -79,17 +117,19 @@ nav a:hover { font-weight: 600; }
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   gap: 0.5rem;
 }
 
 .search-bar input {
-  width: 400px;
-  padding: 0.9rem 1.2rem;
+  width: 100%;
+  max-width: 400px;
+  padding: 0.8rem 1rem;
   border: 2px solid #f7a5c8;
   border-radius: 50px;
   font-size: 1rem;
   outline: none;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .search-bar button {
@@ -101,14 +141,9 @@ nav a:hover { font-weight: 600; }
   transition: 0.3s;
 }
 
-.search-bar button:hover {
-  background-color: #f7a5c8;
-}
+.search-bar button:hover { background-color: #f7a5c8; }
 
-.search-bar img {
-  width: 22px;
-  height: 22px;
-}
+.search-bar img { width: 22px; height: 22px; }
 
 /* ===== Doctor Grid ===== */
 .doctor-grid {
@@ -121,7 +156,7 @@ nav a:hover { font-weight: 600; }
 
 /* ===== Doctor Card ===== */
 .doctor-card {
-  width: 250px; /* fixed width */
+  width: 250px;
   border: 2px solid #c06c91;
   border-radius: 10px;
   overflow: hidden;
@@ -135,24 +170,14 @@ nav a:hover { font-weight: 600; }
   box-shadow: 0 6px 14px rgba(0,0,0,0.1);
 }
 
-.doctor-card a {
-  text-decoration: none;
-  color: white;
-}
+.doctor-card a { text-decoration: none; color: white; }
 
-.doctor-img img {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-}
+.doctor-img img { width: 100%; height: 260px; object-fit: cover; }
 
-.doctor-info {
-  padding: 1rem;
-  text-align: left;
-}
+.doctor-info { padding: 1rem; text-align: left; }
 
 .doctor-info h3 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #333;
   margin-bottom: 0.4rem;
@@ -171,6 +196,7 @@ nav a:hover { font-weight: 600; }
   line-height: 1.4;
 }
 
+/* ===== Footer ===== */
 .footer {
   display: flex;
   justify-content: space-between;
@@ -192,6 +218,4 @@ nav a:hover { font-weight: 600; }
   transition: 0.3s;
 }
 
-.view-btn:hover {
-  background-color: #5b4488;
-}
+.view-btn:hover { background-color: #5b4488; }

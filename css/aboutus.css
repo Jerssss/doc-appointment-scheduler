@@ -23,11 +23,19 @@ header {
   z-index: 9999;
 }
 
-header .logo { font-size: 2.1rem; font-weight: 700; }
+header .logo {
+  font-size: 2.1rem;
+  font-weight: 700;
+}
+
 header .logo .blue { color: #89c8ff; }
 header .logo .pink { color: #f7a5c8; }
 
-header nav { display: flex; gap: 1.2rem; }
+header nav {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
 
 header nav a {
   text-decoration: none;
@@ -43,28 +51,51 @@ header nav a:hover {
 
 header .icons {
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-header .icon {
-  width: 26px;
-  height: 26px;
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
   cursor: pointer;
-  filter: grayscale(100%) brightness(55%);
-  transition: filter 0.3s ease, transform 0.3s ease;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
 }
 
-header .icon:hover {
-  filter: brightness(0) saturate(100%) invert(74%) sepia(22%) saturate(903%) hue-rotate(290deg) brightness(88%) contrast(95%);
+.icon-btn:hover {
   transform: scale(1.1);
 }
 
-header .icon.profile { border-radius: 50%; }
+/* Notification Bell */
+.notification-btn {
+  background-color: #000;
+  -webkit-mask-image: url('../images/notification-bell.png');
+          mask-image: url('../images/notification-bell.png');
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+}
 
-/* ===== ABOUT HEADER (FIXED – LESS TOP SPACE) ===== */
+/* Profile Icon */
+.profile-btn {
+  background-image: url('../images/user.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* ===== ABOUT HEADER ===== */
 .about-header {
   text-align: center;
-  margin: 60px auto 40px;   /* REDUCED to avoid navbar clipping */
+  margin: 60px auto 40px;
   max-width: 900px;
 }
 
@@ -116,10 +147,10 @@ header .icon.profile { border-radius: 50%; }
 .feature-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
 .feature-card p { font-size: 1rem; line-height: 1.6; }
 
-/* ===== TEAM SECTION (REDUCED PADDING) ===== */
+/* ===== TEAM SECTION ===== */
 .team-section {
   background: #ffffff;
-  padding: 60px 8%;   /* REDUCED from 100px 10% */
+  padding: 60px 8%;
   text-align: center;
 }
 

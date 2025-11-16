@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MediKo — Patient Account</title>
+  <title>MediKo — Doctor Account</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
   <!-- Keep navbar style (unchanged) -->
   <link rel="stylesheet" href="css/style.css" />
   <!-- Page-specific styles -->
-  <link rel="stylesheet" href="css/user_patient_profile.css" />
+  <link rel="stylesheet" href="css/user_doctor_profile.css" />
 </head>
 <body>
   <!-- NAVBAR (unchanged) -->
@@ -20,10 +20,8 @@
       <span class="blue">Medi</span><span class="pink">Ko</span>
     </div>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="list_of_doctors.html">Book</a>
-      <a href="history.html">History</a>
-      <a href="aboutus.html">About us</a>
+      <a href="index.html">Patient Records</a>
+      <a href="list_of_doctors.html">Appointments</a>
     </nav>
     <div class="icons">
       <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
@@ -35,25 +33,25 @@
   <main class="profile-page">
     <section class="profile-header">
       <div class="profile-title">
-        <h2>Account</h2>
-        <p class="subtitle">Manage your personal and security information.</p>
+        <h2>My Account</h2>
+        <p class="subtitle">Manage your professional and security information.</p>
       </div>
     </section>
 
     <section class="profile-content single-column">
       <aside class="card account-card" aria-labelledby="account-heading">
-        <h3 id="account-heading" class="sr-only">Patient account information</h3>
+        <h3 id="account-heading" class="sr-only">Doctor account information</h3>
 
         <!-- Top: avatar + primary info + edit -->
         <div class="account-top">
           <div class="avatar-wrap">
-            <img src="images/patient.jpg" alt="Patient photo" class="avatar">
+            <img src="images/default-doctor.png" alt="Doctor photo" class="avatar" id="profileImage">
           </div>
 
           <div class="account-basic">
-            <h4 class="name">Juan Miguel Dela Cruz</h4>
-            <p class="meta">Patient ID: <span class="muted">PT-2025-1032</span></p>
-            <p class="meta">Role: <span class="muted">Patient</span></p>
+            <h4 class="name" id="doctorName">Dr. John Smith</h4>
+            <p class="meta">User ID: <span class="muted" id="userId">675b01a88b4a0f4a3c91e70g</span></p>
+            <p class="meta">Role: <span class="muted" id="role">Doctor</span></p>
 
             <div class="account-actions">
               <button class="btn" id="editProfileBtn">Edit Profile</button>
@@ -61,57 +59,93 @@
           </div>
         </div>
 
-        <!-- ===== CONTACT (Email + Phone) ===== -->
+        <!-- ===== CONTACT (Email + Phone) - moved to top to match patient layout ===== -->
         <div class="account-section" aria-label="Contact information">
           <h5>Contact</h5>
           <div class="field-grid">
             <div class="field">
               <p class="label">Email</p>
-              <p class="value" id="email">juanmiguel.dc@example.com</p>
+              <p class="value" id="email">dr.smith@example.com</p>
             </div>
             <div class="field">
               <p class="label">Phone</p>
-              <p class="value" id="phone">0912-345-6789</p>
+              <p class="value" id="phone">+123 456 7890</p>
             </div>
           </div>
         </div>
 
-        <!-- ===== PERSONAL DETAILS (DOB / Sex / Address) ===== -->
-        <div class="account-section" aria-label="Personal details">
-          <h5>Personal Details</h5>
+        <!-- ===== PROFESSIONAL (Specialization / Fee / Services) ===== -->
+        <div class="account-section" aria-label="Professional information">
+          <h5>Professional</h5>
           <div class="field-grid">
             <div class="field">
-              <p class="label">Date of birth</p>
-              <p class="value" id="dob">03/25/1991</p>
+              <p class="label">Specialization</p>
+              <p class="value" id="specialization">Cardiology</p>
             </div>
             <div class="field">
-              <p class="label">Sex</p>
-              <p class="value" id="sex">Male</p>
+              <p class="label">Consultation Fee</p>
+              <p class="value" id="fee">₱600.00</p>
             </div>
             <div class="field full">
-              <p class="label">Address</p>
-              <p class="value" id="address">#24 Upper Session Road, Baguio City</p>
+              <p class="label">Services</p>
+              <p class="value" id="services">Online Consultation or Home Checkup</p>
             </div>
           </div>
         </div>
 
-        <!-- ===== EMERGENCY CONTACT (separated fields) ===== -->
-        <div class="account-section" aria-label="Emergency contact">
-          <h5>Emergency Contact</h5>
+        <!-- ===== HOSPITAL DETAILS ===== -->
+        <div class="account-section" aria-label="Hospital details">
+          <h5>Hospital / Clinic</h5>
           <div class="field-grid">
             <div class="field">
-              <p class="label">Contact Name</p>
-              <p class="value" id="emergency-name">Maria L. Dela Cruz</p>
+              <p class="label">Hospital</p>
+              <p class="value" id="hospitalName">Baguio General Hospital</p>
             </div>
             <div class="field">
-              <p class="label">Relationship</p>
-              <p class="value" id="emergency-relationship">Spouse</p>
+              <p class="label">Hospital Phone</p>
+              <p class="value" id="hospitalPhone">+123 456 7890</p>
+            </div>
+            <div class="field full">
+              <p class="label">Hospital Address</p>
+              <p class="value" id="hospitalAddress">Gov. Pack Rd, Baguio City</p>
             </div>
           </div>
+        </div>
 
-          <div class="field" style="margin-top:0.6rem;">
-            <p class="label">Contact Number</p>
-            <p class="value" id="emergency-phone">0917-555-3322</p>
+        <!-- ===== SCHEDULE (separate) ===== -->
+        <div class="account-section" aria-label="Schedule">
+          <h5>Schedule</h5>
+          <div class="field-grid">
+            <div class="field full">
+              <p class="label">Clinic Hours</p>
+              <p class="value" id="clinicHours">08:00 AM - 08:00 PM</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== LANGUAGES (separate) ===== -->
+        <div class="account-section" aria-label="Languages">
+          <h5>Languages</h5>
+          <div class="field-grid">
+            <div class="field full">
+              <p class="label">Languages</p>
+              <p class="value" id="languages">English, Tagalog</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== RATINGS & REVIEWS ===== -->
+        <div class="account-section" aria-label="Ratings and reviews">
+          <h5>Reputation</h5>
+          <div class="field-grid">
+            <div class="field">
+              <p class="label">Rating</p>
+              <p class="value" id="rating">4.8</p>
+            </div>
+            <div class="field">
+              <p class="label">Reviews</p>
+              <p class="value" id="reviews">96</p>
+            </div>
           </div>
         </div>
 
@@ -121,13 +155,12 @@
           <p class="label">Password</p>
           <div class="password-row">
             <span class="masked">••••••••</span>
-            <!-- single change password control here -->
             <button class="btn small outlined" id="changePasswordBtn">Change password</button>
           </div>
 
           <div class="meta-grid">
             <div>
-              <p class="label">Account created</p>
+              <p class="label">User created</p>
               <p class="value">Jan 14, 2024</p>
             </div>
           </div>
@@ -161,22 +194,7 @@
     <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
   </footer>
 
-  <script>
-    // Logout action (replace with real auth)
-    document.getElementById('logoutBtnMain')?.addEventListener('click', () => {
-      if (confirm('Are you sure you want to log out?')) {
-        // clear auth tokens here if present
-        window.location.href = 'index.html';
-      }
-    });
-
-    // Edit / Change password placeholders
-    document.getElementById('editProfileBtn')?.addEventListener('click', () => {
-      alert('Open Edit Profile UI (not implemented).');
-    });
-    document.getElementById('changePasswordBtn')?.addEventListener('click', () => {
-      alert('Open Change Password UI (not implemented).');
-    });
-  </script>
+  <!-- External script file -->
+  <script src="js/user_doctor_profile.js"></script>
 </body>
 </html>

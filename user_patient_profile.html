@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediKo — Patient Account</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Keep navbar style (unchanged) -->
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="css/user_patient_profile.css" />
+</head>
+<body>
+  <!-- NAVBAR (unchanged) -->
+  <header>
+    <div class="logo">
+      <span class="blue">Medi</span><span class="pink">Ko</span>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="list_of_doctors.html">Book</a>
+      <a href="history.html">History</a>
+      <a href="aboutus.html">About us</a>
+    </nav>
+    <div class="icons">
+      <img src="images/notification-bell.png" alt="Notifications" class="icon notification">
+      <img src="images/user.png" alt="Profile" class="icon profile">
+    </div>
+  </header>
+
+  <!-- MAIN: focused account profile -->
+  <main class="profile-page">
+    <section class="profile-header">
+      <div class="profile-title">
+        <h2>My Account</h2>
+        <p class="subtitle">Manage your personal and security information.</p>
+      </div>
+    </section>
+
+    <section class="profile-content single-column">
+      <aside class="card account-card" aria-labelledby="account-heading">
+        <h3 id="account-heading" class="sr-only">Patient account information</h3>
+
+        <!-- Top: avatar + primary info + edit -->
+        <div class="account-top">
+          <div class="avatar-wrap">
+            <img src="images/patient.jpg" alt="Patient photo" class="avatar">
+          </div>
+
+          <div class="account-basic">
+            <h4 class="name">Juan Miguel Dela Cruz</h4>
+            <p class="meta">Patient ID: <span class="muted">PT-2025-1032</span></p>
+            <p class="meta">Role: <span class="muted">Patient</span></p>
+
+            <div class="account-actions">
+              <button class="btn" id="editProfileBtn">Edit Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== CONTACT (Email + Phone) ===== -->
+        <div class="account-section" aria-label="Contact information">
+          <h5>Contact</h5>
+          <div class="field-grid">
+            <div class="field">
+              <p class="label">Email</p>
+              <p class="value" id="email">juanmiguel.dc@example.com</p>
+            </div>
+            <div class="field">
+              <p class="label">Phone</p>
+              <p class="value" id="phone">0912-345-6789</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PERSONAL DETAILS (DOB / Sex / Address) ===== -->
+        <div class="account-section" aria-label="Personal details">
+          <h5>Personal Details</h5>
+          <div class="field-grid">
+            <div class="field">
+              <p class="label">Date of birth</p>
+              <p class="value" id="dob">03/25/1991</p>
+            </div>
+            <div class="field">
+              <p class="label">Sex</p>
+              <p class="value" id="sex">Male</p>
+            </div>
+            <div class="field full">
+              <p class="label">Address</p>
+              <p class="value" id="address">#24 Upper Session Road, Baguio City</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== EMERGENCY CONTACT (separated fields) ===== -->
+        <div class="account-section" aria-label="Emergency contact">
+          <h5>Emergency Contact</h5>
+          <div class="field-grid">
+            <div class="field">
+              <p class="label">Contact Name</p>
+              <p class="value" id="emergency-name">Maria L. Dela Cruz</p>
+            </div>
+            <div class="field">
+              <p class="label">Relationship</p>
+              <p class="value" id="emergency-relationship">Spouse</p>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top:0.6rem;">
+            <p class="label">Contact Number</p>
+            <p class="value" id="emergency-phone">0917-555-3322</p>
+          </div>
+        </div>
+
+        <!-- ===== SECURITY ===== -->
+        <div class="account-section" aria-label="Security">
+          <h5>Security</h5>
+          <p class="label">Password</p>
+          <div class="password-row">
+            <span class="masked">••••••••</span>
+            <!-- single change password control here -->
+            <button class="btn small outlined" id="changePasswordBtn">Change password</button>
+          </div>
+
+          <div class="meta-grid">
+            <div>
+              <p class="label">Account created</p>
+              <p class="value">Jan 14, 2024</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logout button in main content (red) -->
+        <div class="card-footer logout-footer">
+          <button class="btn logout" id="logoutBtnMain">Log out</button>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- footer (unchanged) -->
+  <footer class="site-footer">
+    <div class="social-icons">
+      <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
+      <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+      <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+      <a href="#"><img src="images/google.png" alt="Google"></a>
+      <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+    </div>
+
+    <ul class="footer-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="news.html">Book</a></li>
+      <li><a href="about.html">History</a></li>
+      <li><a href="team.html">About Us</a></li>
+    </ul>
+
+    <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
+  </footer>
+
+  <!-- External script file -->
+  <script src="js/frontend_js/user_patient_profile.js"></script>
+</body>
+</html>

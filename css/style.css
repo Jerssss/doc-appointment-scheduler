@@ -1,4 +1,4 @@
-/* ===== Navbar ===== */
+/* ===== NAVBAR ===== */
 header {
   width: 100%;
   display: flex;
@@ -37,41 +37,57 @@ nav a:hover {
   font-weight: 600;
 }
 
+/* ===== ICON SECTION ===== */
 .icons {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.icon {
-  width: 26px;
-  height: 26px;
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #ffe6f1;
   cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  filter: none;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* ===== Navbar Icons ===== */
-.icons {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
 
-.icon {
-  width: 26px;
-  height: 26px;
-  cursor: pointer;
-  filter: grayscale(100%) brightness(55%);
-  transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-/* Hover Effect – darker pink (#c06c91) */
-.icon:hover {
-  filter: brightness(0) saturate(100%) invert(74%) sepia(22%) saturate(903%) hue-rotate(290deg) brightness(88%) contrast(95%);
+.icon-btn:hover {
+  filter: none;
   transform: scale(1.1);
 }
 
-/* Optional: rounded profile icon */
-.icon.profile {
+.notification-btn {
+  width: 32px;
+  height: 32px;
+  background-color: #000; /* Icon color (black) */
+  -webkit-mask-image: url('../images/notification-bell.png');
+          mask-image: url('../images/notification-bell.png');
+  -webkit-mask-size: cover;
+          mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+}
+
+
+.notification-btn:hover {
+  transform: scale(1.1);
+}
+
+
+
+.profile-btn {
+  background-image: url('../images/user.png');
   border-radius: 50%;
 }
 

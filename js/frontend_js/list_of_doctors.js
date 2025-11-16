@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.createElement('div');
         card.classList.add('doctor-card');
 
-        let fullName = doc.full_name || "Unknown";
+        let fullName = doc.full_name || doc.user_name || doc.username || "Unknown";
         let footerName = fullName.toLowerCase().startsWith('dr.') ? fullName : 'Dr. ' + fullName;
 
         card.innerHTML = `

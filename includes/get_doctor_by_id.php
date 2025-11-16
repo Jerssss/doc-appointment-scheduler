@@ -22,13 +22,18 @@ try {
     }
 
     $info = $doctor['personal_info'] ?? [];
+    $userName = $doctor['user_name'] ?? ($doctor['username'] ?? '');
+    $fullName = $info['full_name'] ?? '';
+    if (!$fullName || trim($fullName) === '') {
+        $fullName = $userName;
+    }
 
     $out = [
         "user_id"         => $doctor['user_id'] ?? '',
-        "user_name"       => $doctor['user_name'] ?? '',
+        "user_name"       => $userName,
 
-        // Flattened info
-        "full_name"       => $info['full_name'] ?? '',
+        // Flattened info with fallback
+        "full_name"       => $fullName,
         "specialization"  => $info['specialization'] ?? '',
         "fee"             => $info['fee'] ?? '',
         "rating"          => $info['rating'] ?? '',

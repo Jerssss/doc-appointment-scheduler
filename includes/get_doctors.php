@@ -14,12 +14,18 @@ try {
     foreach ($cursor as $doc) {
         $info = $doc['personal_info'] ?? [];
 
+        $userName = $doc['user_name'] ?? ($doc['username'] ?? '');
+        $fullName = $info['full_name'] ?? '';
+        if (!$fullName || trim($fullName) === '') {
+            $fullName = $userName; // sensible fallback so cards don't show the wrong label
+        }
+
         $out[] = [
             "user_id"         => $doc['user_id'] ?? '',
-            "user_name"       => $doc['user_name'] ?? '',
+            "user_name"       => $userName,
 
-            // Flatten personal_info
-            "full_name"       => $info['full_name'] ?? '',
+            // Flatten personal_info with fallback
+            "full_name"       => $fullName,
             "specialization"  => $info['specialization'] ?? '',
             "fee"             => $info['fee'] ?? '',
             "rating"          => $info['rating'] ?? '',

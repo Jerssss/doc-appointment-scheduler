@@ -17,7 +17,6 @@ try {
     $client = new MongoDB\Client("mongodb://localhost:27017/");
     $appointmentsCol = $client->MediKo->appointments;
     $usersCol = $client->MediKo->users;
-    $consultCol = $client->MediKo->consultation;
 
     // Find appointment
     $appt = $appointmentsCol->findOne(['_id' => new MongoDB\BSON\ObjectId($appointmentId)]);
@@ -28,9 +27,12 @@ try {
 
     $doctorId = $appt['doctor_id'];
 
-    // Add rating to doctor document
+    // Update doctor using user_id field
     $usersCol->updateOne(
-        ['_id' => $doctorId],
+        ['$or' => [
+            ['user_id' => $doctorId],
+            ['user_id' => new MongoDB\BSON\ObjectId($doctorId)]
+        ]],
         ['$push' => ['ratings' => $rating]]
     );
 

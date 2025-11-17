@@ -1,91 +1,130 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const historyContainer = document.querySelector('.history-box');
+document.addEventListener("DOMContentLoaded", () => {
+    const stored = sessionStorage.getItem("user");
 
-  const fetchConsultations = async () => {
-    try {
-      const res = await fetch('http://localhost/9468_it313-teamarc_mediko/includes/get_consultations.php');
-      const consultations = await res.json();
-
-      if (consultations.error) {
-        historyContainer.innerHTML = `<p>${consultations.error}</p>`;
+    if (!stored) {
+        alert("You must log in first");
+        window.location.href = "login.html";
         return;
-      }
-
-      renderHistory(consultations);
-    } catch (err) {
-      console.error(err);
-      historyContainer.innerHTML = '<p>Failed to load consultations. Please try again later.</p>';
     }
-  };
 
-  const renderHistory = (consultations) => {
-    const now = new Date();
+    const user = JSON.parse(stored);
+    const userId = user.user_id;
 
-    // Separate upcoming vs past
-    const upcoming = consultations.filter(c => new Date(c.time) > now);
-    const past = consultations.filter(c => new Date(c.time) <= now);
-
-    const upcomingHTML = upcoming.map(c => `
-      <div class="card">
-        <img src="${c.doctor_img}" alt="Doctor Image">
-        <div class="card-info">
-          <h3>${c.mode} Consultation with ${c.doctor_name}</h3>
-          <p class="schedule">Scheduled for ${new Date(c.time).toLocaleString()}</p>
-          <p class="note">${c.notes}</p>
-        </div>
-      </div>
-    `).join('');
-
-    const pastHTML = past.map(c => `
-      <div class="card" data-appointment-id="${c.appointment_id}" data-doctor="${c.doctor_name}">
-        <img src="${c.doctor_img}" alt="Doctor Image">
-        <div class="card-info">
-          <h3>${c.mode} with ${c.doctor_name}</h3>
-          <p class="schedule">${new Date(c.time).toLocaleString()}</p>
-          <p class="diagnosis">Diagnosis: ${c.diagnosis || 'N/A'}</p>
-          <p class="prescription">Prescription: ${c.prescription || 'N/A'}</p>
-        </div>
-        <button class="rate-btn">RATE</button>
-      </div>
-    `).join('');
-
-    historyContainer.innerHTML = `
-      <div class="section">
-        <h2>Upcoming</h2>
-        ${upcomingHTML || '<p>No upcoming consultations</p>'}
-      </div>
-      <div class="section">
-        <h2>Past Consultations</h2>
-        ${pastHTML || '<p>No past consultations</p>'}
-      </div>
-    `;
-
-    // Add click handler for rate buttons
-    document.querySelectorAll('.rate-btn').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        const card = e.target.closest('.card');
-        const appointmentId = card.dataset.appointmentId;
-        const doctorName = card.dataset.doctor;
-
-        const rating = prompt(`Rate ${doctorName} (1-5):`);
-        if (!rating) return;
-
-        try {
-          // send rating to backend
-          await fetch('http://localhost/9468_it313-teamarc_mediko/includes/rate_doctor.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ appointment_id: appointmentId, rating: parseInt(rating) })
-          });
-          alert(`Thank you! You rated ${doctorName} ${rating} stars.`);
-          fetchConsultations(); // refresh ratings
-        } catch (err) {
-          console.error(err);
-          alert('Failed to submit rating.');
-        }
-      });
-    });
-  };
-
-  fetchConsultations();
+    loadHistory(userId);
 });
+
+async function loadHistory(userId) {
+    try {
+        const res = await fetch(
+            `http://localhost/9468_it313-teamarc_mediko/includes/get_consultations.php?user_id=${userId}`
+        );
+        const data = await res.json();
+        console.log(data);
+
+        renderUpcoming(data);
+        renderPast(data);
+
+    } catch (err) {
+        console.error("Error loading history:", err);
+    }
+}
+
+/* ========== UPCOMING ========== */
+function renderUpcoming(history) {
+    const container = document.getElementById("upcoming-cards");
+    container.innerHTML = "";
+
+    const upcoming = history.filter(item =>
+        item.status === "pending" ||
+        item.status === "approved" ||
+        item.status === "scheduled"
+    );
+
+    if (!upcoming.length) {
+        container.innerHTML = `<p>No upcoming consultations.</p>`;
+        return;
+    }
+
+    upcoming.forEach(item => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        card.innerHTML = `
+            <img src="${item.doctor_img}" alt="Doctor Image">
+
+            <div class="card-info">
+                <h3>${formatConsultationTitle(item)}</h3>
+
+                <p class="schedule">${formatDate(item.time)}</p>
+
+                <p class="note">Please wait for further instructions. Messages will be sent via inbox.</p>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* ========== PAST ========== */
+function renderPast(history) {
+    const container = document.getElementById("past-cards");
+    container.innerHTML = "";
+
+    const past = history.filter(item =>
+        item.status === "completed" || item.status === "done"
+    );
+
+    if (!past.length) {
+        container.innerHTML = `<p>No past consultations.</p>`;
+        return;
+    }
+
+    past.forEach(item => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        card.innerHTML = `
+            <img src="${item.doctor_img}" alt="Doctor Image">
+
+            <div class="card-info">
+                <h3>${formatConsultationTitle(item)}</h3>
+                <p class="schedule">${formatDate(item.time)}</p>
+            </div>
+
+            <button class="rate-btn" onclick="openRatingModal('${item.appointment_id}')">
+                RATE
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* ========== HELPERS ========== */
+function formatConsultationTitle(item) {
+    if (item.mode.toLowerCase() === "virtual") {
+        return `Virtual Consultation with ${item.doctor_name}`;
+    }
+    return `Face-to-face Checkup with ${item.doctor_name}`;
+}
+
+function formatDate(dateString) {
+    if (!dateString) return "Unknown date";
+
+    const date = new Date(dateString);
+
+    // Example: August 10, 2025, 10:00 AM
+    return date.toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+    });
+}
+
+/* ========== RATE BUTTON HANDLER ========== */
+function openRatingModal(appointmentId) {
+    // You can trigger your modal or redirect
+    alert("Rate feature coming soon. Appointment ID: " + appointmentId);
+}

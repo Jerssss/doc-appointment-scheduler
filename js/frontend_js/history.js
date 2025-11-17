@@ -125,6 +125,6 @@ function formatDate(dateString) {
 
 /* ========== RATE BUTTON HANDLER ========== */
 function openRatingModal(appointmentId) {
-    // You can trigger your modal or redirect
+    //TODO: Implement rating modal
     alert("Rate feature coming soon. Appointment ID: " + appointmentId);
 }

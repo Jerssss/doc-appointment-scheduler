@@ -1,4 +1,4 @@
-/* ===== Navbar ===== */
+/* ===== NAVBAR ===== */
 header {
   width: 100%;
   display: flex;
@@ -16,18 +16,19 @@ header {
   font-weight: 700;
 }
 
-.logo .blue {
-  color: #89c8ff;
-}
+.logo .blue { color: #89c8ff; }
+.logo .pink { color: #f7a5c8; }
 
-.logo .pink {
-  color: #f7a5c8;
+/* Use flex gap instead of margin for consistent spacing */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem; /* consistent spacing between links */
 }
 
 nav a {
   text-decoration: none;
   color: #333;
-  margin: 0 1.2rem;
   font-weight: 500;
   transition: 0.3s;
 }
@@ -37,42 +38,55 @@ nav a:hover {
   font-weight: 600;
 }
 
+/* ===== ICON SECTION ===== */
 .icons {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.icon {
-  width: 26px;
-  height: 26px;
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #ffe6f1;
   cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  filter: none;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-/* ===== Navbar Icons ===== */
-.icons {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.icon {
-  width: 26px;
-  height: 26px;
-  cursor: pointer;
-  filter: grayscale(100%) brightness(55%);
-  transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-/* Hover Effect – darker pink (#c06c91) */
-.icon:hover {
-  filter: brightness(0) saturate(100%) invert(74%) sepia(22%) saturate(903%) hue-rotate(290deg) brightness(88%) contrast(95%);
+.icon-btn:hover {
   transform: scale(1.1);
 }
 
-/* Optional: rounded profile icon */
-.icon.profile {
+.notification-btn {
+  width: 32px;
+  height: 32px;
+  background-color: #000; /* Icon color (black) */
+  -webkit-mask-image: url('../images/notification-bell.png');
+          mask-image: url('../images/notification-bell.png');
+  -webkit-mask-size: cover;
+          mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+}
+
+.profile-btn {
   border-radius: 50%;
+}
+
+.profile-img {
+  width: 30px;      
+  height: 30px;  
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 /* ===== FOOTER ===== */

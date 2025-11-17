@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.href = "index.html";
                 } else {
                     // Doctors or other roles can go to their dashboard
-                    window.location.href = "doctor-dashboard.html";
+                    window.location.href = "doctor_appointment_list.html";
                 }
             } else {
                 alert(data.message);

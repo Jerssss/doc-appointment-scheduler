@@ -104,7 +104,13 @@
 }
 
 .patient-header {
-  min-height: 150px;     
+  display: flex;
+  justify-content: space-between; /* left stays left, button stays right */
+  align-items: center;
+  width: 100%;
+}
+
+.left-side {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -132,7 +138,7 @@
   margin-top: 3px;
 }
 
-.med-his-btn {
+.patient-info-btn {
   font-size: 18px;
   font-weight: 600;
   color: #c06c91;                
@@ -141,10 +147,9 @@
   cursor: pointer;
   padding: 8px 5px;
   transition: color 0.3s, transform 0.2s;
-  margin-left: 20%;
 }
 
-.med-his-btn:hover {
+.patient-info-btn:hover {
   color: #a45874;                 
   transform: translateX(3px);   
 }

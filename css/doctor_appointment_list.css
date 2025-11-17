@@ -190,21 +190,3 @@ body {
   font-size: 1rem;
   color: #333;
 }
-
-/* Footer */
-footer {
-  background-color: #5b3b68;
-  color: white;
-  text-align: center;
-  padding: 30px 50px;
-}
-
-footer h3 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-}
-
-.socials i {
-  margin: 0 8px;
-  font-size: 1.3rem;
-}

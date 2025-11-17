@@ -1,15 +1,15 @@
 /* ===== Background Image Layer ===== */
 body::before {
   content: "";
-  position: fixed; /* covers entire viewport even when scrolling */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: url('/images/pink.jpg') no-repeat center center/cover;
-  opacity: 0.39; /* adjust this value (0 = invisible, 1 = full opaque) */
-  z-index: -1; /* keep it behind all content */
-  pointer-events: none; /* so you can click through it */
+  opacity: 0.39;
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* ===== General Reset & Font ===== */
@@ -21,8 +21,31 @@ body::before {
 }
 
 body {
-  background-color: #ffffff; /* fallback if image doesn’t load */
+  background-color: #ffffff;
   overflow-x: hidden;
+}
+
+/* ===== Notification Bell Button ===== */
+.notif-btn {
+  width: 45px;
+  height: 45px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-btn img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.notif-btn:hover {
+  transform: scale(1.05);
+  transition: 0.2s ease;
 }
 
 /* ===== Hero Section ===== */
@@ -99,7 +122,6 @@ body {
   opacity: 1;
 }
 
-/* ===== Responsive Adjustments ===== */
 @media (max-width: 1200px) {
   .hero-image .illustration {
     width: 520px;
@@ -149,4 +171,3 @@ body {
     padding: 0.8rem 2rem;
   }
 }
-

@@ -30,8 +30,11 @@
   </nav>
 
   <div class="icons">
-    <button class="icon-btn notification-btn"></button>
-    <button class="icon-btn profile-btn"></button>
+    <!-- notification button: decorative icon but still accessible -->
+    <button class="icon-btn notification-btn" aria-label="Notifications" title="Notifications"></button>
+
+    <!-- profile button: uses background-image -->
+    <button class="icon-btn profile-btn" aria-label="Profile" title="Profile"></button>
   </div>
 </header>
 

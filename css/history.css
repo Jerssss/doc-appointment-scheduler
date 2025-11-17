@@ -12,6 +12,29 @@ body {
   overflow-x: hidden;
 }
 
+/* === Notification Bell Button (MATCH SIZE WITH PROFILE BTN) === */
+.notif-btn {
+  width: 45px;
+  height: 45px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-btn img {
+  width: 32px;   /* Adjust if profile button uses 30–35px */
+  height: 32px;
+  object-fit: contain;
+}
+
+.notif-btn:hover {
+  transform: scale(1.05);
+  transition: 0.2s ease;
+}
+
 /* === Page Layout === */
 .history-container {
   max-width: 1200px;

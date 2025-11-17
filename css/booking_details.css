@@ -48,11 +48,6 @@
     transform: scale(1.2);
 }
 
-/* Force icon color to appear (fixes invisible bell issue) */
-.nav-icons i {
-    color: #333 !important;
-}
-
 
 /* ============================
    BOOKING DETAILS PAGE STYLES

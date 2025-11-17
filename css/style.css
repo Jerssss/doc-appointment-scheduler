@@ -19,7 +19,7 @@ header {
 .logo .blue { color: #89c8ff; }
 .logo .pink { color: #f7a5c8; }
 
-/* Flex gap for spacing */
+/* Flex gap for consistent spacing */
 nav {
   display: flex;
   align-items: center;
@@ -45,46 +45,32 @@ nav a:hover {
   gap: 1rem;
 }
 
-/* base styles for all icon buttons */
+/* base icon button (for <a> tags) */
 .icon-btn {
   width: 32px;
   height: 32px;
-  border: none;
-  background-size: 60% 60%; /* icon size inside the circle */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: transparent; /* keep circle same as navbar if you want */
-  cursor: pointer;
-  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  transition: transform 0.25s ease, filter 0.25s ease;
-  display: inline-block;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.25s ease;
 }
 
-/* hover: only scale the icon (not change color) */
+/* hover effect */
 .icon-btn:hover {
   transform: scale(1.12);
 }
 
-/* ----- NOTIFICATION BUTTON ----- */
-.notification-btn {
-  background-image: url('../images/notification-bell.png');
-  background-size: 60% 60%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: transparent;
-}
-
-.profile-btn {
-  background-image: url('../images/user.png');
-  background-size: cover;
-  background-position: center;
+/* notification + profile icon images */
+.notif-img,
+.profile-img {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
   border-radius: 50%;
-}
-
-.notification-btn,
-.icons .icon-btn {
-  background-color: transparent !important;
 }
 
 /* ===== FOOTER ===== */

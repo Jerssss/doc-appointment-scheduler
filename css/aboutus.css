@@ -72,26 +72,6 @@ header .icons {
   transform: scale(1.1);
 }
 
-/* Notification Bell (mask) */
-.notification-btn {
-  background-color: #000;
-  -webkit-mask-image: url('../images/notification-bell.png');
-          mask-image: url('../images/notification-bell.png');
-  -webkit-mask-size: contain;
-          mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-          mask-position: center;
-}
-
-/* Profile Icon */
-.profile-btn {
-  background-image: url('../images/user.png');
-  background-size: cover;
-  background-position: center;
-}
-
 /* ===== ABOUT HEADER ===== */
 .about-header {
   text-align: center;

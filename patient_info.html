@@ -6,6 +6,7 @@
   <title>MediKo | Patient Record</title>
   <link rel="stylesheet" href="css/style_doc.css">
   <link rel="stylesheet" href="css/patient_info.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- ===== NAVBAR ===== -->
@@ -16,8 +17,7 @@
 
     <nav>
       <a href="wala pa">Consultations</a>
-      <a href="doctor_appointment_list.html">My Appointments</a>
-      <a class="active" href="#">Patient Record</a>
+      <a class="active" href="doctor_appointment_list.html">My Appointments</a>
     </nav>
 
     <div class="icons">
@@ -32,7 +32,15 @@
 
   <!-- Main Content -->
   <main class="main-container">
-    <section class="record-section">
+
+    <!-- Back Button -->
+    <div class="back-btn-container">
+      <a href="doctor_appointment_list.html" class="back-btn">← Back </a>
+    </div>
+
+    <!-- Patient Details Card -->
+    <section class="patient-details">
+      <!-- Patient Header -->
       <div class="patient-header">
         <img src="images/default-patient.png" alt="Patient Image" id="patientImage">
         <div class="info">
@@ -43,19 +51,30 @@
         </div>
       </div>
 
-      <form class="record-form">
-        <label>Past Medical Conditions</label>
-        <input type="text" id="pastConditions" readonly>
-
-        <label>Past Surgeries</label>
-        <input type="text" id="pastSurgeries" readonly>
-
-        <label>Current Medical Conditions</label>
-        <input type="text" id="currentConditions" readonly>
-
-        <label>Last Appointment Date</label>
-        <input type="text" id="lastAppointment" readonly>
-      </form>
+      <!-- Patient Info / Medical History -->
+      <div class="record-form">
+        <div class="vitals-container">
+          <h3>Medical History</h3>
+          <div class="vitals">
+            <div class="vital-box">
+              <label>Past Medical Conditions</label>
+              <input type="text" id="pastConditions" readonly>
+            </div>
+            <div class="vital-box">
+              <label>Past Surgeries</label>
+              <input type="text" id="pastSurgeries" readonly>
+            </div>
+            <div class="vital-box">
+              <label>Current Medical Conditions</label>
+              <input type="text" id="currentConditions" readonly>
+            </div>
+            <div class="vital-box">
+              <label>Last Appointment Date</label>
+              <input type="text" id="lastAppointment" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -79,7 +98,6 @@
     <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
   </footer>
 
-  <!-- JS -->
   <script src="js/patient_info.js"></script>
 </body>
 </html>

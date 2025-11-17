@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 
 try {
     $client = new MongoDB\Client("mongodb://localhost:27017/");
-    $usersCollection = $client->Mediko->users;
+    $usersCollection = $client->MediKo->users;
 
     $user_id = $_GET['user_id'] ?? null;
 

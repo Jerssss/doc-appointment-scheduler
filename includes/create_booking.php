@@ -4,7 +4,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 try {
     $client = new MongoDB\Client("mongodb://localhost:27017");
-    $collection = $client->Mediko->appointments;
+    $collection = $client->MediKo->appointments;
 
     $input = json_decode(file_get_contents('php://input'), true);
 

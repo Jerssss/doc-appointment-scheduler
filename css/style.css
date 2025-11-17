@@ -19,11 +19,11 @@ header {
 .logo .blue { color: #89c8ff; }
 .logo .pink { color: #f7a5c8; }
 
-/* Use flex gap instead of margin for consistent spacing */
+/* Flex gap for spacing */
 nav {
   display: flex;
   align-items: center;
-  gap: 1.2rem; /* consistent spacing between links */
+  gap: 1.2rem;
 }
 
 nav a {
@@ -38,49 +38,53 @@ nav a:hover {
   font-weight: 600;
 }
 
-/* ===== ICON SECTION ===== */
+/* ===== ICONS ===== */
 .icons {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
+/* base styles for all icon buttons */
 .icon-btn {
   width: 32px;
   height: 32px;
   border: none;
-  background-size: cover;
+  background-size: 60% 60%; /* icon size inside the circle */
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #ffe6f1;
+  background-color: transparent; /* keep circle same as navbar if you want */
   cursor: pointer;
   padding: 0;
   border-radius: 50%;
-  filter: none;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  display: inline-block;
 }
 
+/* hover: only scale the icon (not change color) */
 .icon-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.12);
 }
 
+/* ----- NOTIFICATION BUTTON ----- */
 .notification-btn {
-  width: 32px;
-  height: 32px;
-  background-color: #000; /* Icon color (black) */
-  -webkit-mask-image: url('../images/notification-bell.png');
-          mask-image: url('../images/notification-bell.png');
-  -webkit-mask-size: cover;
-          mask-size: cover;
-  -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-          mask-position: center;
+  background-image: url('../images/notification-bell.png');
+  background-size: 60% 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
 }
 
 .profile-btn {
   background-image: url('../images/user.png');
+  background-size: cover;
+  background-position: center;
   border-radius: 50%;
+}
+
+.notification-btn,
+.icons .icon-btn {
+  background-color: transparent !important;
 }
 
 /* ===== FOOTER ===== */

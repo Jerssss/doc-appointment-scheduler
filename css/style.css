@@ -82,18 +82,24 @@ nav a:hover {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Social Icons */
 .site-footer .social-icons {
+  display: flex;             /* flex layout for horizontal row */
+  justify-content: center;   /* center horizontally */
+  align-items: center;       /* center vertically */
+  gap: 1.2rem;               /* spacing between icons (like navbar) */
   margin-bottom: 20px;
 }
 
 .site-footer .social-icons a {
-  display: inline-block;
-  margin: 0 10px;
-  background-color: #fff;
-  border-radius: 50%;
-  padding: 10px;
+  display: flex;             /* flex to center image inside circle */
+  align-items: center;
+  justify-content: center;
   width: 45px;
   height: 45px;
+  border-radius: 50%;
+  background-color: #fff;
+  text-decoration: none;
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
@@ -102,11 +108,13 @@ nav a:hover {
   background-color: #ff0062;
 }
 
-.site-footer .social-icons img {
+.site-footer .social-icons a img {
+  display: block;           /* prevent inline spacing issues */
   width: 25px;
   height: 25px;
 }
 
+/* Footer Nav Links */
 .site-footer .footer-nav {
   list-style: none;
   padding: 0;

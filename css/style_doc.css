@@ -16,7 +16,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  overflow: hidden;
   background-color: #ffffff;
 }
 
@@ -120,6 +119,8 @@ nav a:hover {
   text-align: center;
   padding: 40px 0 20px;
   font-family: 'Poppins', sans-serif;
+  flex-shrink: 0;           /* footer stays at bottom */
+  margin-top: auto;         /* helps in some cases */
 }
 
 .site-footer .social-icons {

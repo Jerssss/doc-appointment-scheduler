@@ -2,7 +2,6 @@
 .main-container {
   display: flex;
   flex: 1 1 auto;       /* fills remaining height between header and footer */
-  height: calc(100vh - 120px); /* fallback if needed */
 }
 
 /* Sidebar */

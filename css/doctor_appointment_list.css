@@ -231,4 +231,93 @@
   background: linear-gradient(90deg, #e885ad, #b94a7e);
 }
 
+/* Tablets */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 35%;
+    padding: 20px;
+  }
+  .patient-header img {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+/* Mobile (phones) */
+@media (max-width: 768px) {
+
+  /* Layout becomes vertical */
+  .main-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Sidebar becomes full width */
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #f5e6ec;
+    height: auto;
+  }
+
+  /* Patient details full width */
+  .patient-details {
+    margin-top: 0;
+    padding: 20px;
+  }
+
+  .patient-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .patient-header img {
+    width: 110px;
+    height: 110px;
+  }
+
+  /* Vitals become single column */
+  .vitals {
+    grid-template-columns: 1fr;
+  }
+
+  .start-consultation-container {
+    margin-top: 10px;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+  .search-box input {
+    padding: 8px;
+  }
+
+  .appointment-item img {
+    width: 40px;
+  }
+
+  .start-consultation-btn {
+    padding: 14px 25px;
+    font-size: 16px;
+  }
+
+  .patient-info-btn {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .appointment-list {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 

@@ -28,54 +28,55 @@ try {
     $result = [];
 
     foreach ($cursor as $appt) {
-        $patient = $appt['patient_info'] ?? null;
+      $patient = $appt['patient_info'] ?? null;
 
-        // Get name safely
-        $patientName = "Unknown Patient";
-        $patientImage = "images/default-patient.png";
-        $gender = "N/A";
-        $address = "N/A";
-        $age = "N/A";
+      // Get name safely
+      $patientName = "Unknown Patient";
+      $patientImage = "images/default-patient.png";
+      $gender = "N/A";
+      $address = "N/A";
+      $age = "N/A";
 
-        if ($patient && isset($patient['personal_info']['full_name'])) {
-            $patientName = $patient['personal_info']['full_name'];
-            $patientImage = $patient['profile_image'] ?? "images/default-patient.png";
-            $gender = $patient['personal_info']['sex'] ?? "N/A";
-            $address = $patient['personal_info']['address'] ?? "N/A";
+      if ($patient && isset($patient['personal_info']['full_name'])) {
+          $patientName = $patient['personal_info']['full_name'];
+          $patientImage = $patient['profile_image'] ?? "images/default-patient.png";
+          $gender = $patient['personal_info']['sex'] ?? "N/A";
+          $address = $patient['personal_info']['address'] ?? "N/A";
 
-            // Calculate age from date_of_birth
-            if (!empty($patient['personal_info']['date_of_birth'])) {
-                try {
-                    $dob = new DateTime($patient['personal_info']['date_of_birth']);
-                    $now = new DateTime();
-                    $age = $now->diff($dob)->y;
-                } catch (Exception $e) {
-                    $age = "N/A";
-                }
-            }
-        }
+          // Calculate age from date_of_birth
+          if (!empty($patient['personal_info']['date_of_birth'])) {
+              try {
+                  $dob = new DateTime($patient['personal_info']['date_of_birth']);
+                  $now = new DateTime();
+                  $age = $now->diff($dob)->y;
+              } catch (Exception $e) {
+                  $age = "N/A";
+              }
+          }
+      }
 
-        // Convert time
-        $timeISO = null;
-        if (isset($appt['time']) && $appt['time'] instanceof MongoDB\BSON\UTCDateTime) {
-            $timeISO = $appt['time']->toDateTime()->format('c');
-        }
+      // Convert time
+      $timeISO = null;
+      if (isset($appt['time']) && $appt['time'] instanceof MongoDB\BSON\UTCDateTime) {
+          $timeISO = $appt['time']->toDateTime()->format('c');
+      }
 
-        $result[] = [
-            'patient_name' => $patientName,
-            'patient_image' => $patientImage,
-            'age' => $age,
-            'gender' => $gender,
-            'address' => $address,
-            'temperature' => $appt['temperature'] ?? '-',
-            'blood_pressure' => $appt['blood_pressure'] ?? '-',
-            'heart_rate' => $appt['heart_rate'] ?? '-',
-            'height_weight' => $appt['height_weight'] ?? '-',
-            'time' => $timeISO,
-            'mode' => $appt['mode'] ?? 'N/A',
-            'status' => $appt['status'] ?? 'pending',
-            'notes' => $appt['notes'] ?? ''
-        ];
+      $result[] = [
+        'patient_id' => (string)($patient['_id'] ?? null), // <-- added patient id as string
+        'patient_name' => $patientName,
+        'patient_image' => $patientImage,
+        'age' => $age,
+        'gender' => $gender,
+        'address' => $address,
+        'temperature' => $appt['temperature'] ?? '-',
+        'blood_pressure' => $appt['blood_pressure'] ?? '-',
+        'heart_rate' => $appt['heart_rate'] ?? '-',
+        'height_weight' => $appt['height_weight'] ?? '-',
+        'time' => $timeISO,
+        'mode' => $appt['mode'] ?? 'N/A',
+        'status' => $appt['status'] ?? 'pending',
+        'notes' => $appt['notes'] ?? ''
+      ];
     }
 
     header('Content-Type: application/json');

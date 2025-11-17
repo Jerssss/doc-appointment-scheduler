@@ -48,9 +48,12 @@ echo json_encode([
     "success" => true,
     "message" => "Login successful",
     "user" => [
+        // Added user_id field so it actually stores user id in session storage
+        "user_id" => (string)$user["user_id"], // Converts to string because it is an object in the DB
         "username" => $user["user_name"],
         "email" => $user["user_email"],
         "role" => $user["role"],
-        "profile_image" => $user["profile_image"]
+        "profile_image" => $user["profile_image"] ?? null
     ]
 ]);
+?>

@@ -1,4 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function() {
+
+    // First check if the user is actually logged in
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    if (!user || user.role !== 'patient') {
+        alert('Please login as a patient to book an appointment.');
+        window.location.href = 'login.html';
+        return;
+    }
+
+
     // Get selected doctor from localStorage
     const doctor = JSON.parse(localStorage.getItem("selectedDoctor"));
 
@@ -53,15 +63,30 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // Get user info from sessionStorage
+        const userEmail = user.email;
+
         const notes = prescriptions ? `${reason} | Prescriptions: ${prescriptions}` : reason;
 
         const payload = {
-            patient_id: localStorage.getItem("user_id") || "PATIENT_ID_PLACEHOLDER",
-            doctor_id: doctor.user_id,
+            patient_id: user.user_id, // Now dynamic
+            doctor_id: doctor.user_id?.$oid || doctor.user_id, // Added fallback 
             mode: selectedMode,
             time: time,
-            notes: notes
+            notes: notes,
+
+            // Optional patient info. Static null fields for now
+            age: document.getElementById("age")?.value || null,
+            gender: document.getElementById("gender")?.value || null,
+            address: document.getElementById("address")?.value || null,
+            temperature: document.getElementById("temperature")?.value || null,
+            blood_pressure: document.getElementById("blood_pressure")?.value || null,
+            heart_rate: document.getElementById("heart_rate")?.value || null,
+            height_weight: document.getElementById("height_weight")?.value || null
         };
+
+        // Debug
+        console.log("PAYLOAD BEING SENT:", payload);
 
         try {
             const res = await fetch("includes/create_booking.php", {

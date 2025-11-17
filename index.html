@@ -9,12 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<script>
-  document.getElementById("consult-btn").addEventListener("click", () => {
-    window.location.href = "book.html";
-  });
-</script>
-
 <body>
   <!-- ===== NAVBAR ===== -->
 <header>
@@ -45,11 +39,10 @@
     <div class="hero-text">
       <h1><span class="blue">Medi</span><span class="pink">Ko</span></h1>
       <p>Book and consult with a trusted Doctor for<br>your underlying condition now</p>
-      <a href="list_of_doctors.html" class="consult-btn">Consult →</a>
+      <a href="list_of_doctors.html" class="consult-btn" id="consult-btn">Consult →</a>
     </div>
 
     <div class="hero-image">
-      <!-- Replace this path with your PNG -->
       <img src="images/logotranspo.png" alt="MediKo Illustration" class="illustration">
     </div>
   </section>
@@ -73,5 +66,15 @@
 
     <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
   </footer>
+
+  <script>
+  const consultBtn = document.getElementById("consult-btn");
+  if (consultBtn) {
+    consultBtn.addEventListener("click", () => {
+      window.location.href = "book.html";
+    });
+  }
+</script>
+
 </body>
 </html>

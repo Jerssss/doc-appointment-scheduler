@@ -93,19 +93,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const now = new Date();
     now.setMinutes(Math.ceil(now.getMinutes() / 30) * 30, 0, 0); // round up to next 30-min
     const pad = (num) => String(num).padStart(2, "0");
-    scheduleInput.min = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    scheduleInput.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
-    // Round manually entered time to nearest 30-min
+    // Round manually entered time up to nearest 30-min
     scheduleInput.addEventListener("change", () => {
         const selected = new Date(scheduleInput.value);
-        const mins = selected.getMinutes();
-        const rounded = Math.round(mins / 30) * 30 + 30;
-        selected.setMinutes(rounded, 0, 0);
+        let mins = selected.getMinutes();
 
-        // Format in local YYYY-MM-DDTHH:MM
+        // Always round UP to the next 30-minute block
+        let newMins = Math.ceil(mins / 30) * 30;
+
+        // If rounding hits 60, increase hour
+        if (newMins === 60) {
+            selected.setHours(selected.getHours() + 1);
+            newMins = 0;
+        }
+
+        selected.setMinutes(newMins, 0, 0);
+
+        // Format back to datetime-local
         const pad = (n) => String(n).padStart(2, "0");
-        const localFormatted = `${selected.getFullYear()}-${pad(selected.getMonth()+1)}-${pad(selected.getDate())}T${pad(selected.getHours())}:${pad(selected.getMinutes())}`;
-
-        scheduleInput.value = localFormatted;
+        scheduleInput.value =
+            `${selected.getFullYear()}-${pad(selected.getMonth() + 1)}-${pad(selected.getDate())}T${pad(selected.getHours())}:${pad(selected.getMinutes())}`;
     });
 });

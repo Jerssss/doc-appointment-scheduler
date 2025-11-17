@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8888/9468_it313-teamarc_mediko/includes/login.php", {
+            const response = await fetch("http://localhost/9468_it313-teamarc_mediko/includes/login.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.href = "index.html";
                 } else {
                     // Doctors or other roles can go to their dashboard
-                    window.location.href = "doctor-dashboard.html";
+                    window.location.href = "doctor_appointment_list.html";
                 }
             } else {
                 alert(data.message);

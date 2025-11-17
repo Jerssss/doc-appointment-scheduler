@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 try {
     $client = new MongoDB\Client("mongodb://localhost:27017/");
-    $appointments = $client->Mediko->appointments;
+    $appointments = $client->MediKo->appointments;
 
     $input = json_decode(file_get_contents('php://input'), true);
     $appointment_id = $input['appointment_id'] ?? null;

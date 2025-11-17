@@ -1,7 +1,8 @@
-/* Layout */
+/* Main content area */
 .main-container {
   display: flex;
-  height: calc(100vh - 160px);
+  flex: 1 1 auto;       /* fills remaining height between header and footer */
+  height: calc(100vh - 120px); /* fallback if needed */
 }
 
 /* Sidebar */
@@ -10,6 +11,9 @@
   background: white;
   padding: 30px;
   border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;      /* stretch sidebar to full container height */
 }
 
 .sidebar h2 {
@@ -30,10 +34,7 @@
 }
 
 .appointment-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  height: 60%;
+  flex: 1 1 auto;        /* fill remaining vertical space */
   overflow-y: auto;
 }
 
@@ -74,18 +75,24 @@
   cursor: pointer;
 }
 
-/* Patient Details */
+/* ===== Patient Details ===== */
 .patient-details {
-  flex: 1;
-  padding: 30px 50px;
+  flex: 1 1 auto;        /* fills remaining width */
+  padding: 28px 40px;
+  overflow: auto;        /* scroll if content overflows */
+  box-sizing: border-box;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .patient-header {
+  min-height: 150px;     /* prevents collapse when content is replaced */
   display: flex;
   align-items: center;
+  gap: 20px;
   justify-content: space-between;
-  gap: 25px;
-  margin-bottom: 30px;
 }
 
 .patient-header img {
@@ -117,6 +124,13 @@
 }
 
 /* Vitals */
+.vitals {
+  min-height: 120px;     /* prevents collapse */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+}
+
 .vitals {
   display: grid;
   grid-template-columns: 1fr 1fr;

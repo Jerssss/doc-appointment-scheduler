@@ -51,38 +51,43 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const loadPatientInfo = (appt) => {
-    const patientName = appt.patient_name || "Unknown Patient";
-    const imgSrc = appt.patient_image || "images/default-patient.png";
+    // Update patient image
+    const patientImg = patientHeader.querySelector('img');
+    patientImg.src = appt.patient_image || 'images/default-patient.png';
+    patientImg.alt = appt.patient_name || 'Unknown Patient';
 
-    patientHeader.innerHTML = `
-      <img src="${imgSrc}" alt="${patientName}" />
-      <div class="info">
-        <h3>${patientName}</h3>
-        <p>${appt.age || 'N/A'} years old</p>
-        <p>${appt.gender || ''}</p>
-        <p>${appt.address || ''}</p>
-      </div>
-      <button class="consult-btn">Start Consultation</button>
-    `;
+    // Update info fields
+    const info = patientHeader.querySelector('.info');
+    info.querySelector('h3').textContent = appt.patient_name || 'Unknown Patient';
+    const pTags = info.querySelectorAll('p');
+    pTags[0].textContent = `${appt.age || 'N/A'} years old`;
+    pTags[1].textContent = appt.gender || '';
+    pTags[2].textContent = appt.address || '';
 
-    vitalsContainer.innerHTML = `
-      <div class="vital-box">
-        <label>Temperature</label>
-        <input type="text" value="${appt.temperature || '-'}" readonly />
-      </div>
-      <div class="vital-box">
-        <label>Blood Pressure</label>
-        <input type="text" value="${appt.blood_pressure || '-'}" readonly />
-      </div>
-      <div class="vital-box">
-        <label>Heart Rate</label>
-        <input type="text" value="${appt.heart_rate || '-'}" readonly />
-      </div>
-      <div class="vital-box">
-        <label>Height and Weight</label>
-        <input type="text" value="${appt.height_weight || '-'}" readonly />
-      </div>
-    `;
+    // Ensure consult button exists
+    if (!patientHeader.querySelector('.consult-btn')) {
+      const btn = document.createElement('button');
+      btn.classList.add('consult-btn');
+      btn.textContent = 'Start Consultation';
+      patientHeader.appendChild(btn);
+    }
+
+    // Update vitals
+    const vitalBoxes = vitalsContainer.querySelectorAll('.vital-box input');
+    if (vitalBoxes.length === 0) {
+      // first time, create boxes
+      vitalsContainer.innerHTML = `
+        <div class="vital-box"><label>Temperature</label><input readonly /></div>
+        <div class="vital-box"><label>Blood Pressure</label><input readonly /></div>
+        <div class="vital-box"><label>Heart Rate</label><input readonly /></div>
+        <div class="vital-box"><label>Height and Weight</label><input readonly /></div>
+      `;
+    }
+    const inputs = vitalsContainer.querySelectorAll('input');
+    inputs[0].value = appt.temperature || '-';
+    inputs[1].value = appt.blood_pressure || '-';
+    inputs[2].value = appt.heart_rate || '-';
+    inputs[3].value = appt.height_weight || '-';
   };
 
   loadAppointments();

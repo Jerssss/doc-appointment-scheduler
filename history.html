@@ -15,58 +15,49 @@
 
 <body>
   <!-- ===== NAVBAR ===== -->
-<header>
-  <div class="logo">
-    <span class="blue">Medi</span><span class="pink">Ko</span>
-  </div>
+  <header>
+    <div class="logo">
+      <span class="blue">Medi</span><span class="pink">Ko</span>
+    </div>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="list_of_doctors.html">Book</a>
-    <a href="history.html">History</a>
-    <a href="aboutus.html">About Us</a>
-  </nav>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="list_of_doctors.html">Book</a>
+      <a href="history.html">History</a>
+      <a href="aboutus.html">About Us</a>
+    </nav>
 
-  <div class="icons">
-    <a href="history.html" class="icon-btn notification-btn">
-      <img src="images/notification.png" alt="Notifications" class="notif-img">
-    </a>
-
-    <a href="user_patient_profile.html" class="icon-btn profile-btn">
-      <img src="images/user.png" alt="Profile" class="profile-img">
-    </a>
-  </div>
-</header>
+    <div class="icons">
+      <a href="history.html" class="icon-btn notification-btn">
+        <img src="images/notification.png" alt="Notifications" class="notif-img">
+      </a>
+      <a href="user_patient_profile.html" class="icon-btn profile-btn">
+        <img src="images/user.png" alt="Profile" class="profile-img">
+      </a>
+    </div>
+  </header>
 
   <!-- ===== PAGE CONTENT ===== -->
   <main class="history-container">
     <h1>Consultation History</h1>
 
     <div class="history-box">
-      <!-- Upcoming -->
-      <div class="section">
+      <!-- Upcoming Consultations -->
+      <div class="section" id="upcoming-section">
         <h2>Upcoming</h2>
-        <div class="card">
-          <img src="images/sebdoctyor.png" alt="Doctor Image">
-          <div class="card-info">
-            <h3>Virtual Consultation with Dr. Molina</h3>
-            <p class="schedule">Scheduled for August 10, 2025, from 10:00 AM to 10:30 AM</p>
-            <p class="note">Please wait for further instructions. Messages will be sent via inbox.</p>
-          </div>
+        <div id="upcoming-cards">
+          <!-- JS will inject upcoming consultation cards here -->
+          <p>Loading upcoming consultations...</p>
         </div>
       </div>
 
-      <!-- History -->
-      <div class="section">
+      <!-- Past Consultations -->
+      <div class="section" id="past-section">
         <h2>Past Consultations</h2>
         <p class="subtext">Your completed appointments</p>
-        <div class="card">
-          <img src="images/yanadr.png" alt="Doctor Image">
-          <div class="card-info">
-            <h3>Face-to-face Checkup with Dr. Grabanzor</h3>
-            <p class="schedule">August 01, 2025, from 10:00 AM to 10:30 AM</p>
-          </div>
-          <button class="rate-btn">RATE</button>
+        <div id="past-cards">
+          <!-- JS will inject past consultation cards here -->
+          <p>Loading past consultations...</p>
         </div>
       </div>
     </div>
@@ -91,5 +82,8 @@
 
     <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
   </footer>
+
+  <!-- ===== JS ===== -->
+  <script src="js/frontend_js/history.js"></script>
 </body>
 </html>

@@ -1,18 +1,19 @@
 /* Main content area */
 .main-container {
   display: flex;
-  flex: 1 1 auto;            /* ← back to flex: 1 1 auto */               /* ← Change from flex: 1 1 auto → just flex: 1 */
+  flex: 1 1 auto;
   min-height: 0;
-  height: calc(100vh - 80px); /* subtract header height */
+  height: calc(100vh - 80px); 
   overflow: hidden;
+  background-color: #ffffff; /* mostly white */
 }
 
 /* Sidebar */
 .sidebar {
   width: 30%;
-  background: white;
+  background: #ffffff; /* white sidebar */
   padding: 30px;
-  border-right: 1px solid #eee;
+  border-right: 1px solid #f5e6ec; /* subtle pink border */
   display: flex;
   flex-direction: column;
   height: 100%;      
@@ -20,7 +21,7 @@
 }
 
 .sidebar h2 {
-  color: #6d4ab1;
+  color: #c06c91; /* pink accent */
   margin-bottom: 5px;
 }
 .sidebar h4 {
@@ -32,14 +33,16 @@
   width: 100%;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #f5e6ec; /* subtle pink border */
   margin-bottom: 15px;
+  background-color: #fff;
 }
 
+/* Appointment list */
 .appointment-list {
   flex: 1 1 auto;
   overflow-y: auto;
-  min-height: 0;             /* ← must stay */
+  min-height: 0;             
 }
 
 .appointment-item {
@@ -50,87 +53,117 @@
   border-radius: 15px;
   transition: background 0.3s;
   cursor: pointer;
+  background-color: #ffffff;
+  border: 1px solid #fbe6f0; /* very subtle pink */
 }
 
 .appointment-item.active,
 .appointment-item:hover {
-  background-color: #f2ecfc;
+  background-color: #fde6f4; /* soft pink highlight */
 }
 
 .appointment-item img {
   width: 50px;
   border-radius: 50%;
+  border: 2px solid #fbe6f0;
 }
 
 .details h4 {
-  color: #333;
+  color: #c06c91; /* pink headings */
 }
 .details p {
   font-size: 0.9rem;
   color: #777;
 }
 
+/* Back button */
 .back-btn {
-  background-color: #f9d6e6;
+  background-color: #c06c91; /* pink button */
   border: none;
   padding: 10px 20px;
   border-radius: 15px;
   margin-top: 25px;
   cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+}
+.back-btn:hover {
+  background-color: #a45874; /* slightly darker pink hover */
 }
 
-/* ===== Patient Details ===== */
 .patient-details {
-  flex: 1 1 auto;        /* fills remaining width */
+  flex: 1 1 auto;        
   padding: 28px 40px;
-  overflow: auto;        /* scroll if content overflows */
+  overflow: auto;        
   box-sizing: border-box;
-  background: #fff;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   gap: 20px;
+  margin-top: 30px;
 }
 
 .patient-header {
-  min-height: 150px;     /* prevents collapse when content is replaced */
+  min-height: 150px;     
   display: flex;
   align-items: center;
   gap: 20px;
-  justify-content: space-between;
 }
 
 .patient-header img {
   width: 130px;
   height: 130px;
   border-radius: 50%;
+  border: 2px solid #fde6f4; 
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; 
 }
 
 .info h3 {
   font-size: 1.5rem;
-  color: #222;
+  color: #c06c91; /* pink accent */
 }
 .info p {
   color: #555;
   margin-top: 3px;
 }
 
-.consult-btn {
-  background-color: #c25c83;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 12px;
+.med-his-btn {
+  font-size: 18px;
+  font-weight: 600;
+  color: #c06c91;                
+  background: none;              
+  border: none;                  
   cursor: pointer;
-  transition: background 0.3s;
-}
-.consult-btn:hover {
-  background-color: #a2486c;
+  padding: 8px 5px;
+  transition: color 0.3s, transform 0.2s;
+  margin-left: 20%;
 }
 
+.med-his-btn:hover {
+  color: #a45874;                 
+  transform: translateX(3px);   
+}
+
+
 /* Vitals */
+.vitals-container {
+  margin-top: 30px;
+}
+
+.vitals-container h3 {
+  font-size: 23px;
+  color: #c06c91;
+  margin-bottom: 20px;
+}
+
 .vitals {
-  min-height: 120px;     /* prevents collapse */
+  margin-top: 10px;
+  min-height: 120px;     
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 18px;
@@ -145,17 +178,52 @@
 .vital-box {
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #fde6f4;
 }
+
 .vital-box label {
   font-weight: 500;
-  color: #555;
+  color: #c06c91; /* pink label */
   margin-bottom: 5px;
 }
 .vital-box input {
-  border: none;
-  background-color: #f3f3f3;
+  border: 1px solid #eee;
+  background-color: #fdfdfd;
   padding: 12px;
   border-radius: 10px;
   font-size: 1rem;
   color: #333;
 }
+
+/* Container to center the button */
+.start-consultation-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* Eye-catching Start Consultation button */
+.start-consultation-btn {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #eb96b9, #d1598d); /* gradient pink */
+  color: #fff;
+  padding: 18px 40px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(249, 163, 199, 0.35);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+/* Hover effect */
+.start-consultation-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(209, 89, 141, 0.45);
+  background: linear-gradient(90deg, #e885ad, #b94a7e);
+}
+
+

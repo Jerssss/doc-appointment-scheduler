@@ -64,14 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     pTags[1].textContent = appt.gender || '';
     pTags[2].textContent = appt.address || '';
 
-    // Ensure consult button exists
-    if (!patientHeader.querySelector('.consult-btn')) {
-      const btn = document.createElement('button');
-      btn.classList.add('consult-btn');
-      btn.textContent = 'Start Consultation';
-      patientHeader.appendChild(btn);
-    }
-
     // Update vitals
     const vitalBoxes = vitalsContainer.querySelectorAll('.vital-box input');
     if (vitalBoxes.length === 0) {

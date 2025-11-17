@@ -191,3 +191,33 @@
   font-size: 1rem;
   color: #333;
 }
+
+/* Container to center the button */
+.start-consultation-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* Eye-catching Start Consultation button */
+.start-consultation-btn {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #eb96b9, #d1598d); /* gradient pink */
+  color: #fff;
+  padding: 18px 40px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(249, 163, 199, 0.35);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+/* Hover effect */
+.start-consultation-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(209, 89, 141, 0.45);
+  background: linear-gradient(90deg, #e885ad, #b94a7e);
+}
+
+

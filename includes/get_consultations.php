@@ -1,5 +1,4 @@
 <?php
-session_start();
 require __DIR__ . '/../vendor/autoload.php';
 header('Content-Type: application/json');
 
@@ -9,54 +8,63 @@ try {
     $consultationsCol = $client->MediKo->consultation;
     $usersCol = $client->MediKo->users;
 
-    // Get logged-in user id
-    // Example: $_SESSION['user_id'] contains the patient's ObjectId string
-    $userId = $_SESSION['user_id'] ?? null;
+    // GET user ID from frontend (sessionStorage)
+    $userId = $_GET['user_id'] ?? null;
 
     if (!$userId) {
-        echo json_encode(['error' => 'User not logged in']);
+        echo json_encode(['error' => 'Missing user_id']);
         exit;
     }
 
-    $userObjId = new MongoDB\BSON\ObjectId($userId);
+    // Try to convert user ID to ObjectId, fallback to string
+    try {
+        $userObjId = new MongoDB\BSON\ObjectId($userId);
+        $patientQuery = ['$or' => [['patient_id' => $userObjId], ['patient_id' => $userId]]];
+    } catch (Exception $e) {
+        $patientQuery = ['patient_id' => $userId];
+    }
 
-    // Fetch all appointments for this patient
-    $cursor = $appointmentsCol->find([
-        'patient_id' => $userObjId
-    ], [
-        'sort' => ['time' => 1]
-    ]);
+    // Fetch all appointments of this patient
+    $cursor = $appointmentsCol->find(
+        $patientQuery,
+        ['sort' => ['time' => 1]]
+    );
 
     $result = [];
 
     foreach ($cursor as $appt) {
         $apptId = $appt['_id'];
 
-        // Get doctor info
-        $doctor = $usersCol->findOne(['_id' => $appt['doctor_id']]);
+        // Fetch doctor details (match against user_id field)
+        $doctorId = $appt['doctor_id'];
+        $doctorQuery = ['$or' => [
+            ['user_id' => $doctorId], // match string user_id
+            ['user_id' => new MongoDB\BSON\ObjectId($doctorId)] // match ObjectId user_id
+        ]];
+
+        $doctor = $usersCol->findOne($doctorQuery);
+
         $doctorName = $doctor['personal_info']['full_name'] ?? $doctor['user_name'] ?? 'Unknown';
-        $doctorImg = $doctor['personal_info']['profile_image'] ?? 'images/default-doctor.png';
+        $doctorImg = $doctor['profile_image'] ?? 'images/default-doctor.png';
 
-        // Get ratings
-        $ratings = $doctor['ratings'] ?? []; // assume doctor document has 'ratings' array of numbers
-        $avgRating = !empty($ratings) ? round(array_sum($ratings)/count($ratings), 1) : 'N/A';
+        // Doctor rating from personal_info
+        $avgRating = $doctor['personal_info']['rating'] ?? 'N/A';
 
-        // Find related consultation
-        $consult = $consultationsCol->findOne([
-            'appointment_id' => $apptId
-        ]);
+        // Related consultation record
+        $consult = $consultationsCol->findOne(['appointment_id' => $apptId]);
 
         $diagnosis = $consult['diagnosis'] ?? '';
         $prescription = $consult['prescription'] ?? '';
         $followUp = null;
+
         if (!empty($consult['follow_up_date']) && $consult['follow_up_date'] instanceof MongoDB\BSON\UTCDateTime) {
             $followUp = $consult['follow_up_date']->toDateTime()->format('Y-m-d H:i:s');
         }
 
-        // Convert time
-        $apptTime = $appt['time'] instanceof MongoDB\BSON\UTCDateTime 
-                    ? $appt['time']->toDateTime()->format('Y-m-d H:i:s') 
-                    : null;
+        // Appointment time
+        $apptTime = $appt['time'] instanceof MongoDB\BSON\UTCDateTime
+            ? $appt['time']->toDateTime()->format('Y-m-d H:i:s')
+            : null;
 
         $result[] = [
             'appointment_id' => (string)$apptId,

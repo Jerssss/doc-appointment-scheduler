@@ -277,6 +277,22 @@ textarea::placeholder {
     font-family: 'Montserrat', sans-serif;
 }
 
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+select:focus {
+    outline: none;
+    border-color: #7B6B9E;
+}
+
+
 .btn-cancel {
     background: white;
     color: #666;
@@ -299,6 +315,31 @@ textarea::placeholder {
     border-color: #6A5A8D;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(123, 107, 158, 0.3);
+}
+
+
+/* Generic input styling */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #7B6B9E;
+}
+
+input::placeholder {
+    color: #999;
 }
 
 /* Responsive Design */

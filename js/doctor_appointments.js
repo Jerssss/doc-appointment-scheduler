@@ -1,10 +1,11 @@
-// js/doctor_appointments.js
 document.addEventListener("DOMContentLoaded", () => {
   const appointmentList = document.querySelector(".appointment-list");
   const patientHeader = document.querySelector(".patient-header");
   const vitalsContainer = document.querySelector(".vitals");
   const searchInput = document.getElementById("searchInput");
-  const medRecordAnchor = patientHeader ? patientHeader.querySelector('a') : null;
+
+  // NEW: Patient Info button
+  const patientInfoBtn = document.querySelector(".patient-info-btn");
 
   const escapeHtml = (str) => {
     if (str === null || str === undefined) return "";
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/'/g, "&#039;");
   };
 
-  // get selected patient id from active DOM element
+  // get selected patient id from active element
   const getSelectedPatientIdFromDOM = () => {
     const active = appointmentList.querySelector(".appointment-item.active");
     if (!active) return null;
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const item = document.createElement("div");
         item.classList.add("appointment-item");
 
-        // attach patient_id from backend
+        // store patient ID
         const pid = appt.patient_id;
         if (pid) item.dataset.patientId = pid;
 
@@ -65,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-        // store appointment object for later usage
         item._appt = appt;
 
         item.addEventListener("click", () => {
@@ -74,21 +74,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (pid) localStorage.setItem("selectedPatientId", pid);
 
-          if (medRecordAnchor) {
-            medRecordAnchor.href = `patient_info.html?id=${encodeURIComponent(pid)}`;
-          }
-
           loadPatientInfo(appt);
         });
 
         appointmentList.appendChild(item);
       });
 
-      // auto-click first appointment
       const firstItem = appointmentList.querySelector(".appointment-item");
       if (firstItem) firstItem.click();
 
-      // search/filter functionality
       if (searchInput) {
         searchInput.addEventListener("input", () => {
           const q = searchInput.value.trim().toLowerCase();
@@ -128,17 +122,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!vitalsContainer) return;
-    const existingInputs = vitalsContainer.querySelectorAll(".vital-box input");
-    if (existingInputs.length === 0) {
-      vitalsContainer.innerHTML = `
-        <div class="vital-box"><label>Temperature</label><input readonly /></div>
-        <div class="vital-box"><label>Blood Pressure</label><input readonly /></div>
-        <div class="vital-box"><label>Heart Rate</label><input readonly /></div>
-        <div class="vital-box"><label>Height and Weight</label><input readonly /></div>
-      `;
-    }
-
     const inputs = vitalsContainer.querySelectorAll("input");
+
     if (inputs.length >= 4) {
       inputs[0].value = appt.temperature || "-";
       inputs[1].value = appt.blood_pressure || "-";
@@ -147,21 +132,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // handle "See Medical Record" button
-  if (medRecordAnchor) {
-    medRecordAnchor.addEventListener("click", (e) => {
-      const pidFromDOM = getSelectedPatientIdFromDOM();
-      const fallbackPid = localStorage.getItem("selectedPatientId") || null;
-
-      const patientId = pidFromDOM || fallbackPid;
+  if (patientInfoBtn) {
+    patientInfoBtn.addEventListener("click", () => {
+      const patientId = getSelectedPatientIdFromDOM() || localStorage.getItem("selectedPatientId");
 
       if (!patientId) {
-        e.preventDefault();
-        alert("No patient selected. Please select a patient from the appointments list first.");
+        alert("No patient selected.");
         return;
       }
 
-      medRecordAnchor.href = `patient_info.html?id=${encodeURIComponent(patientId)}`;
+      window.location.href = `patient_info.html?id=${encodeURIComponent(patientId)}`;
     });
   }
 

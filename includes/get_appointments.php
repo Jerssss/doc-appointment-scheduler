@@ -4,33 +4,20 @@ require __DIR__ . '/../vendor/autoload.php';
 try {
     $client = new MongoDB\Client("mongodb://localhost:27017");
     $appointmentsCollection = $client->MediKo->appointments;
+    $usersCollection = $client->MediKo->users;
 
     $pipeline = [
         [
             '$lookup' => [
-                'from' => 'patientdetails',
+                'from' => 'users',
                 'localField' => 'patient_id',
                 'foreignField' => '_id',
-                'as' => 'patient_details'
+                'as' => 'patient_info'
             ]
         ],
         [
             '$unwind' => [
-                'path' => '$patient_details',
-                'preserveNullAndEmptyArrays' => true
-            ]
-        ],
-        [
-            '$lookup' => [
-                'from' => 'users',
-                'localField' => 'patient_details.user_id',
-                'foreignField' => '_id',
-                'as' => 'user_info'
-            ]
-        ],
-        [
-            '$unwind' => [
-                'path' => '$user_info',
+                'path' => '$patient_info',
                 'preserveNullAndEmptyArrays' => true
             ]
         ],
@@ -41,65 +28,61 @@ try {
     $result = [];
 
     foreach ($cursor as $appt) {
+        $patient = $appt['patient_info'] ?? null;
 
-        // time
-        $timeISO = null;
-        if (isset($appt['time']) && $appt['time'] instanceof MongoDB\BSON\UTCDateTime) {
-            $timeISO = $appt['time']->toDateTime()->format(DATE_ATOM);
+        // Get name safely
+        $patientName = "Unknown Patient";
+        $patientImage = "images/default-patient.png";
+        $gender = "N/A";
+        $address = "N/A";
+        $age = "N/A";
+
+        if ($patient && isset($patient['personal_info']['full_name'])) {
+            $patientName = $patient['personal_info']['full_name'];
+            $patientImage = $patient['profile_image'] ?? "images/default-patient.png";
+            $gender = $patient['personal_info']['sex'] ?? "N/A";
+            $address = $patient['personal_info']['address'] ?? "N/A";
+
+            // Calculate age from date_of_birth
+            if (!empty($patient['personal_info']['date_of_birth'])) {
+                try {
+                    $dob = new DateTime($patient['personal_info']['date_of_birth']);
+                    $now = new DateTime();
+                    $age = $now->diff($dob)->y;
+                } catch (Exception $e) {
+                    $age = "N/A";
+                }
+            }
         }
 
-        // extract personal info (NEW structure)
-        $pinfo = $appt['user_info']['personal_info'] ?? [];
-
-        // full name
-        $patientName = $pinfo['full_name'] ?? "Unknown Patient";
-
-        // profile image
-        $patientImage = $appt['user_info']['profile_image']
-            ?? "images/default-patient.png";
-
-        // gender
-        $gender = $pinfo['sex'] ?? 'N/A';
-
-        // address
-        $address = $pinfo['address'] ?? 'N/A';
-
-        // AGE — calculate from date_of_birth
-        $age = 'N/A';
-        if (!empty($pinfo['date_of_birth'])) {
-            try {
-                $dob = new DateTime($pinfo['date_of_birth']);
-                $today = new DateTime();
-                $age = $today->diff($dob)->y;
-            } catch (Exception $e) {}
+        // Convert time
+        $timeISO = null;
+        if (isset($appt['time']) && $appt['time'] instanceof MongoDB\BSON\UTCDateTime) {
+            $timeISO = $appt['time']->toDateTime()->format('c');
         }
 
         $result[] = [
-            '_id' => (string)$appt['_id'],
-            'patient_id' => (string)$appt['patient_id'],
             'patient_name' => $patientName,
             'patient_image' => $patientImage,
-
             'age' => $age,
             'gender' => $gender,
             'address' => $address,
-
-            // vitals (appointments still contain them)
             'temperature' => $appt['temperature'] ?? '-',
             'blood_pressure' => $appt['blood_pressure'] ?? '-',
             'heart_rate' => $appt['heart_rate'] ?? '-',
             'height_weight' => $appt['height_weight'] ?? '-',
             'time' => $timeISO,
-            'mode' => $appt['mode'] ?? '-',
-            'status' => $appt['status'] ?? '-',
+            'mode' => $appt['mode'] ?? 'N/A',
+            'status' => $appt['status'] ?? 'pending',
             'notes' => $appt['notes'] ?? ''
         ];
     }
 
     header('Content-Type: application/json');
-    echo json_encode($result);
+    echo json_encode($result, JSON_UNESCAPED_SLASHES);
 
 } catch (Exception $e) {
+    http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode(['error' => $e->getMessage()]);
 }

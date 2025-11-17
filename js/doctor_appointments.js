@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (pid) localStorage.setItem("selectedPatientId", pid);
 
           if (medRecordAnchor) {
-            medRecordAnchor.href = `patient_records.html?id=${encodeURIComponent(pid)}`;
+            medRecordAnchor.href = `patient_info.html?id=${encodeURIComponent(pid)}`;
           }
 
           loadPatientInfo(appt);
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      medRecordAnchor.href = `patient_records.html?id=${encodeURIComponent(patientId)}`;
+      medRecordAnchor.href = `patient_info.html?id=${encodeURIComponent(patientId)}`;
     });
   }
 

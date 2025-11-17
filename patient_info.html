@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediKo | Patient Record</title>
+  <link rel="stylesheet" href="css/style_doc.css">
+  <link rel="stylesheet" href="css/patient_info.css">
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <header>
+    <div class="logo">
+      <span class="blue">Medi</span><span class="pink">Ko</span>
+    </div>
+
+    <nav>
+      <a href="wala pa">Consultations</a>
+      <a href="doctor_appointment_list.html">My Appointments</a>
+      <a class="active" href="#">Patient Record</a>
+    </nav>
+
+    <div class="icons">
+      <a href="user_doctor_profile.html" class="icon-btn notification-btn">
+        <img src="images/notification.png" alt="Notification Bell" class="notif-img">
+      </a>
+      <a href="user_doctor_profile.html" class="icon-btn profile-btn">
+        <img src="images/user.png" alt="Profile" class="profile-img">
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <section class="record-section">
+      <div class="patient-header">
+        <img src="images/default-patient.png" alt="Patient Image" id="patientImage">
+        <div class="info">
+          <h3 id="patientName">Loading...</h3>
+          <p id="patientAge">-</p>
+          <p id="patientGender">-</p>
+          <p id="patientAddress">-</p>
+        </div>
+      </div>
+
+      <form class="record-form">
+        <label>Past Medical Conditions</label>
+        <input type="text" id="pastConditions" readonly>
+
+        <label>Past Surgeries</label>
+        <input type="text" id="pastSurgeries" readonly>
+
+        <label>Current Medical Conditions</label>
+        <input type="text" id="currentConditions" readonly>
+
+        <label>Last Appointment Date</label>
+        <input type="text" id="lastAppointment" readonly>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="social-icons">
+      <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
+      <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+      <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+      <a href="#"><img src="images/google.png" alt="Google"></a>
+      <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+    </div>
+
+    <ul class="footer-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="news.html">Book</a></li>
+      <li><a href="about.html">History</a></li>
+      <li><a href="team.html">About Us</a></li>
+    </ul>
+
+    <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/patient_info.js"></script>
+</body>
+</html>

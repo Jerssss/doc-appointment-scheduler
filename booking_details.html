@@ -81,6 +81,48 @@
                     <textarea id="reason" rows="4" required placeholder="Enter your reasons here..."></textarea>
                 </div>
 
+
+                <!-- More Patient Information -->
+                 <div class="form-group">
+                    <label>Age*</label>
+                    <input type="number" id="age" placeholder="Enter your age" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Gender*</label>
+                    <select id="gender" required>
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Address*</label>
+                    <textarea id="address" rows="2" placeholder="Enter your address" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Temperature (°C)</label>
+                    <input type="number" id="temperature" placeholder="Enter body temperature" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label>Blood Pressure (mmHg)</label>
+                    <input type="text" id="blood_pressure" placeholder="e.g., 120/80">
+                </div>
+                
+                <div class="form-group">
+                    <label>Heart Rate (bpm)</label>
+                    <input type="number" id="heart_rate" placeholder="Enter heart rate">
+                </div>
+                
+                <div class="form-group">
+                    <label>Height & Weight</label>
+                    <input type="text" id="height_weight" placeholder="e.g., 170 cm / 65 kg">
+                </div>
+
                 <!-- Current Prescriptions -->
                 <div class="form-group">
                     <label>Any current prescriptions? If none, leave this blank...</label>

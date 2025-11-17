@@ -100,6 +100,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: 30px;
 }
 
 .patient-header {
@@ -132,23 +133,28 @@
 }
 
 .med-his-btn {
-  height: 50px;
-  width: 220px;
-  font-size: 17px;
-  background-color: #c06c91; /* pink button */
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #c06c91;                
+  background: none;              
+  border: none;                  
   cursor: pointer;
-  transition: background 0.3s;
-  margin-left: 13%;
-}
-.med-his-btn:hover {
-  background-color: #a45874; /* slightly darker pink hover */
+  padding: 8px 5px;
+  transition: color 0.3s, transform 0.2s;
+  margin-left: 20%;
 }
 
+.med-his-btn:hover {
+  color: #a45874;                 
+  transform: translateX(3px);   
+}
+
+
 /* Vitals */
+.vitals-container {
+  margin-top: 30px;
+}
+
 .vitals-container h3 {
   font-size: 23px;
   color: #c06c91;

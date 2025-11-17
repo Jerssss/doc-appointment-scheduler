@@ -10,68 +10,6 @@ html, body {
   box-sizing: inherit;
 }
 
-/* ===== Navbar ===== */
-header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 6%;
-  background-color: #ffe6f1;
-  position: sticky;
-  top: 0;
-  z-index: 9999;
-}
-
-header .logo {
-  font-size: 2.1rem;
-  font-weight: 700;
-}
-
-header .logo .blue { color: #89c8ff; }
-header .logo .pink { color: #f7a5c8; }
-
-header nav {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
-
-header nav a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: 0.3s;
-}
-
-header nav a.active,
-header nav a:hover {
-  font-weight: 600;
-}
-
-header .icons {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.icon-btn {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-}
-
-.icon-btn:hover {
-  transform: scale(1.1);
-}
-
 /* ===== ABOUT HEADER ===== */
 .about-header {
   text-align: center;

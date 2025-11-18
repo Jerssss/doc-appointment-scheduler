@@ -37,7 +37,7 @@ try {
 
     echo json_encode([
         "success" => true,
-        "inserted_id" => (string)$result->getInsertedId()
+        "appointment_id" => (string)$result->getInsertedId()
     ]);
 
 } catch (Exception $e) {

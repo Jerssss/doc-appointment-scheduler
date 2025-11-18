@@ -1,7 +1,5 @@
-// js/frontend_js/user_patient_profile.js
-
 document.addEventListener("DOMContentLoaded", async () => {
-  // 1. Check if logged-in user exists
+
   const storedUser = sessionStorage.getItem("user");
   if (!storedUser) {
     alert("Please log in first.");
@@ -11,7 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const user = JSON.parse(storedUser);
 
-  // 2. Fetch full user details (because session only stores limited data)
   try {
     const response = await fetch(
       `http://localhost/9468_it313-teamarc_mediko/includes/get_user_by_email.php?email=${user.email}`
@@ -24,42 +21,161 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // 3. Populate profile fields dynamically
+    // Load profile fields
     document.querySelector(".avatar").src = fullData.profile_image || "images/default-patient.png";
     document.querySelector(".name").textContent = fullData.full_name || "Unknown User";
 
-    // Contact
-    document.getElementById("email").textContent = fullData.user_email || "—";
-    document.getElementById("phone").textContent = fullData.phone || "—";
+    const fields = {
+      email: fullData.user_email,
+      phone: fullData.phone,
+      address: fullData.address,
+      "emergency-name": fullData.emergency_name,
+      "emergency-relationship": fullData.emergency_relationship,
+      "emergency-phone": fullData.emergency_phone
+    };
 
-    // Personal details
-    document.getElementById("dob").textContent = fullData.date_of_birth || "—";
-    document.getElementById("sex").textContent = fullData.sex || "—";
-    document.getElementById("address").textContent = fullData.address || "—";
+    for (let id in fields) {
+      document.getElementById(id).textContent = fields[id] || "—";
+    }
 
-    // Emergency contact
-    document.getElementById("emergency-name").textContent = fullData.emergency_name || "—";
-    document.getElementById("emergency-relationship").textContent = fullData.emergency_relationship || "—";
-    document.getElementById("emergency-phone").textContent = fullData.emergency_phone || "—";
-
-    // Security section
-    document.getElementById("accountCreated").textContent =
-      formatAccountDate(fullData.account_created);
-
+    document.getElementById("account-created").textContent =
+      new Date(fullData.account_created).toLocaleDateString();
 
   } catch (err) {
     console.error("Profile load error:", err);
   }
 
-  // Logging out
+  // LOGOUT
   document.getElementById("logoutBtnMain").addEventListener("click", () => {
     sessionStorage.removeItem("user");
     window.location.href = "login.html";
   });
+
+  // =========================================
+  //          GLOBAL EDIT PROFILE MODE
+  // =========================================
+
+  const editProfileBtn = document.getElementById("editProfileBtn");
+  let editMode = false;
+
+  editProfileBtn.addEventListener("click", () => {
+    editMode = !editMode;
+
+    const allEditButtons = document.querySelectorAll(".edit-btn");
+
+    if (editMode) {
+      allEditButtons.forEach(btn => (btn.style.display = "inline-block"));
+      editProfileBtn.textContent = "Done Editing";
+    } else {
+      allEditButtons.forEach(btn => (btn.style.display = "none"));
+      editProfileBtn.textContent = "Edit Profile";
+    }
+  });
+
+  // =========================================
+  //       INLINE EDIT SYSTEM
+  // =========================================
+
+  document.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const fieldId = btn.dataset.field;
+
+      // Prevent interfering with the password edit button
+      if (fieldId === "password") return;
+
+      const valueEl = document.getElementById(fieldId);
+      const currentValue = valueEl.textContent;
+
+      valueEl.innerHTML = `
+        <input type="text" class="edit-input" id="input-${fieldId}" value="${currentValue}">
+      `;
+
+      btn.style.display = "none";
+
+      const saveBtn = document.createElement("button");
+      saveBtn.className = "save-btn";
+      saveBtn.textContent = "Save";
+
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "cancel-btn";
+      cancelBtn.textContent = "Cancel";
+
+      btn.parentElement.appendChild(saveBtn);
+      btn.parentElement.appendChild(cancelBtn);
+
+      // SAVE
+      saveBtn.addEventListener("click", async () => {
+        const newValue = document.getElementById(`input-${fieldId}`).value;
+
+        valueEl.textContent = newValue;
+
+        saveBtn.remove();
+        cancelBtn.remove();
+        if (editMode) btn.style.display = "inline-block";
+
+        // TODO backend update
+      });
+
+      // CANCEL
+      cancelBtn.addEventListener("click", () => {
+        valueEl.textContent = currentValue;
+
+        saveBtn.remove();
+        cancelBtn.remove();
+        if (editMode) btn.style.display = "inline-block";
+      });
+    });
+  });
+
+  // =========================================
+//         PASSWORD EDIT (MODAL)
+// =========================================
+
+const passwordBtn = document.querySelector(".change-password-edit");
+const passwordModal = document.getElementById("passwordModal");
+
+const newPassInput = document.getElementById("newPassInput");
+const confirmPassInput = document.getElementById("confirmPassInput");
+
+const cancelPassBtn = document.getElementById("cancelPassBtn");
+const savePassBtn = document.getElementById("savePassBtn");
+
+if (passwordBtn) {
+  passwordBtn.addEventListener("click", () => {
+    passwordModal.style.display = "flex";
+  });
+}
+
+// CLOSE MODAL
+cancelPassBtn.addEventListener("click", () => {
+  newPassInput.value = "";
+  confirmPassInput.value = "";
+  passwordModal.style.display = "none";
 });
 
-// Helper to convert timestamps
-function formatAccountDate(date) {
-  if (!date) return "—";
-  return new Date(date).toLocaleDateString();
-}
+// SAVE PASSWORD
+savePassBtn.addEventListener("click", () => {
+  const newPass = newPassInput.value.trim();
+  const confirmPass = confirmPassInput.value.trim();
+
+  if (newPass === "" || confirmPass === "") {
+    alert("Please fill out both fields.");
+    return;
+  }
+
+  if (newPass !== confirmPass) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  // Close modal
+  passwordModal.style.display = "none";
+
+  // Clear fields
+  newPassInput.value = "";
+  confirmPassInput.value = "";
+
+  alert("Password updated! (Backend integration pending)");
+});
+
+});

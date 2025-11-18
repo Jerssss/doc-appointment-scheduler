@@ -48,7 +48,6 @@
       <aside class="card account-card" aria-labelledby="account-heading">
         <h3 id="account-heading" class="sr-only">Patient account information</h3>
 
-        <!-- Top: avatar + primary info + edit -->
         <div class="account-top">
           <div class="avatar-wrap">
             <img src="images/patient.jpg" alt="Patient photo" class="avatar">
@@ -63,79 +62,93 @@
           </div>
         </div>
 
-        <!-- ===== CONTACT (Email + Phone) ===== -->
-        <div class="account-section" aria-label="Contact information">
+        <!-- ===== CONTACT ===== -->
+        <div class="account-section">
           <h5>Contact</h5>
+
           <div class="field-grid">
             <div class="field">
               <p class="label">Email</p>
-              <p class="value" id="email">juanmiguel.dc@example.com</p>
+              <p class="value editable" id="email">juanmiguel.dc@example.com</p>
+              <button class="edit-btn" data-field="email">Edit</button>
             </div>
+
             <div class="field">
               <p class="label">Phone</p>
-              <p class="value" id="phone">0912-345-6789</p>
+              <p class="value editable" id="phone">0912-345-6789</p>
+              <button class="edit-btn" data-field="phone">Edit</button>
             </div>
           </div>
         </div>
 
-        <!-- ===== PERSONAL DETAILS (DOB / Sex / Address) ===== -->
-        <div class="account-section" aria-label="Personal details">
+        <!-- ===== PERSONAL DETAILS ===== -->
+        <div class="account-section">
           <h5>Personal Details</h5>
+
           <div class="field-grid">
             <div class="field">
               <p class="label">Date of birth</p>
               <p class="value" id="dob">03/25/1991</p>
             </div>
+
             <div class="field">
               <p class="label">Sex</p>
               <p class="value" id="sex">Male</p>
             </div>
+
             <div class="field full">
               <p class="label">Address</p>
-              <p class="value" id="address">#24 Upper Session Road, Baguio City</p>
+              <p class="value editable" id="address">#24 Upper Session Road, Baguio City</p>
+              <button class="edit-btn" data-field="address">Edit</button>
             </div>
           </div>
         </div>
 
-        <!-- ===== EMERGENCY CONTACT (separated fields) ===== -->
-        <div class="account-section" aria-label="Emergency contact">
+        <!-- ===== EMERGENCY CONTACT ===== -->
+        <div class="account-section">
           <h5>Emergency Contact</h5>
+
           <div class="field-grid">
             <div class="field">
               <p class="label">Contact Name</p>
-              <p class="value" id="emergency-name">Maria L. Dela Cruz</p>
+              <p class="value editable" id="emergency-name">Maria L. Dela Cruz</p>
+              <button class="edit-btn" data-field="emergency-name">Edit</button>
             </div>
+
             <div class="field">
               <p class="label">Relationship</p>
-              <p class="value" id="emergency-relationship">Spouse</p>
+              <p class="value editable" id="emergency-relationship">Spouse</p>
+              <button class="edit-btn" data-field="emergency-relationship">Edit</button>
             </div>
           </div>
 
-          <div class="field" style="margin-top:0.6rem;">
+          <div class="field">
             <p class="label">Contact Number</p>
-            <p class="value" id="emergency-phone">0917-555-3322</p>
+            <p class="value editable" id="emergency-phone">0917-555-3322</p>
+            <button class="edit-btn" data-field="emergency-phone">Edit</button>
           </div>
         </div>
 
         <!-- ===== SECURITY ===== -->
-        <div class="account-section" aria-label="Security">
-          <h5>Security</h5>
-          <p class="label">Password</p>
-          <div class="password-row">
-            <span class="masked">••••••••</span>
-            <!-- single change password control here -->
-            <button class="btn small outlined" id="changePasswordBtn">Change password</button>
-          </div>
+<div class="account-section">
+  <h5>Security</h5>
+  <p class="label">Password</p>
 
-          <div class="meta-grid">
-            <div>
-              <p class="label">Account created</p>
-              <p class="value" id="account-created">Jan 14, 2024</p>
-            </div>
-          </div>
-        </div>
+  <div class="password-row">
+    <span class="masked">••••••••</span>
+    <!-- NEW: Change Password now behaves like an edit button -->
+    <button class="edit-btn change-password-edit" data-field="password">Change Password</button>
+  </div>
 
-        <!-- Logout button in main content (red) -->
+  <div class="meta-grid">
+    <div>
+      <p class="label">Account created</p>
+      <p class="value" id="account-created">Jan 14, 2024</p>
+    </div>
+  </div>
+</div>
+
+
         <div class="card-footer logout-footer">
           <button class="btn logout" id="logoutBtnMain">Log out</button>
         </div>
@@ -143,7 +156,27 @@
     </section>
   </main>
 
-  <!-- footer (unchanged) -->
+  <!-- =======================
+     CHANGE PASSWORD MODAL
+========================= -->
+<div id="passwordModal" class="modal">
+  <div class="modal-content">
+    <h2>Change Password</h2>
+
+    <label>New Password</label>
+    <input type="password" id="newPassInput">
+
+    <label>Confirm Password</label>
+    <input type="password" id="confirmPassInput">
+
+    <div class="modal-actions">
+      <button id="cancelPassBtn" class="cancel-btn">Cancel</button>
+      <button id="savePassBtn" class="save-btn">Save</button>
+    </div>
+  </div>
+</div>
+
+
   <footer class="site-footer">
     <div class="social-icons">
       <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
@@ -163,7 +196,6 @@
     <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
   </footer>
 
-  <!-- External script file -->
   <script src="js/frontend_js/user_patient_profile.js"></script>
 </body>
 

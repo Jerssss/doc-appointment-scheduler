@@ -97,8 +97,16 @@ document.addEventListener("DOMContentLoaded", function() {
             const data = await res.json();
 
             if (data.success) {
-                alert("Booking confirmed!");
-                window.location.href = "history.html";
+                sessionStorage.setItem("pending_payment", JSON.stringify({
+                    appointment_id: data.appointment_id,
+                    doctor_id: doctor._id?.$oid || doctor._id,
+                    doctor_name: cleanName,
+                    mode: selectedMode,
+                    fee: parseFloat(doctor.fee) || 600, // default fee if undefined
+                    time: new Date(time).toISOString()
+                }));
+                
+                window.location.href = "payment_gateway.html";
             } else {
                 alert("Booking failed: " + (data.error || "Unknown error"));
             }

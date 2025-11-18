@@ -24,26 +24,29 @@ try {
     }
 
     $personalInfo = $user['personal_info'] ?? [];
-    
+
     $out = [
         "user_id"    => (string)$user['user_id'],
         "user_name"  => $user['user_name'] ?? '',
         "user_email" => $user['user_email'] ?? '',
         "role"       => $user['role'] ?? '',
         "profile_image" => $user['profile_image'] ?? 'images/default-patient.png',
-        
+
         // Personal info
         "full_name"      => $personalInfo['full_name'] ?? '',
         "date_of_birth"  => $personalInfo['date_of_birth'] ?? '',
         "sex"            => $personalInfo['sex'] ?? '',
-        "gender"         => $personalInfo['sex'] ?? '',
         "address"        => $personalInfo['address'] ?? '',
-        
+
         // Contact info
         "phone"          => $user['contact_info']['phone'] ?? '',
-        
-        // Calculate age if DOB exists
-        "age"            => null
+
+        // Emergency contact
+        "emergency_name"         => $user['emergency_contact']['name'] ?? '',
+        "emergency_relationship" => $user['emergency_contact']['relationship'] ?? '',
+        "emergency_phone"        => $user['emergency_contact']['phone'] ?? '',
+
+        "account_created" => $user['security']['account_created'] ?? ''
     ];
 
     // Calculate age from date of birth
@@ -55,7 +58,6 @@ try {
     }
 
     echo json_encode($out);
-
 } catch (Exception $e) {
     echo json_encode(["error" => $e->getMessage()]);
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediKo | Doctor Dashboard</title>
+  <link rel="stylesheet" href="css/style_doc.css" />
+  <link rel="stylesheet" href="css/doctor_appointment_list.css" />
+  <link rel="stylesheet" href="css/consultation_history.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <header>
+    <div class="logo">
+      <span class="blue">Medi</span><span class="pink">Ko</span>
+    </div>
+
+    <nav>
+      <a class="active" href="consultation_history.html">Consultations</a>
+      <a href="doctor_appointment_list.html">My Appointments</a>
+    </nav>
+
+    <div class="icons">
+      <a href="user_doctor_profile.html" class="icon-btn notification-btn">
+        <img src="images/notification.png" alt="Notification Bell" class="notif-img">
+      </a>
+      <a href="user_doctor_profile.html" class="icon-btn profile-btn">
+        <img src="images/user.png" alt="Profile" class="profile-img">
+      </a>
+    </div>
+  </header>
+  
+  <!-- Start of Main Section. Focus on basic functionality for now -->
+   <!-- Suggestions for future improvement esp sa techno: Add sorting and searching. Add a view button to view detailed data-->
+   <section class="past-dashboard">
+    <!-- LEFT SIDE: Patient List. STATIC DATA -->
+     <div class="patients-list">
+        <h2>Past Consultations</h2>
+        <div class="patient-card">
+            <img src="images/default-patient.png" alt="Patient Picture">
+            <span>Fred Terre</span>
+        </div>
+        
+        <div class="patient-card">
+            <img src="images/default-patient.png" alt="Patient Picture">
+            <span>Den Ferrer</span>
+        </div>
+        
+        <div class="patient-card">
+            <img src="images/default-patient.png" alt="Patient Picture">
+            <span>Bernard Molina</span>
+        </div>
+        
+        <div class="patient-card">
+            <img src="images/default-patient.png" alt="Patient Picture">
+            <span>Lorraine Adame</span>
+        </div>
+        
+        <div class="patient-card">
+            <img src="images/default-patient.png" alt="Patient Picture">
+            <span>Kristy Grabanzor</span>
+        </div>
+    </div>
+    
+    <!-- RIGHT SIDE: Patient Medical Info. STATIC INFO -->
+     <div class="patient-details">
+        <h2>Consultation Details</h2>
+        <label>Description of Medical History</label>
+        <textarea readonly></textarea><label>Current Medical Conditions</label>
+        <textarea readonly></textarea>
+        <label>Consultation Notes</label>
+        <textarea readonly></textarea>
+        <label>Last appointment date</label>
+        <input type="date" disabled>
+    </div>
+
+</section>
+
+
+  <!-- footer -->
+  <footer class="site-footer">
+    <div class="social-icons">
+      <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
+      <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+      <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+      <a href="#"><img src="images/google.png" alt="Google"></a>
+      <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+    </div>
+
+    <ul class="footer-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="news.html">Book</a></li>
+      <li><a href="about.html">History</a></li>
+      <li><a href="team.html">About Us</a></li>
+    </ul>
+
+    <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/frontend_js/consultation_history.js"></script>
+</body>
+</html>

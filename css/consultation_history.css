@@ -1,0 +1,105 @@
+.past-dashboard {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 80px;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 20px;
+}
+
+/* LEFT SIDE LIST */
+.patients-list {
+  width: 280px;
+  background: #ffeef3;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.patients-list h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  color: #444;
+}
+
+.patient-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fbd7e3;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s;
+}
+
+.patient-card:hover {
+  background: #f7c8d8;
+  transform: translateX(4px);
+}
+
+.patient-card img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.patient-card span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.patient-card.active {
+  background: #f4b8cb !important;
+  transform: translateX(6px);
+  border-left: 4px solid #d65087;
+}
+
+/* RIGHT SIDE INFO PANEL */
+.patient-details {
+  flex: 1;
+  background: #6c4b72;
+  padding: 30px;
+  border-radius: 18px;
+  color: white;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.patient-details h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.patient-details label {
+  display: block;
+  margin-top: 15px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.patient-details textarea {
+  width: 100%;
+  height: 60px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: none;
+  padding: 12px;
+  resize: none;
+  font-family: inherit;
+}
+
+.patient-details input[type="date"] {
+  width: 50%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+

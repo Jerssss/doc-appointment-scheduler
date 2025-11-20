@@ -1,5 +1,8 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
+use MongoDB\Client;
+use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\UTCDateTime;
 header('Content-Type: application/json');
 
 // Get JSON input
@@ -17,12 +20,12 @@ if (!$doctorId || !$patientId || !$appointmentId || $rating < 1 || $rating > 5) 
 }
 
 try {
-    $client = new MongoDB\Client("mongodb://localhost:27017/");
+    $client = new Client("mongodb://localhost:27017/");
     $usersCol = $client->MediKo->users;
     $ratingsCol = $client->MediKo->doctor_ratings; // collection for one-time ratings per appointment
 
     // Convert doctor_id string to ObjectId
-    $doctorObjectId = new MongoDB\BSON\ObjectId($doctorId);
+    $doctorObjectId = new ObjectId($doctorId);
 
     // Find doctor
     $doctor = $usersCol->findOne(['_id' => $doctorObjectId]);
@@ -56,7 +59,7 @@ try {
         'patient_id' => $patientId,
         'appointment_id' => $appointmentId,
         'rating' => $rating,
-        'created_at' => new MongoDB\BSON\UTCDateTime()
+        'created_at' => new UTCDateTime()
     ]);
 
     // Update doctor directly (no array, numeric fields)

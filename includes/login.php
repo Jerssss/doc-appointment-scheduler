@@ -38,10 +38,18 @@ if (!$user) {
     exit;
 }
 
-// Plaintext password check
-if (!isset($user['password']) || $password !== $user['password']) {
-    echo json_encode(["success" => false, "message" => "Incorrect password"]);
-    exit;
+// Prefer hashed verification if available
+if (!empty($user['password_hash'])) {
+    if (!password_verify($password, (string)$user['password_hash'])) {
+        echo json_encode(["success" => false, "message" => "Incorrect password"]);
+        exit;
+    }
+} else {
+    // Fallback to legacy plaintext check
+    if (!isset($user['password']) || $password !== $user['password']) {
+        echo json_encode(["success" => false, "message" => "Incorrect password"]);
+        exit;
+    }
 }
 
 echo json_encode([

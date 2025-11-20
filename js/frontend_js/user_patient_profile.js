@@ -113,7 +113,44 @@ document.addEventListener("DOMContentLoaded", async () => {
         cancelBtn.remove();
         if (editMode) btn.style.display = "inline-block";
 
-        // TODO backend update
+        // update
+        try {
+          const payload = { user_id: user.user_id };
+          if (fieldId === "email") payload.email = newValue;
+          if (fieldId === "phone") payload.phone = newValue;
+          if (fieldId === "address") payload.address = newValue;
+          if (fieldId === "emergency-name") payload.emergency_name = newValue;
+          if (fieldId === "emergency-relationship") payload.emergency_relationship = newValue;
+          if (fieldId === "emergency-phone") payload.emergency_phone = newValue;
+
+          const res = await fetch(
+            "http://localhost/9468_it313-teamarc_mediko/includes/update_patient_profile.php",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            }
+          );
+
+          const result = await res.json();
+          if (!result.success) {
+            // revert UI on failure
+            valueEl.textContent = currentValue;
+            alert(result.msg || "Failed to update profile.");
+            return;
+          }
+
+          // keep session in sync if email changed
+          if (fieldId === "email") {
+            const current = JSON.parse(sessionStorage.getItem("user") || "{}");
+            current.email = newValue;
+            sessionStorage.setItem("user", JSON.stringify(current));
+          }
+        } catch (e) {
+          valueEl.textContent = currentValue;
+          console.error(e);
+          alert("Error updating profile. Please try again.");
+        }
       });
 
       // CANCEL
@@ -127,7 +164,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // =========================================
+// =========================================
 //         PASSWORD EDIT (MODAL)
 // =========================================
 
@@ -154,7 +191,7 @@ cancelPassBtn.addEventListener("click", () => {
 });
 
 // SAVE PASSWORD
-savePassBtn.addEventListener("click", () => {
+savePassBtn.addEventListener("click", async () => {
   const newPass = newPassInput.value.trim();
   const confirmPass = confirmPassInput.value.trim();
 
@@ -168,14 +205,34 @@ savePassBtn.addEventListener("click", () => {
     return;
   }
 
-  // Close modal
-  passwordModal.style.display = "none";
+  try {
+    const storedUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+    const res = await fetch(
+      "http://localhost/9468_it313-teamarc_mediko/includes/change_password.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: storedUser.user_id,
+          new_password: newPass
+        })
+      }
+    );
 
-  // Clear fields
-  newPassInput.value = "";
-  confirmPassInput.value = "";
+    const result = await res.json();
+    if (!result.success) {
+      alert(result.msg || "Failed to change password.");
+      return;
+    }
 
-  alert("Password updated! (Backend integration pending)");
+    alert("Password updated successfully.");
+    passwordModal.style.display = "none";
+    newPassInput.value = "";
+    confirmPassInput.value = "";
+  } catch (err) {
+    console.error(err);
+    alert("Error changing password. Please try again.");
+  }
 });
 
 });

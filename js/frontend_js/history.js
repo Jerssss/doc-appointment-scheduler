@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const userId = user.user_id;
 
     loadHistory(userId);
+
+    initializeRatingModal(); // <-- Initialize modal listeners
 });
 
 async function loadHistory(userId) {
@@ -91,7 +93,7 @@ function renderPast(history) {
                 <p class="schedule">${formatDate(item.time)}</p>
             </div>
 
-            <button class="rate-btn" onclick="openRatingModal('${item.appointment_id}')">
+            <button class="rate-btn" data-appointment="${item.appointment_id}">
                 RATE
             </button>
         `;
@@ -113,7 +115,6 @@ function formatDate(dateString) {
 
     const date = new Date(dateString);
 
-    // Example: August 10, 2025, 10:00 AM
     return date.toLocaleString("en-US", {
         year: "numeric",
         month: "long",
@@ -123,8 +124,76 @@ function formatDate(dateString) {
     });
 }
 
-/* ========== RATE BUTTON HANDLER ========== */
-function openRatingModal(appointmentId) {
-    //TODO: Implement rating modal
-    alert("Rate feature coming soon. Appointment ID: " + appointmentId);
+/* ============================================================
+   RATING MODAL (FULL FUNCTIONALITY)
+   ============================================================ */
+
+let selectedRating = 0;
+let selectedAppointmentId = null;
+
+function initializeRatingModal() {
+    const modal = document.getElementById("rateModal");
+    const closeBtn = document.querySelector(".close-modal");
+    const stars = document.querySelectorAll(".star");
+    const submitBtn = document.querySelector(".submit-rating");
+    const feedbackText = document.getElementById("feedbackText");
+
+    // OPEN MODAL (delegated listener)
+    document.addEventListener("click", function(evt) {
+        if (evt.target.classList.contains("rate-btn")) {
+            selectedAppointmentId = evt.target.dataset.appointment;
+            selectedRating = 0;
+
+            stars.forEach(s => s.classList.remove("active"));
+            feedbackText.value = "";
+
+            modal.style.display = "flex";
+        }
+    });
+
+    // CLOSE MODAL
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // CLICK OUTSIDE TO CLOSE
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // STAR LOGIC
+    stars.forEach(star => {
+        star.addEventListener("click", () => {
+            selectedRating = parseInt(star.dataset.star);
+
+            stars.forEach(s => {
+                s.classList.remove("active");
+                if (parseInt(s.dataset.star) <= selectedRating) {
+                    s.classList.add("active");
+                }
+            });
+        });
+    });
+
+    // SUBMIT RATING
+    submitBtn.addEventListener("click", () => {
+        if (selectedRating === 0) {
+            // Small feedback (no alert)
+            stars.forEach(s => {
+                s.style.transform = "scale(1.15)";
+                setTimeout(() => s.style.transform = "scale(1)", 150);
+            });
+            return;
+        }
+
+        console.log("Rating submitted:", {
+            appointment_id: selectedAppointmentId,
+            stars: selectedRating,
+            feedback: feedbackText.value
+        });
+
+        modal.style.display = "none";
+    });
 }

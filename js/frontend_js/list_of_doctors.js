@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     try {
-      const res = await fetch("http://localhost/9468_it313-teamarc_mediko/includes/get_doctors.php?" + params.toString());
+      const res = await fetch("http://localhost:8888/9468_it313-teamarc_mediko/includes/get_doctors.php?" + params.toString());
       const doctors = await res.json();
 
       renderDoctors(doctors);

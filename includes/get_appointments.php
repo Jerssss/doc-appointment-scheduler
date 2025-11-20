@@ -7,11 +7,36 @@ try {
     $appointmentsCollection = $client->MediKo->appointments;
     $usersCollection = $client->MediKo->users;
 
+    $doctorId = $_GET['doctor_id'] ?? null;
+
+        if (!$doctorId) {
+            echo json_encode([]);
+            exit;
+        }
+
+    $doctorObjectId = new MongoDB\BSON\ObjectId($doctorId);
+
+
     $pipeline = [
+        [
+            '$match' => [
+                '$or' => [
+                    [ 'doctor_id' => $doctorObjectId ],       // ObjectId
+                    [ 'doctor_id' => $doctorId ]             // string fallback
+                ]
+            ]
+        ],
+        [
+            '$addFields' => [
+                'patient_id_obj' => [
+                    '$toObjectId' => '$patient_id'
+                ]
+            ]
+        ],
         [
             '$lookup' => [
                 'from' => 'users',
-                'localField' => 'patient_id',
+                'localField' => 'patient_id_obj',
                 'foreignField' => '_id',
                 'as' => 'patient_info'
             ]

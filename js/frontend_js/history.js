@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const userId = user.user_id;
 
     loadHistory(userId);
-
-    initializeRatingModal();
 });
 
+/* ============================================================
+// LOAD HISTORY
+============================================================ */
 async function loadHistory(userId) {
     try {
         const res = await fetch(
@@ -25,21 +26,22 @@ async function loadHistory(userId) {
 
         renderUpcoming(data);
         renderPast(data);
+        initializeRatingModal();
 
     } catch (err) {
         console.error("Error loading history:", err);
     }
 }
 
-/* ========== UPCOMING ========== */
+/* ============================================================
+// UPCOMING
+============================================================ */
 function renderUpcoming(history) {
     const container = document.getElementById("upcoming-cards");
     container.innerHTML = "";
 
     const upcoming = history.filter(item =>
-        item.status === "pending" ||
-        item.status === "approved" ||
-        item.status === "scheduled"
+        item.status === "pending" || item.status === "approved" || item.status === "scheduled"
     );
 
     if (!upcoming.length) {
@@ -53,21 +55,19 @@ function renderUpcoming(history) {
 
         card.innerHTML = `
             <img src="${item.doctor_img}" alt="Doctor Image">
-
             <div class="card-info">
                 <h3>${formatConsultationTitle(item)}</h3>
-
                 <p class="schedule">${formatDate(item.time)}</p>
-
                 <p class="note">Please wait for further instructions. Messages will be sent via inbox.</p>
             </div>
         `;
-
         container.appendChild(card);
     });
 }
 
-/* ========== PAST ========== */
+/* ============================================================
+// PAST
+============================================================ */
 function renderPast(history) {
     const container = document.getElementById("past-cards");
     container.innerHTML = "";
@@ -87,34 +87,32 @@ function renderPast(history) {
 
         card.innerHTML = `
             <img src="${item.doctor_img}" alt="Doctor Image">
-
             <div class="card-info">
                 <h3>${formatConsultationTitle(item)}</h3>
                 <p class="schedule">${formatDate(item.time)}</p>
             </div>
 
-            <button class="rate-btn" data-appointment="${item.appointment_id}">
-                RATE
-            </button>
-        `;
-
+            <button class="rate-btn" 
+                data-doctor="${item.doctor_id}">
+            RATE
+            </button>`;
         container.appendChild(card);
     });
 }
 
-/* ========== HELPERS ========== */
+/* ============================================================
+// HELPERS
+============================================================ */
 function formatConsultationTitle(item) {
-    if (item.mode.toLowerCase() === "virtual") {
-        return `Virtual Consultation with ${item.doctor_name}`;
-    }
-    return `Face-to-face Checkup with ${item.doctor_name}`;
+    return item.mode.toLowerCase() === "virtual" 
+        ? `Virtual Consultation with ${item.doctor_name}`
+        : `Face-to-face Checkup with ${item.doctor_name}`;
 }
 
 function formatDate(dateString) {
     if (!dateString) return "Unknown date";
 
     const date = new Date(dateString);
-
     return date.toLocaleString("en-US", {
         year: "numeric",
         month: "long",
@@ -125,72 +123,98 @@ function formatDate(dateString) {
 }
 
 /* ============================================================
-   RATING MODAL (FULL FUNCTIONALITY)
-   ============================================================ */
-
+// RATING MODAL
+============================================================ */
 let selectedRating = 0;
-let selectedAppointmentId = null;
+let selectedDoctorId = null;
 
 function initializeRatingModal() {
     const modal = document.getElementById("rateModal");
     const closeBtn = document.querySelector(".close-modal");
-    const stars = document.querySelectorAll(".star");
     const submitBtn = document.querySelector(".submit-rating");
+    const stars = document.querySelectorAll(".star");
 
-    // OPEN MODAL (delegated listener)
-    document.addEventListener("click", function(evt) {
-        if (evt.target.classList.contains("rate-btn")) {
-            selectedAppointmentId = evt.target.dataset.appointment;
+    // OPEN MODAL
+    document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("rate-btn")) {
+            selectedDoctorId = e.target.dataset.doctor;
             selectedRating = 0;
-
-            stars.forEach(s => s.classList.remove("active"));
-
+            stars.forEach(s => s.classList.remove("active", "hovered"));
             modal.style.display = "flex";
         }
     });
 
     // CLOSE MODAL
-    closeBtn.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
-
-    // CLICK OUTSIDE TO CLOSE
+    closeBtn.addEventListener("click", () => modal.style.display = "none");
     window.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.style.display = "none";
-        }
+        if (e.target === modal) modal.style.display = "none";
     });
 
     // STAR LOGIC
     stars.forEach(star => {
-        star.addEventListener("click", () => {
-            selectedRating = parseInt(star.dataset.star);
-
+        star.addEventListener("mouseover", () => {
+            const hoverVal = parseInt(star.dataset.value);
             stars.forEach(s => {
+                const val = parseInt(s.dataset.value);
+                s.classList.toggle("hovered", val <= hoverVal);
                 s.classList.remove("active");
-                if (parseInt(s.dataset.star) <= selectedRating) {
-                    s.classList.add("active");
-                }
             });
+        });
+
+        star.addEventListener("mouseout", () => {
+            stars.forEach(s => s.classList.remove("hovered"));
+            highlightStars(selectedRating);
+        });
+
+        star.addEventListener("click", () => {
+            selectedRating = parseInt(star.dataset.value);
+            highlightStars(selectedRating);
         });
     });
 
     // SUBMIT RATING
-    submitBtn.addEventListener("click", () => {
-        if (selectedRating === 0) {
-            // Small feedback (no alert)
-            stars.forEach(s => {
-                s.style.transform = "scale(1.15)";
-                setTimeout(() => s.style.transform = "scale(1)", 150);
-            });
+    submitBtn.addEventListener("click", async () => {
+        if (selectedRating === 0) return;
+
+        if (!selectedDoctorId) {
+            console.error("No doctor selected for rating!");
             return;
         }
 
-        console.log("Rating submitted:", {
-            appointment_id: selectedAppointmentId,
-            stars: selectedRating,
-        });
+        try {
+            const res = await fetch(
+                "http://localhost/9468_it313-teamarc_mediko/includes/rate_doctor.php",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        doctor_id: selectedDoctorId,
+                        rating: selectedRating
+                    })
+                }
+            );
 
-        modal.style.display = "none";
+            const result = await res.json();
+            if (result.success) {
+                alert("Rating submitted!");
+                modal.style.display = "none";
+                location.reload();
+            } else {
+                alert("Failed: " + (result.msg || "Unknown error"));
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    });
+}
+
+/* ============================================================
+// STAR HIGHLIGHTING
+============================================================ */
+function highlightStars(count) {
+    const stars = document.querySelectorAll(".star");
+    stars.forEach(star => {
+        const value = parseInt(star.dataset.value);
+        star.classList.toggle("active", value <= count);
     });
 }

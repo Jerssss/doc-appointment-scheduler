@@ -68,6 +68,7 @@ try {
 
         $result[] = [
             'appointment_id' => (string)$apptId,
+            'doctor_id' => isset($doctor['_id']) ? (string)$doctor['_id'] : null,
             'doctor_name' => $doctorName,
             'doctor_img' => $doctorImg,
             'doctor_rating' => $avgRating,

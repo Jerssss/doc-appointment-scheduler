@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadHistory(userId);
 
-    initializeRatingModal(); // <-- Initialize modal listeners
+    initializeRatingModal();
 });
 
 async function loadHistory(userId) {
@@ -136,7 +136,6 @@ function initializeRatingModal() {
     const closeBtn = document.querySelector(".close-modal");
     const stars = document.querySelectorAll(".star");
     const submitBtn = document.querySelector(".submit-rating");
-    const feedbackText = document.getElementById("feedbackText");
 
     // OPEN MODAL (delegated listener)
     document.addEventListener("click", function(evt) {
@@ -145,7 +144,6 @@ function initializeRatingModal() {
             selectedRating = 0;
 
             stars.forEach(s => s.classList.remove("active"));
-            feedbackText.value = "";
 
             modal.style.display = "flex";
         }
@@ -191,7 +189,6 @@ function initializeRatingModal() {
         console.log("Rating submitted:", {
             appointment_id: selectedAppointmentId,
             stars: selectedRating,
-            feedback: feedbackText.value
         });
 
         modal.style.display = "none";

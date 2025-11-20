@@ -150,6 +150,19 @@ body {
   background-color: #3a2063;
 }
 
+/* Rated (disabled) state */
+.rate-btn.rated,
+.rate-btn:disabled {
+  background-color: #d1d1d1;
+  color: #555;
+  cursor: default;
+}
+
+.rate-btn.rated:hover,
+.rate-btn:disabled:hover {
+  background-color: #d1d1d1;
+}
+
 /* === General Layout Balance === */
 html, body {
   height: 100%;

@@ -7,6 +7,7 @@ try {
     $appointmentsCol = $client->MediKo->appointments;
     $consultationsCol = $client->MediKo->consultation;
     $usersCol = $client->MediKo->users;
+    $ratingsCol = $client->MediKo->doctor_ratings; // new collection for per-appointment ratings
 
     // GET user ID from frontend (sessionStorage)
     $userId = $_GET['user_id'] ?? null;
@@ -78,7 +79,12 @@ try {
             'notes' => $appt['notes'] ?? '',
             'diagnosis' => $diagnosis,
             'prescription' => $prescription,
-            'follow_up' => $followUp
+            'follow_up' => $followUp,
+            // Flag if this patient already rated this appointment
+            'has_rated' => ($ratingsCol->findOne([
+                'appointment_id' => (string)$apptId,
+                'patient_id' => $userId
+            ]) !== null)
         ];
     }
 

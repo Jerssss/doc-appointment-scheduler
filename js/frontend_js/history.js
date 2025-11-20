@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const user = JSON.parse(stored);
     const userId = user.user_id;
 
+    window.currentPatientId = userId; // expose for rating submission
     loadHistory(userId);
 });
 
@@ -85,16 +86,21 @@ function renderPast(history) {
         const card = document.createElement("div");
         card.classList.add("card");
 
+        const alreadyRated = !!item.has_rated;
+        const btnLabel = alreadyRated ? "RATED" : "RATE";
+        const btnClasses = alreadyRated ? "rate-btn rated" : "rate-btn";
+        const disabledAttr = alreadyRated ? "disabled" : "";
+
         card.innerHTML = `
             <img src="${item.doctor_img}" alt="Doctor Image">
             <div class="card-info">
                 <h3>${formatConsultationTitle(item)}</h3>
                 <p class="schedule">${formatDate(item.time)}</p>
             </div>
-
-            <button class="rate-btn" 
-                data-doctor="${item.doctor_id}">
-            RATE
+            <button class="${btnClasses}" ${disabledAttr}
+                data-doctor="${item.doctor_id}"
+                data-appointment="${item.appointment_id}">
+                ${btnLabel}
             </button>`;
         container.appendChild(card);
     });
@@ -127,6 +133,7 @@ function formatDate(dateString) {
 ============================================================ */
 let selectedRating = 0;
 let selectedDoctorId = null;
+let selectedAppointmentId = null;
 
 function initializeRatingModal() {
     const modal = document.getElementById("rateModal");
@@ -136,8 +143,9 @@ function initializeRatingModal() {
 
     // OPEN MODAL
     document.addEventListener("click", (e) => {
-        if (e.target.classList.contains("rate-btn")) {
+        if (e.target.classList.contains("rate-btn") && !e.target.classList.contains("rated")) {
             selectedDoctorId = e.target.dataset.doctor;
+            selectedAppointmentId = e.target.dataset.appointment;
             selectedRating = 0;
             stars.forEach(s => s.classList.remove("active", "hovered"));
             modal.style.display = "flex";
@@ -176,7 +184,7 @@ function initializeRatingModal() {
     submitBtn.addEventListener("click", async () => {
         if (selectedRating === 0) return;
 
-        if (!selectedDoctorId) {
+        if (!selectedDoctorId || !selectedAppointmentId) {
             console.error("No doctor selected for rating!");
             return;
         }
@@ -189,6 +197,8 @@ function initializeRatingModal() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         doctor_id: selectedDoctorId,
+                        appointment_id: selectedAppointmentId,
+                        patient_id: window.currentPatientId,
                         rating: selectedRating
                     })
                 }
@@ -198,7 +208,13 @@ function initializeRatingModal() {
             if (result.success) {
                 alert("Rating submitted!");
                 modal.style.display = "none";
-                location.reload();
+                // Update the button UI without full reload
+                const btn = document.querySelector(`.rate-btn[data-doctor='${selectedDoctorId}'][data-appointment='${selectedAppointmentId}']`);
+                if (btn) {
+                    btn.textContent = "RATED";
+                    btn.classList.add("rated");
+                    btn.disabled = true;
+                }
             } else {
                 alert("Failed: " + (result.msg || "Unknown error"));
             }

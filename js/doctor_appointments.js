@@ -13,8 +13,7 @@ if (!doctor || doctor.role !== 'doctor') {
     window.location.href = "login.html";
 }
 
-const doctorId = doctor.user_id; // <-- ADD THIS
-
+const doctorId = doctor.user_id;  
 
   // NEW: Patient Info button
   const patientInfoBtn = document.querySelector(".patient-info-btn");

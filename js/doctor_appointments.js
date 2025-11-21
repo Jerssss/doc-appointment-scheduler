@@ -9,8 +9,75 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!doctor || doctor.role !== 'doctor') {
     alert("Please log in as a doctor.");
     window.location.href = "login.html";
+    return;
   }
-  const doctorId = doctor.user_id;
+
+  // Check role (handle both new login format and updated format from loadDoctorInfo)
+  const userRole = doctor.role || doctor.user_role;
+  if (userRole !== 'doctor') {
+    alert("Please log in as a doctor.");
+    window.location.href = "login.html";
+    return;
+  }
+  
+  
+  // Convert the user ID object into a string
+  const doctorId = typeof doctor.user_id === 'object' && doctor.user_id.$oid
+  ? doctor.user_id.$oid
+  : doctor.user_id;
+
+  // Debugging  
+  console.log('Doctor ID:', doctorId);
+  console.log('Doctor role:', userRole);
+
+  // Load doctor info from backend
+  async function loadDoctorInfo() {
+    try {
+      const res = await fetch(`includes/get_doctor_by_id.php?user_id=${encodeURIComponent(doctorId)}`);
+      const data = await res.json();
+      
+      console.log('Doctor data received:', data);
+
+      if (data.error) {
+        console.error('Error loading doctor info:', data.error);
+        alert("Failed to load doctor info: " + data.error);
+        return null;
+      }
+
+      // Update session with full doctor data
+      sessionStorage.setItem("user", JSON.stringify(data));
+
+      return data;
+    } catch (error) {
+      console.error('Error fetching doctor info:', error);
+      alert("Failed to load doctor information.");
+      return null;
+    }
+  }
+
+  // Greet doctor
+  loadDoctorInfo().then(fullDoctor => {
+    const doctorGreeting = document.getElementById("doctorGreeting");
+    
+    if (!fullDoctor || fullDoctor.error) {
+      console.error("Failed to load doctor info:", fullDoctor?.error);
+      // Use existing session data as fallback
+      if (doctorGreeting && doctor.username) {
+        doctorGreeting.textContent = `Hello, ${doctor.username}`;
+      }
+      return;
+    }
+
+    if (doctorGreeting) {
+      const displayName = fullDoctor.full_name || fullDoctor.user_name || doctor.username || "Doctor";
+      doctorGreeting.textContent = `Hello, ${displayName}`;
+      console.log('Greeting set to:', displayName);
+    } else {
+      console.warn('doctorGreeting element not found in DOM');
+    }
+  });
+
+
 
   // Patient Info button
   const patientInfoBtn = document.querySelector(".patient-info-btn");

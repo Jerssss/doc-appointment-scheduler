@@ -1,61 +1,69 @@
-// user_doctor_profile.js
-// Doctor profile behaviors (kept minimal — same placeholders as patient view)
+document.addEventListener("DOMContentLoaded", async () => {
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Example JSON you provided (kept here as a reference)
-  // const doctor = {
-  //   user_id: "675b01a88b4a0f4a3c91e70g",
-  //   user_name: "dr_smith",
-  //   user_email: "dr.smith@example.com",
-  //   role: "doctor",
-  //   name: "Dr. John Smith",
-  //   profile_image: "images/default-doctor.png",
-  //   specialization: "Cardiology",
-  //   hospital_name: "Baguio General Hospital",
-  //   hospital_phone: "+123 456 7890",
-  //   hospital_address: "Gov. Pack Rd, Baguio City",
-  //   clinic_hours: "08:00 AM - 08:00 PM",
-  //   fee: "600.00",
-  //   languages: "English, Tagalog",
-  //   rating: "4.8",
-  //   reviews: "96",
-  //   services: "Online Consultation or Home Checkup"
-  // };
+  const storedUser = sessionStorage.getItem("user");
+  if (!storedUser) {
+    alert("Please log in first.");
+    window.location.href = "login.html";
+    return;
+  }
 
-  // If/when you fetch doctor data from the server, uncomment & use the snippet below:
-  /*
-  document.getElementById('profileImage').src = doctor.profile_image;
-  document.getElementById('doctorName').textContent = doctor.name;
-  document.getElementById('userId').textContent = doctor.user_id;
-  document.getElementById('role').textContent = doctor.role.charAt(0).toUpperCase() + doctor.role.slice(1);
-  document.getElementById('email').textContent = doctor.user_email;
-  document.getElementById('phone').textContent = doctor.hospital_phone || ''; // show hospital phone as contact
-  document.getElementById('specialization').textContent = doctor.specialization;
-  document.getElementById('fee').textContent = `₱${parseFloat(doctor.fee).toFixed(2)}`;
-  document.getElementById('services').textContent = doctor.services;
-  document.getElementById('hospitalName').textContent = doctor.hospital_name;
-  document.getElementById('hospitalPhone').textContent = doctor.hospital_phone;
-  document.getElementById('hospitalAddress').textContent = doctor.hospital_address;
-  document.getElementById('clinicHours').textContent = doctor.clinic_hours;
-  document.getElementById('languages').textContent = doctor.languages;
-  document.getElementById('rating').textContent = doctor.rating;
-  document.getElementById('reviews').textContent = doctor.reviews;
-  document.getElementById('username').textContent = doctor.user_name;
-  */
+  const user = JSON.parse(storedUser);
 
-  // Logout action (replace with real auth)
-  document.getElementById('logoutBtnMain')?.addEventListener('click', () => {
-    if (confirm('Are you sure you want to log out?')) {
-      // clear auth tokens here if present
-      window.location.href = 'index.html';
+  if (!user.email) {
+    alert("Email not found in session. Please log in again.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost/9468_it313-teamarc_mediko/includes/doctor_profile_data.php?email=${encodeURIComponent(user.email)}`);
+    const data = await response.json();
+
+    if (!data.success) {
+      alert(data.error || "Failed to load profile.");
+      console.error(data.error);
+      return;
     }
+
+    const doctor = data.doctor;
+    const info = doctor.personal_info || {};
+
+
+    document.getElementById("profileImage").src = doctor.profile_image || "images/default-doctor.png";
+    document.getElementById("doctorName").textContent = info.full_name || "—";
+    document.getElementById("email").textContent = doctor.user_email || "—";
+    document.getElementById("phone").textContent = doctor.contact_info?.phone || "—";
+
+    document.getElementById("specialization").textContent = info.specialization || "—";
+    document.getElementById("fee").textContent = info.fee ? `₱${parseFloat(info.fee).toFixed(2)}` : "—";
+    document.getElementById("services").textContent = info.services || "—";
+
+    document.getElementById("hospitalName").textContent = info.hospital_name || "—";
+    document.getElementById("hospitalPhone").textContent = info.hospital_phone || "—";
+    document.getElementById("hospitalAddress").textContent = info.hospital_address || "—";
+
+    document.getElementById("clinicHours").textContent = info.clinic_hours || "—";
+    document.getElementById("languages").textContent = info.languages || "—";
+
+    document.getElementById("rating").textContent = info.rating || "—";
+    document.getElementById("reviews").textContent = info.reviews || "—";
+
+  } catch (err) {
+    console.error("Profile load error:", err);
+    alert("Error loading profile. Please try again.");
+  }
+
+  document.getElementById("logoutBtnMain")?.addEventListener("click", () => {
+    sessionStorage.removeItem("user");
+    window.location.href = "login.html";
   });
 
-  // Edit / Change password placeholders
-  document.getElementById('editProfileBtn')?.addEventListener('click', () => {
-    alert('Open Edit Profile UI for doctor (not implemented).');
+  document.getElementById("editProfileBtn")?.addEventListener("click", () => {
+    alert("Edit Profile UI not implemented yet.");
   });
-  document.getElementById('changePasswordBtn')?.addEventListener('click', () => {
-    alert('Open Change Password UI (not implemented).');
+
+  document.getElementById("changePasswordBtn")?.addEventListener("click", () => {
+    alert("Change Password UI not implemented yet.");
   });
+
 });

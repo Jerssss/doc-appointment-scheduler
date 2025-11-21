@@ -36,6 +36,13 @@ try {
             ]
         ],
 
+        [
+    '$match' => [
+        'doctor_id' => $doctorObjectId,
+        'status' => [ '$ne' => 'declined' ]  // <--- exclude declined
+    ]
+],
+
 
         // Ensure patient_id is an ObjectId for proper lookup
         [

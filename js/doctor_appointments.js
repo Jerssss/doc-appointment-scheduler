@@ -4,18 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const vitalsContainer = document.querySelector(".vitals");
   const searchInput = document.getElementById("searchInput");
 
-
-  // DOCTOR SESSION CHECK 
-const doctor = JSON.parse(sessionStorage.getItem('user'));
-
-if (!doctor || doctor.role !== 'doctor') {
+  // DOCTOR SESSION CHECK
+  const doctor = JSON.parse(sessionStorage.getItem('user'));
+  if (!doctor || doctor.role !== 'doctor') {
     alert("Please log in as a doctor.");
     window.location.href = "login.html";
-}
+  }
+  const doctorId = doctor.user_id;
 
-const doctorId = doctor.user_id;  
-
-  // NEW: Patient Info button
+  // Patient Info button
   const patientInfoBtn = document.querySelector(".patient-info-btn");
 
   const escapeHtml = (str) => {
@@ -28,7 +25,6 @@ const doctorId = doctor.user_id;
       .replace(/'/g, "&#039;");
   };
 
-  // get selected patient id from active element
   const getSelectedPatientIdFromDOM = () => {
     const active = appointmentList.querySelector(".appointment-item.active");
     if (!active) return null;
@@ -38,7 +34,6 @@ const doctorId = doctor.user_id;
   const loadAppointments = async () => {
     try {
       const res = await fetch("includes/get_appointments.php?doctor_id=" + encodeURIComponent(doctorId));
-
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const appointments = await res.json();
 
@@ -50,12 +45,15 @@ const doctorId = doctor.user_id;
       appointmentList.innerHTML = "";
 
       appointments.forEach((appt, index) => {
+        // Normalize IDs to strings
+        if (appt._id?.$oid) appt._id = appt._id.$oid;
+        if (appt.patient_id?.$oid) appt.patient_id = appt.patient_id.$oid;
+        if (appt.doctor_id?.$oid) appt.doctor_id = appt.doctor_id.$oid;
+
         const item = document.createElement("div");
         item.classList.add("appointment-item");
 
-        // store patient ID
-        const pid = appt.patient_id;
-        if (pid) item.dataset.patientId = pid;
+        if (appt.patient_id) item.dataset.patientId = appt.patient_id;
 
         if (index === 0) item.classList.add("active");
 
@@ -83,18 +81,18 @@ const doctorId = doctor.user_id;
         item.addEventListener("click", () => {
           document.querySelectorAll(".appointment-item").forEach(i => i.classList.remove("active"));
           item.classList.add("active");
-
-          if (pid) localStorage.setItem("selectedPatientId", pid);
-
+          if (appt.patient_id) localStorage.setItem("selectedPatientId", appt.patient_id);
           loadPatientInfo(appt);
         });
 
         appointmentList.appendChild(item);
       });
 
+      // auto-click first appointment
       const firstItem = appointmentList.querySelector(".appointment-item");
       if (firstItem) firstItem.click();
 
+      // search functionality
       if (searchInput) {
         searchInput.addEventListener("input", () => {
           const q = searchInput.value.trim().toLowerCase();
@@ -147,123 +145,114 @@ const doctorId = doctor.user_id;
   if (patientInfoBtn) {
     patientInfoBtn.addEventListener("click", () => {
       const patientId = getSelectedPatientIdFromDOM() || localStorage.getItem("selectedPatientId");
-
-      if (!patientId) {
-        alert("No patient selected.");
-        return;
-      }
-
+      if (!patientId) { alert("No patient selected."); return; }
       window.location.href = `patient_info.html?id=${encodeURIComponent(patientId)}`;
     });
   }
 
-  // DECLINE APPOINTMENT FUNCTIONALITY
+  // DECLINE APPOINTMENT
   document.querySelector(".decline-btn").addEventListener("click", async () => {
-
-      const activeItem = document.querySelector(".appointment-item.active");
-      if (!activeItem) {
-          alert("No appointment selected to decline.");
-          return;
-      }
-
-      const appt = activeItem._appt;
-      if (!appt || !appt._id) {
-          alert("Cannot decline: Missing appointment ID.");
-          return;
-      }
-
-      if (!confirm("Are you sure you want to decline this appointment?")) return;
-
-      try {
-          const res = await fetch("includes/decline_appointment.php", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                  appointment_id: appt._id   // THIS is the only field we need
-              })
-          });
-
-          const data = await res.json();
-
-          if (!data.success) {
-              alert(data.error || "Failed to decline appointment.");
-              return;
-          }
-
-          // Remove declined appointment from UI
-          activeItem.remove();
-
-          const remaining = document.querySelector(".appointment-item");
-          if (remaining) remaining.click();
-          else {
-              document.getElementById("patientName").innerText = "No Appointment";
-              document.getElementById("patientAge").innerText = "-";
-              document.getElementById("patientGender").innerText = "-";
-              document.getElementById("patientAddress").innerText = "-";
-          }
-
-          alert("Appointment declined successfully.");
-
-      } catch (err) {
-          console.error(err);
-          alert("Error declining appointment.");
-      }
-  });
-
-    // ACCEPT BUTTON
-document.querySelector(".accept-btn").addEventListener("click", async () => {
     const activeItem = document.querySelector(".appointment-item.active");
-
-
-    if (!activeItem) {
-        alert("No appointment selected.");
-        return;
-    }
-
+    if (!activeItem) { alert("No appointment selected to decline."); return; }
 
     const appt = activeItem._appt;
-    const patientId = appt.patient_id;
-    const status = appt.status;
+    if (!appt || !appt._id) { alert("Cannot decline: Missing appointment ID."); return; }
 
-
-    if (!patientId) {
-        alert("Missing patient ID.");
-        return;
-    }
-
-
-    if (status !== "pending") {
-        alert("Only pending appointments can be accepted.");
-        return;
-    }
-
+    if (!confirm("Are you sure you want to decline this appointment?")) return;
 
     try {
-        const res = await fetch("includes/accept_appointment.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                patient_id: patientId,
-                doctor_id: doctorId
-            })
-        });
+      const res = await fetch("includes/decline_appointment.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ appointment_id: appt._id })
+      });
+      const data = await res.json();
+      if (!data.success) { alert(data.error || "Failed to decline appointment."); return; }
 
+      appt.status = "declined";
+      activeItem._appt = appt;
+      activeItem.remove();
 
-        const data = await res.json();
+      const remaining = document.querySelector(".appointment-item");
+      if (remaining) remaining.click();
+      else {
+        document.getElementById("patientName").innerText = "No Appointment";
+        document.getElementById("patientAge").innerText = "-";
+        document.getElementById("patientGender").innerText = "-";
+        document.getElementById("patientAddress").innerText = "-";
+      }
 
-
-        if (data.success) {
-            alert("Appointment accepted.");
-            loadAppointments(); // refresh UI
-        } else {
-            alert("Error: " + data.error);
-        }
+      alert("Appointment declined successfully.");
     } catch (err) {
-        console.error(err);
-        alert("Server error.");
+      console.error(err);
+      alert("Error declining appointment.");
     }
-});
+  });
 
+  // ACCEPT APPOINTMENT
+  document.querySelector(".accept-btn").addEventListener("click", async () => {
+    const activeItem = document.querySelector(".appointment-item.active");
+    if (!activeItem) { alert("No appointment selected."); return; }
+
+    const appt = activeItem._appt;
+    if (!appt || !appt._id) { alert("Cannot accept: Missing appointment ID."); return; }
+    if (appt.status !== "pending") { alert("Only pending appointments can be accepted."); return; }
+
+    try {
+      const res = await fetch("includes/accept_appointment.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ appointment_id: appt._id })
+      });
+      const data = await res.json();
+      if (data.success) {
+        appt.status = "in_progress";
+        activeItem._appt = appt;
+        alert("Appointment accepted.");
+        loadAppointments();
+      } else {
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Server error.");
+    }
+  });
+
+  // START CONSULTATION
+  const startConsultationBtn = document.querySelector(".start-consultation-btn");
+  if (startConsultationBtn) {
+    startConsultationBtn.addEventListener("click", async () => {
+      const activeItem = document.querySelector(".appointment-item.active");
+      if (!activeItem) { alert("No appointment selected."); return; }
+
+      const appt = activeItem._appt;
+      if (!appt || !appt._id) { alert("Cannot start consultation: Missing appointment data."); return; }
+      if (appt.status !== "in_progress") { alert("You can only start a consultation for appointments in progress."); return; }
+
+      if (!confirm("Start consultation and mark this appointment as completed?")) return;
+
+      try {
+        const res = await fetch("includes/complete_appointment.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ appointment_id: appt._id })
+        });
+        const data = await res.json();
+        if (data.success) {
+          appt.status = "completed";
+          activeItem._appt = appt;
+          alert("Consultation started. Appointment marked as completed.");
+          loadAppointments();
+        } else {
+          alert("Failed to update appointment: " + (data.error || "Unknown error"));
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Server error while updating appointment.");
+      }
+    });
+  }
 
   loadAppointments();
 });

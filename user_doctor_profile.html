@@ -159,13 +159,14 @@
         </div>
 
         <!-- ===== SECURITY ===== -->
-        <div class="account-section" aria-label="Security">
-          <h5>Security</h5>
-          <p class="label">Password</p>
-          <div class="password-row">
-            <span class="masked">••••••••</span>
-            <button class="btn small outlined" id="changePasswordBtn">Change password</button>
-          </div>
+        <div class="account-section">
+        <h5>Security</h5>
+        <p class="label">Password</p>
+
+        <div class="password-row">
+          <span class="masked">••••••••</span>
+          <!-- NEW: Change Password now behaves like an edit button -->
+          <button class="edit-btn change-password-edit" data-field="password">Change Password</button>
         </div>
 
         <!-- Logout button in main content (red) -->
@@ -175,6 +176,23 @@
       </aside>
     </section>
   </main>
+
+  <div id="passwordModal" class="modal">
+    <div class="modal-content">
+      <h2>Change Password</h2>
+
+      <label>New Password</label>
+      <input type="password" id="newPassInput">
+
+      <label>Confirm Password</label>
+      <input type="password" id="confirmPassInput">
+
+      <div class="modal-actions">
+        <button id="cancelPassBtn" class="cancel-btn">Cancel</button>
+        <button id="savePassBtn" class="save-btn">Save</button>
+      </div>
+    </div>
+  </div>
 
   <!-- footer -->
   <footer class="site-footer">

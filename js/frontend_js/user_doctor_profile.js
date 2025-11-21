@@ -159,8 +159,71 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =========================================
   //         PASSWORD EDIT (MODAL)
   // =========================================
-  document.getElementById("changePasswordBtn")?.addEventListener("click", () => {
-    alert("Change Password UI not implemented yet.");
+  const passwordBtn = document.querySelector(".change-password-edit");
+const passwordModal = document.getElementById("passwordModal");
+
+const newPassInput = document.getElementById("newPassInput");
+const confirmPassInput = document.getElementById("confirmPassInput");
+
+const cancelPassBtn = document.getElementById("cancelPassBtn");
+const savePassBtn = document.getElementById("savePassBtn");
+
+if (passwordBtn) {
+  passwordBtn.addEventListener("click", () => {
+    passwordModal.style.display = "flex";
   });
+}
+
+// CLOSE MODAL
+cancelPassBtn.addEventListener("click", () => {
+  newPassInput.value = "";
+  confirmPassInput.value = "";
+  passwordModal.style.display = "none";
+});
+
+// SAVE PASSWORD
+savePassBtn.addEventListener("click", async () => {
+  const newPass = newPassInput.value.trim();
+  const confirmPass = confirmPassInput.value.trim();
+
+  if (newPass === "" || confirmPass === "") {
+    alert("Please fill out both fields.");
+    return;
+  }
+
+  if (newPass !== confirmPass) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  try {
+    const storedUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+    const res = await fetch(
+      "http://localhost/9468_it313-teamarc_mediko/includes/change_password.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: storedUser.user_id,
+          new_password: newPass
+        })
+      }
+    );
+
+    const result = await res.json();
+    if (!result.success) {
+      alert(result.msg || "Failed to change password.");
+      return;
+    }
+
+    alert("Password updated successfully.");
+    passwordModal.style.display = "none";
+    newPassInput.value = "";
+    confirmPassInput.value = "";
+  } catch (err) {
+    console.error(err);
+    alert("Error changing password. Please try again.");
+  }
+});
 
 });

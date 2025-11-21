@@ -244,13 +244,30 @@
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
+.accept-btn {
+  font-size: 18px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #f7dbe6, #f1c7d8); /* pale pink gradient */
+  color: #9e5a73; /* soft muted mauve text */
+  padding: 16px 36px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(235, 150, 185, 0.25);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
 .decline-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(209, 89, 141, 0.25);
+  background: linear-gradient(90deg, #f3cfdc, #eee);
+}
+
+.accept-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(209, 89, 141, 0.25);
   background: linear-gradient(90deg, #f3cfdc, #eab9ce);
 }
-
-
 
 
 /* Tablets */

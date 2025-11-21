@@ -58,10 +58,107 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = "login.html";
   });
 
-  document.getElementById("editProfileBtn")?.addEventListener("click", () => {
-    alert("Edit Profile UI not implemented yet.");
+  // =========================================
+  //          GLOBAL EDIT PROFILE MODE
+  // =========================================
+  const editProfileBtn = document.getElementById("editProfileBtn");
+  let editMode = false;
+
+  editProfileBtn.addEventListener("click", () => {
+    editMode = !editMode;
+
+    const allEditButtons = document.querySelectorAll(".edit-btn");
+
+    if (editMode) {
+      allEditButtons.forEach(btn => (btn.style.display = "inline-block"));
+      editProfileBtn.textContent = "Done Editing";
+    } else {
+      allEditButtons.forEach(btn => (btn.style.display = "none"));
+      editProfileBtn.textContent = "Edit Profile";
+    }
   });
 
+  // =========================================
+  //       INLINE EDIT SYSTEM
+  // =========================================
+  document.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const fieldId = btn.dataset.field;
+      const valueEl = document.getElementById(fieldId);
+      const currentValue = valueEl.textContent;
+
+      valueEl.innerHTML = `<input type="text" class="edit-input" id="input-${fieldId}" value="${currentValue}">`;
+      btn.style.display = "none";
+
+      const saveBtn = document.createElement("button");
+      saveBtn.className = "save-btn";
+      saveBtn.textContent = "Save";
+
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "cancel-btn";
+      cancelBtn.textContent = "Cancel";
+
+      btn.parentElement.appendChild(saveBtn);
+      btn.parentElement.appendChild(cancelBtn);
+
+      // SAVE
+      saveBtn.addEventListener("click", async () => {
+        const newValue = document.getElementById(`input-${fieldId}`).value;
+        valueEl.textContent = newValue;
+
+        saveBtn.remove();
+        cancelBtn.remove();
+        if (editMode) btn.style.display = "inline-block";
+
+        // Prepare payload
+        try {
+          const payload = { user_id: user.user_id };
+          if (fieldId === "email") payload.email = newValue;
+          if (fieldId === "phone") payload.phone = newValue;
+
+          const res = await fetch(
+            "http://localhost/9468_it313-teamarc_mediko/includes/update_doctor_profile.php",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            }
+          );
+
+          const result = await res.json();
+          if (!result.success) {
+            valueEl.textContent = currentValue;
+            alert(result.msg || "Failed to update profile.");
+            return;
+          }
+
+          // update session if email changed
+          if (fieldId === "email") {
+            const current = JSON.parse(sessionStorage.getItem("user") || "{}");
+            current.email = newValue;
+            sessionStorage.setItem("user", JSON.stringify(current));
+          }
+
+        } catch (e) {
+          valueEl.textContent = currentValue;
+          console.error(e);
+          alert("Error updating profile. Please try again.");
+        }
+      });
+
+      // CANCEL
+      cancelBtn.addEventListener("click", () => {
+        valueEl.textContent = currentValue;
+        saveBtn.remove();
+        cancelBtn.remove();
+        if (editMode) btn.style.display = "inline-block";
+      });
+    });
+  });
+
+  // =========================================
+  //         PASSWORD EDIT (MODAL)
+  // =========================================
   document.getElementById("changePasswordBtn")?.addEventListener("click", () => {
     alert("Change Password UI not implemented yet.");
   });

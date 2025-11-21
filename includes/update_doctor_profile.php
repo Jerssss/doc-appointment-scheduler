@@ -1,55 +1,72 @@
 <?php
-// update_doctor_profile.php
 require __DIR__ . '/../vendor/autoload.php';
+
+use MongoDB\Client;
+use MongoDB\BSON\ObjectId;
+
 header('Content-Type: application/json');
 
 try {
-    $data = json_decode(file_get_contents("php://input"), true);
-    if (!$data || !isset($data['user_id'])) {
-        echo json_encode(["success" => false, "msg" => "User ID is required"]);
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (!$data) {
+        echo json_encode(['success' => false, 'msg' => 'Invalid JSON']);
         exit;
     }
 
-    $client = new MongoDB\Client("mongodb://localhost:27017/");
-    $usersCollection = $client->MediKo->users;
+    $userId = $data['user_id'] ?? null;
+    if (!$userId) {
+        echo json_encode(['success' => false, 'msg' => 'user_id is required']);
+        exit;
+    }
 
-    $userId = new MongoDB\BSON\ObjectId($data['user_id']);
+    try {
+        $userObjId = new ObjectId($userId);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'msg' => 'Invalid user_id format']);
+        exit;
+    }
 
-    // Prepare update array
-    $updateFields = [];
+    $client = new Client('mongodb://localhost:27017/');
+    $users = $client->MediKo->users;
 
-    $personalInfoFields = ['full_name', 'specialization', 'hospital_name', 'hospital_phone', 'hospital_address', 'clinic_hours', 'fee', 'languages', 'rating', 'reviews', 'services'];
-    foreach ($personalInfoFields as $field) {
+    $set = [];
+
+    if (isset($data['email'])) {
+        $set['user_email'] = trim($data['email']);
+    }
+
+    if (isset($data['phone'])) {
+        $set['contact_info.phone'] = trim($data['phone']);
+    }
+
+    // Personal info fields
+    $personalFields = ['specialization', 'fee', 'services', 'hospital_name', 'hospital_phone', 'hospital_address', 'clinic_hours', 'languages'];
+    foreach ($personalFields as $field) {
         if (isset($data[$field])) {
-            $updateFields["personal_info.$field"] = $data[$field];
+            $set["personal_info.$field"] = trim($data[$field]);
         }
     }
 
-    // Email
-    if (isset($data['email'])) $updateFields['user_email'] = $data['email'];
-
-    // Phone (contact_info.phone)
-    if (isset($data['contact_info.phone'])) {
-        $updateFields['contact_info.phone'] = $data['contact_info.phone'];
+    if (!$set) {
+        echo json_encode(['success' => false, 'msg' => 'No fields to update']);
+        exit;
     }
 
-    // Execute update
-    if (!empty($updateFields)) {
-        $result = $usersCollection->updateOne(
-            ['user_id' => $userId],
-            ['$set' => $updateFields]
-        );
+    $result = $users->updateOne(
+        ['user_id' => $userObjId],
+        ['$set' => $set]
+    );
 
-        if ($result->getModifiedCount() > 0) {
-            echo json_encode(["success" => true]);
-        } else {
-            echo json_encode(["success" => false, "msg" => "No changes were made."]);
-        }
-    } else {
-        echo json_encode(["success" => false, "msg" => "No valid fields to update."]);
+    if ($result->getMatchedCount() === 0) {
+        echo json_encode(['success' => false, 'msg' => 'User not found']);
+        exit;
     }
+
+    echo json_encode(['success' => true]);
 
 } catch (Exception $e) {
-    echo json_encode(["success" => false, "msg" => $e->getMessage()]);
+    http_response_code(500);
+    echo json_encode(['success' => false, 'msg' => $e->getMessage()]);
 }
 ?>

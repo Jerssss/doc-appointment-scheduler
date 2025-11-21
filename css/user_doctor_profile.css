@@ -217,3 +217,123 @@
   .field-grid { grid-template-columns: 1fr; }
   .profile-page { padding: 0 4%; }
 }
+
+.edit-btn {
+  display: none;
+  margin-top: 4px;
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #ddd;
+}
+
+input.edit-input {
+  width: 100%;
+  padding: 6px;
+  margin-top: 3px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+}
+
+.save-btn, .cancel-btn {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin-right: 4px;
+  margin-top: 4px;
+}
+
+.save-btn {
+  background: #6cc070;
+  color: #fff;
+}
+
+.cancel-btn {
+  background: #d9534f;
+  color: #fff;
+}
+
+.change-password-edit {
+  display: none;
+  margin-left: 6px;
+}
+
+/* ===== PASSWORD MODAL ===== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #444;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  outline: none;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.save-btn {
+  background: #4d90fe;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #ccc;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

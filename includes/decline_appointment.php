@@ -1,25 +1,45 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-header("Content-Type: application/json");
+header('Content-Type: application/json');
 
 try {
-    $client = new MongoDB\Client("mongodb://localhost:27017");
+    $client = new MongoDB\Client("mongodb://localhost:27017/");
     $appointments = $client->MediKo->appointments;
 
-    $input = json_decode(file_get_contents("php://input"), true);
+    $input = json_decode(file_get_contents('php://input'), true);
+    $appointment_id = $input['appointment_id'] ?? null;
 
-    if (!$input['patient_id'] || !$input['doctor_id']) {
-        echo json_encode(["error" => "Missing parameters"]);
+    if (!$appointment_id) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Appointment ID is required']);
         exit;
     }
 
-    $result = $appointments->deleteOne([
-        'patient_id' => new MongoDB\BSON\ObjectId($input['patient_id']),
-        'doctor_id'  => new MongoDB\BSON\ObjectId($input['doctor_id'])
-    ]);
+    try {
+        $apptOid = new MongoDB\BSON\ObjectId($appointment_id);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => 'Invalid appointment ID']);
+        exit;
+    }
 
-    echo json_encode(["success" => $result->getDeletedCount() > 0]);
+    $result = $appointments->updateOne(
+        ['_id' => $apptOid],
+        [
+            '$set' => [
+                'status' => 'declined',
+                'declined_at' => new MongoDB\BSON\UTCDateTime()
+            ]
+        ]
+    );
+
+    if ($result->getModifiedCount() === 1) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Appointment not found or already declined']);
+    }
 
 } catch (Exception $e) {
-    echo json_encode(["error" => $e->getMessage()]);
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
+?>

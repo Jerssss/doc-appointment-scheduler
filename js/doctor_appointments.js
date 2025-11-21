@@ -210,5 +210,60 @@ const doctorId = doctor.user_id;
       }
   });
 
+    // ACCEPT BUTTON
+document.querySelector(".accept-btn").addEventListener("click", async () => {
+    const activeItem = document.querySelector(".appointment-item.active");
+
+
+    if (!activeItem) {
+        alert("No appointment selected.");
+        return;
+    }
+
+
+    const appt = activeItem._appt;
+    const patientId = appt.patient_id;
+    const status = appt.status;
+
+
+    if (!patientId) {
+        alert("Missing patient ID.");
+        return;
+    }
+
+
+    if (status !== "pending") {
+        alert("Only pending appointments can be accepted.");
+        return;
+    }
+
+
+    try {
+        const res = await fetch("includes/accept_appointment.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                patient_id: patientId,
+                doctor_id: doctorId
+            })
+        });
+
+
+        const data = await res.json();
+
+
+        if (data.success) {
+            alert("Appointment accepted.");
+            loadAppointments(); // refresh UI
+        } else {
+            alert("Error: " + data.error);
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Server error.");
+    }
+});
+
+
   loadAppointments();
 });

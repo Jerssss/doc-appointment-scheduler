@@ -2,17 +2,21 @@
 require __DIR__ . '/../vendor/autoload.php';
 header("Content-Type: application/json");
 
+
 try {
     $client = new MongoDB\Client("mongodb://localhost:27017");
     $appointmentsCollection = $client->MediKo->appointments;
     $usersCollection = $client->MediKo->users;
 
+
     $doctorId = $_GET['doctor_id'] ?? null;
+
 
     if (!$doctorId) {
         echo json_encode([]);
         exit;
     }
+
 
     // Convert doctorId (string from frontend) into ObjectId
     try {
@@ -21,6 +25,7 @@ try {
         echo json_encode([]);
         exit;
     }
+
 
     // AGGREGATION PIPELINE
     $pipeline = [
@@ -31,6 +36,7 @@ try {
             ]
         ],
 
+
         // Ensure patient_id is an ObjectId for proper lookup
         [
             '$addFields' => [
@@ -38,7 +44,7 @@ try {
                     '$cond' => [
                         [
                             '$eq' => [
-                                ['$type' => '$patient_id'], 
+                                ['$type' => '$patient_id'],
                                 'string'
                             ]
                         ],
@@ -48,6 +54,7 @@ try {
                 ]
             ]
         ],
+
 
         // Lookup patient information from users collection using _id
         [
@@ -59,6 +66,7 @@ try {
             ]
         ],
 
+
         // Unwind the array but allow nulls if no match
         [
             '$unwind' => [
@@ -67,14 +75,18 @@ try {
             ]
         ],
 
+
         [ '$sort' => [ 'time' => 1 ] ]
     ];
+
 
     $cursor = $appointmentsCollection->aggregate($pipeline);
     $result = [];
 
+
     foreach ($cursor as $appt) {
         $patient = $appt['patient_info'] ?? null;
+
 
         // Defaults
         $patientName = "Unknown Patient";
@@ -83,12 +95,14 @@ try {
         $address = "N/A";
         $age = "N/A";
 
+
         // If patient exists, override defaults
         if ($patient && isset($patient['personal_info']['full_name'])) {
             $patientName = $patient['personal_info']['full_name'];
             $patientImage = $patient['profile_image'] ?? "images/default-patient.png";
             $gender = $patient['personal_info']['sex'] ?? "N/A";
             $address = $patient['personal_info']['address'] ?? "N/A";
+
 
             // Calculate age
             if (!empty($patient['personal_info']['date_of_birth'])) {
@@ -102,6 +116,7 @@ try {
             }
         }
 
+
         // Convert time to ISO
         $timeISO = null;
         if (isset($appt['time']) && $appt['time'] instanceof MongoDB\BSON\UTCDateTime) {
@@ -110,9 +125,9 @@ try {
             $timeISO = (string)$appt['time'];
         }
 
+
         $result[] = [
-            '_id' => (string)$appt['_id'],
-            'patient_id' => isset($patient['_id']) ? (string)$patient['_id'] : '',
+            'patient_id' => isset($patient['user_id']) ? (string)$patient['user_id'] : '',
             'patient_name' => $patientName,
             'patient_image' => $patientImage,
             'age' => $age,
@@ -129,7 +144,9 @@ try {
         ];
     }
 
+
     echo json_encode($result, JSON_UNESCAPED_SLASHES);
+
 
 } catch (Exception $e) {
     http_response_code(500);

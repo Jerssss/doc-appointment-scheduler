@@ -38,15 +38,26 @@ if (!$user) {
     exit;
 }
 
-// Prefer hashed verification if available
-if (!empty($user['password_hash'])) {
-    if (!password_verify($password, (string)$user['password_hash'])) {
-        echo json_encode(["success" => false, "message" => "Incorrect password"]);
-        exit;
+// Authentication logic (supports transition from plaintext to hashed)
+$hashed = $user['password_hash'] ?? null;
+$plain  = $user['password'] ?? null;
+
+if ($hashed) {
+    $hashOk = password_verify($password, (string)$hashed);
+    if (!$hashOk) {
+        // Fallback only if a legacy plaintext exists and matches
+        if ($plain && $password === $plain) {
+            // (Optional) could re-hash here for automatic migration
+            // $newHash = password_hash($password, PASSWORD_BCRYPT);
+            // $users->updateOne(['_id' => $user['_id']], ['$set' => ['password_hash' => $newHash], '$unset' => ['password' => '']]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Incorrect password"]);
+            exit;
+        }
     }
 } else {
-    // Fallback to legacy plaintext check
-    if (!isset($user['password']) || $password !== $user['password']) {
+    // No hash yet, rely on plaintext
+    if (!$plain || $password !== $plain) {
         echo json_encode(["success" => false, "message" => "Incorrect password"]);
         exit;
     }

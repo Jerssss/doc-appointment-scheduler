@@ -3,57 +3,74 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notifications</title>
+    <title>Notifications | MediKo</title>
 
-
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/notifications.css">
 
-
-    <style>
-        body {
-            background: #fdf4f8;
-            font-family: "Poppins", sans-serif;
-            padding: 20px;
-        }
-        .notif-container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .notif-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-            border-left: 5px solid #ff7aa8;
-        }
-        .notif-card h3 {
-            margin: 0 0 10px 0;
-        }
-        .pay-btn {
-            background: #ff7aa8;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-    </style>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+<!-- ===== NAVBAR ===== -->
+<header>
+  <div class="logo">
+    <span class="blue">Medi</span><span class="pink">Ko</span>
+  </div>
 
-    <h2>Your Notifications</h2>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="list_of_doctors.html">Book</a>
+    <a href="history.html">History</a>
+    <a href="aboutus.html">About Us</a>
+  </nav>
+
+  <div class="icons">
+    <a href="list_of_doctors.html" class="icon-btn notification-btn">
+      <img src="images/notification.png" alt="Notifications" class="notif-img">
+    </a>
+
+    <a href="list_of_doctors.html" class="icon-btn profile-btn">
+      <img src="images/user.png" alt="Profile" class="profile-img">
+    </a>
+  </div>
+</header>
 
 
-    <div class="notif-container" id="notifContainer">
-        <!-- Cards appear here -->
+<!-- ===== PAGE TITLE ===== -->
+<h2>Your Notifications</h2>
+
+<!-- ===== NOTIFICATIONS CONTAINER ===== -->
+<div class="notif-container" id="notifContainer">
+    <!-- JS inserts notification cards here -->
+</div>
+
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+    <div class="social-icons">
+        <a href="#"><img src="images/facebook-app-symbol.png" alt="Facebook"></a>
+        <a href="#"><img src="images/instagram.png" alt="Instagram"></a>
+        <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+        <a href="#"><img src="images/google.png" alt="Google"></a>
+        <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
     </div>
 
+    <ul class="footer-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="list_of_doctors.html">Book</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+    </ul>
 
-    <script src="js/notifications.js"></script>
+    <p class="footer-copy">Copyright ©2025 | Designed by <span>Team T. Arc</span></p>
+</footer>
 
+<!-- Scripts -->
+<script src="js/notifications.js"></script>
 
 </body>
 </html>

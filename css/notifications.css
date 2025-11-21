@@ -12,16 +12,14 @@ body::before {
     pointer-events: none;
 }
 
-
 /* ===== Global Styles ===== */
 body {
     font-family: 'Poppins', sans-serif;
-    padding: 20px;
     margin: 0;
+    padding: 0; /* FIX: removes body padding causing navbar clipping */
     background-color: #fdf4f8;
     color: #333;
 }
-
 
 /* ===== Header / Navbar ===== */
 header {
@@ -29,30 +27,27 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 6%;
+    padding: 1rem 5%; /* FIX: reduced padding, better alignment */
     background-color: #ffe6f1;
     position: sticky;
     top: 0;
     z-index: 10;
+    box-sizing: border-box; /* FIX: prevents overflow */
 }
-
 
 .logo {
     font-size: 2.1rem;
     font-weight: 700;
 }
 
-
 .logo .blue { color: #89c8ff; }
 .logo .pink { color: #f7a5c8; }
-
 
 nav {
     display: flex;
     align-items: center;
     gap: 1.2rem;
 }
-
 
 nav a {
     text-decoration: none;
@@ -61,12 +56,10 @@ nav a {
     transition: 0.3s;
 }
 
-
-nav a.active,
-nav a:hover {
+nav a:hover,
+nav a.active {
     font-weight: 600;
 }
-
 
 /* ===== ICONS ===== */
 .icons {
@@ -75,7 +68,6 @@ nav a:hover {
     gap: 1rem;
 }
 
-
 .icon-btn {
     width: 32px;
     height: 32px;
@@ -83,17 +75,14 @@ nav a:hover {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    text-decoration: none;
     background: transparent;
     cursor: pointer;
     transition: transform 0.25s ease;
 }
 
-
 .icon-btn:hover {
     transform: scale(1.12);
 }
-
 
 .notif-img,
 .profile-img {
@@ -103,21 +92,18 @@ nav a:hover {
     border-radius: 50%;
 }
 
-
 /* ===== Notifications Section ===== */
 h2 {
     text-align: center;
-    margin-bottom: 30px;
+    margin: 40px 0 30px;
     font-size: 2rem;
     color: #ff0062;
 }
-
 
 .notif-container {
     max-width: 700px;
     margin: 0 auto;
 }
-
 
 .notif-card {
     background: white;
@@ -129,12 +115,10 @@ h2 {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-
 .notif-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0,0,0,0.12);
 }
-
 
 .notif-card h3 {
     margin: 0 0 10px 0;
@@ -142,17 +126,14 @@ h2 {
     color: #ff0062;
 }
 
-
 .notif-card p {
     margin: 0 0 8px 0;
     font-size: 1rem;
 }
 
-
 .notif-card small {
     color: #999;
 }
-
 
 /* Pay Button */
 .pay-btn {
@@ -166,12 +147,10 @@ h2 {
     transition: background 0.3s ease, transform 0.2s ease;
 }
 
-
 .pay-btn:hover {
     background: #ff3399;
     transform: scale(1.05);
 }
-
 
 /* ===== Footer ===== */
 .site-footer {
@@ -179,10 +158,8 @@ h2 {
     color: #ccc;
     text-align: center;
     padding: 40px 0 20px;
-    font-family: 'Poppins', sans-serif;
     margin-top: 50px;
 }
-
 
 /* Social Icons */
 .site-footer .social-icons {
@@ -193,32 +170,26 @@ h2 {
     margin-bottom: 20px;
 }
 
-
 .site-footer .social-icons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 45px;
     height: 45px;
     border-radius: 50%;
     background-color: #fff;
-    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
-
 
 .site-footer .social-icons a:hover {
     transform: scale(1.1);
     background-color: #ff0062;
 }
 
-
-.site-footer .social-icons a img {
-    display: block;
+.site-footer .social-icons img {
     width: 25px;
     height: 25px;
 }
-
 
 .site-footer .footer-nav {
     list-style: none;
@@ -226,32 +197,24 @@ h2 {
     margin: 20px 0;
 }
 
-
 .site-footer .footer-nav li {
     display: inline-block;
     margin: 0 15px;
 }
 
-
-.site-footer .footer-nav li a {
-    color: #ccc;
+.site-footer .footer-nav a {
     text-decoration: none;
-    font-size: 18px;
-    transition: color 0.3s ease;
+    color: #ccc;
+    transition: 0.3s;
 }
 
-
-.site-footer .footer-nav li a:hover {
+.site-footer .footer-nav a:hover {
     color: #fff;
 }
 
-
 .site-footer .footer-copy {
-    font-size: 15px;
     margin-top: 15px;
-    color: #bfbfbf;
 }
-
 
 .site-footer .footer-copy span {
     color: #ff0062;

@@ -127,6 +127,7 @@ try {
 
 
         $result[] = [
+            '_id' => (string)$appt['_id'], 
             'patient_id' => isset($patient['user_id']) ? (string)$patient['user_id'] : '',
             'patient_name' => $patientName,
             'patient_image' => $patientImage,

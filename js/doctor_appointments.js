@@ -157,41 +157,58 @@ const doctorId = doctor.user_id;
     });
   }
 
+  // DECLINE APPOINTMENT FUNCTIONALITY
   document.querySelector(".decline-btn").addEventListener("click", async () => {
-      const patientId = getSelectedPatientIdFromDOM();
-      if (!patientId) {
-          alert("No patient selected to decline.");
+
+      const activeItem = document.querySelector(".appointment-item.active");
+      if (!activeItem) {
+          alert("No appointment selected to decline.");
           return;
       }
 
-      const confirmDecline = confirm("Are you sure you want to decline this appointment?");
-      if (!confirmDecline) return;
+      const appt = activeItem._appt;
+      if (!appt || !appt._id) {
+          alert("Cannot decline: Missing appointment ID.");
+          return;
+      }
+
+      if (!confirm("Are you sure you want to decline this appointment?")) return;
 
       try {
           const res = await fetch("includes/decline_appointment.php", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                  patient_id: patientId,
-                  doctor_id: doctorId
+                  appointment_id: appt._id   // THIS is the only field we need
               })
           });
 
           const data = await res.json();
 
-          if (data.success) {
-              alert("Appointment declined.");
-              loadAppointments(); // refresh list
-          } else {
-              alert("Error: " + data.error);
+          if (!data.success) {
+              alert(data.error || "Failed to decline appointment.");
+              return;
           }
+
+          // Remove declined appointment from UI
+          activeItem.remove();
+
+          const remaining = document.querySelector(".appointment-item");
+          if (remaining) remaining.click();
+          else {
+              document.getElementById("patientName").innerText = "No Appointment";
+              document.getElementById("patientAge").innerText = "-";
+              document.getElementById("patientGender").innerText = "-";
+              document.getElementById("patientAddress").innerText = "-";
+          }
+
+          alert("Appointment declined successfully.");
 
       } catch (err) {
           console.error(err);
-          alert("Server error.");
+          alert("Error declining appointment.");
       }
   });
-
 
   loadAppointments();
 });

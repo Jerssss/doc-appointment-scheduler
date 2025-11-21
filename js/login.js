@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("http://localhost/9468_it313-teamarc_mediko/includes/login.php", {
+            const response = await fetch("http://localhost:8888/9468_it313-teamarc_mediko/includes/login.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

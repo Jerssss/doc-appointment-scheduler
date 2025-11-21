@@ -4,6 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const vitalsContainer = document.querySelector(".vitals");
   const searchInput = document.getElementById("searchInput");
 
+
+  // DOCTOR SESSION CHECK 
+const doctor = JSON.parse(sessionStorage.getItem('user'));
+
+if (!doctor || doctor.role !== 'doctor') {
+    alert("Please log in as a doctor.");
+    window.location.href = "login.html";
+}
+
+const doctorId = doctor.user_id;  
+
   // NEW: Patient Info button
   const patientInfoBtn = document.querySelector(".patient-info-btn");
 
@@ -26,7 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const loadAppointments = async () => {
     try {
-      const res = await fetch("includes/get_appointments.php");
+      const res = await fetch("includes/get_appointments.php?doctor_id=" + encodeURIComponent(doctorId));
+
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const appointments = await res.json();
 
@@ -144,6 +156,42 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = `patient_info.html?id=${encodeURIComponent(patientId)}`;
     });
   }
+
+  document.querySelector(".decline-btn").addEventListener("click", async () => {
+      const patientId = getSelectedPatientIdFromDOM();
+      if (!patientId) {
+          alert("No patient selected to decline.");
+          return;
+      }
+
+      const confirmDecline = confirm("Are you sure you want to decline this appointment?");
+      if (!confirmDecline) return;
+
+      try {
+          const res = await fetch("includes/decline_appointment.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                  patient_id: patientId,
+                  doctor_id: doctorId
+              })
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+              alert("Appointment declined.");
+              loadAppointments(); // refresh list
+          } else {
+              alert("Error: " + data.error);
+          }
+
+      } catch (err) {
+          console.error(err);
+          alert("Server error.");
+      }
+  });
+
 
   loadAppointments();
 });

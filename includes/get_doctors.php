@@ -36,24 +36,25 @@ try {
         }
 
         $out[] = [
-            "user_id"         => $doc['user_id'] ?? '',
-            "user_name"       => $userName,
-            "full_name"       => $fullName,
-            "specialization"  => $info['specialization'] ?? '',
-            "fee"             => $info['fee'] ?? '',
-            "rating"          => $info['rating'] ?? '',
-            "reviews"         => $info['reviews'] ?? '',
-            "services"        => $info['services'] ?? '',
-            "languages"       => $info['languages'] ?? '',
-            "titles"          => $info['titles'] ?? '',
-            "hospital_title"  => $info['hospital_title'] ?? '',
-            "hospital_name"   => $info['hospital_name'] ?? '',
-            "hospital_phone"  => $info['hospital_phone'] ?? '',
-            "hospital_address"=> $info['hospital_address'] ?? '',
-            "clinic_hours"    => $info['clinic_hours'] ?? '',
-            "profile_image"   => $info['profile_image'] ?? 'images/default-doctor.png',
-            "hospital_image"  => $info['hospital_image'] ?? 'images/bgh.png'
-        ];
+          "user_id"         => $doc['user_id'] ?? '',
+          "user_name"       => $userName,
+          "full_name"       => $fullName,
+          "specialization"  => $info['specialization'] ?? '',
+          "fee"             => $info['fee'] ?? '',
+          "rating"          => $info['rating'] ?? '',
+          "reviews"         => $info['reviews'] ?? '',
+          "services"        => $info['services'] ?? '',
+          "languages"       => $info['languages'] ?? '',
+          "titles"          => $info['titles'] ?? '',
+          "hospital_title"  => $info['hospital_title'] ?? '',
+          "hospital_name"   => $info['hospital_name'] ?? '',
+          "hospital_phone"  => $info['hospital_phone'] ?? '',
+          "hospital_address"=> $info['hospital_address'] ?? '',
+          "clinic_hours"    => $info['clinic_hours'] ?? '',
+          "profile_image"   => $doc['profile_image'] ?? 'images/default-doctor.png',
+          "hospital_image"  => $info['hospital_image'] ?? 'images/bgh.png'
+      ];
+
     }
 
     echo json_encode($out);

@@ -28,31 +28,36 @@ try {
     $personalInfo = $doctor['personal_info'] ?? [];
 
     $out = [
-      "success" => true,
-      "doctor" => [
-          "user_id"       => (string)$doctor['user_id'],
-          "user_name"     => $doctor['user_name'] ?? '',
-          "user_email"    => $doctor['user_email'] ?? '',
-          "role"          => $doctor['role'] ?? 'doctor',
-          "profile_image" => $doctor['profile_image'] ?? 'images/default-doctor.png',
-          "personal_info" => [
-              "full_name"        => $personalInfo['full_name'] ?? '',
-              "specialization"   => $personalInfo['specialization'] ?? '',
-              "hospital_name"    => $personalInfo['hospital_name'] ?? '',
-              "hospital_phone"   => $personalInfo['hospital_phone'] ?? '',
-              "hospital_address" => $personalInfo['hospital_address'] ?? '',
-              "clinic_hours"     => $personalInfo['clinic_hours'] ?? '',
-              "fee"              => $personalInfo['fee'] ?? '',
-              "languages"        => $personalInfo['languages'] ?? '',
-              "rating"           => $personalInfo['rating'] ?? '',
-              "reviews"          => $personalInfo['reviews'] ?? '',
-              "services"         => $personalInfo['services'] ?? ''
-          ],
-          "contact_info" => [
-              "phone" => $doctor['contact_info']['phone'] ?? '—'  // <-- here
-          ]
-      ]
-  ];
+        "success" => true,
+        "doctor" => [
+            "user_id"       => (string)$doctor['user_id'],
+            "user_name"     => $doctor['user_name'] ?? '',
+            "user_email"    => $doctor['user_email'] ?? '',
+            "role"          => $doctor['role'] ?? 'doctor',
+            "profile_image" => $doctor['profile_image'] ?? 'images/default-doctor.png',
+            "personal_info" => [
+                "full_name"        => $personalInfo['full_name'] ?? '',
+                "specialization"   => $personalInfo['specialization'] ?? '',
+                "hospital_name"    => $personalInfo['hospital_name'] ?? '',
+                "hospital_phone"   => $personalInfo['hospital_phone'] ?? '',
+                "hospital_address" => $personalInfo['hospital_address'] ?? '',
+                "clinic_hours"     => $personalInfo['clinic_hours'] ?? '',
+                "fee"              => $personalInfo['fee'] ?? '',
+                "languages"        => $personalInfo['languages'] ?? '',
+                "rating"           => $personalInfo['rating'] ?? '',
+                "reviews"          => $personalInfo['reviews'] ?? '',
+                "services"         => $personalInfo['services'] ?? ''
+            ],
+            "contact_info" => [
+                "phone" => $doctor['contact_info']['phone'] ?? '—'
+            ],
+            "security" => [
+                "account_created" => $doctor['security']['account_created'] ?? ''
+            ]
+        ]
+    ];
+
+
 
 
     echo json_encode($out);

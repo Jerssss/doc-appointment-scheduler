@@ -15,6 +15,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  // Helper: format ISO string to date only (e.g., Feb 13, 2025)
+  function formatIsoToDateOnly(iso) {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso; // fallback
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
   try {
     const response = await fetch(`http://localhost/9468_it313-teamarc_mediko/includes/doctor_profile_data.php?email=${encodeURIComponent(user.email)}`);
     const data = await response.json();
@@ -27,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const doctor = data.doctor;
     const info = doctor.personal_info || {};
-
 
     document.getElementById("profileImage").src = doctor.profile_image || "images/default-doctor.png";
     document.getElementById("doctorName").textContent = info.full_name || "—";
@@ -48,6 +55,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("rating").textContent = info.rating || "—";
     document.getElementById("reviews").textContent = info.reviews || "—";
 
+    // Account created (date only)
+    const accountCreatedRaw = doctor.security?.account_created || '';
+    document.getElementById("account-created").textContent = formatIsoToDateOnly(accountCreatedRaw);
+
   } catch (err) {
     console.error("Profile load error:", err);
     alert("Error loading profile. Please try again.");
@@ -58,9 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = "login.html";
   });
 
-  // =========================================
-  //          GLOBAL EDIT PROFILE MODE
-  // =========================================
+  // GLOBAL EDIT PROFILE MODE
   const editProfileBtn = document.getElementById("editProfileBtn");
   let editMode = false;
 
@@ -78,9 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // =========================================
-  //       INLINE EDIT SYSTEM
-  // =========================================
+  // INLINE EDIT SYSTEM
   document.querySelectorAll(".edit-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const fieldId = btn.dataset.field;
@@ -156,74 +163,72 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // =========================================
-  //         PASSWORD EDIT (MODAL)
-  // =========================================
+  // PASSWORD EDIT (MODAL)
   const passwordBtn = document.querySelector(".change-password-edit");
-const passwordModal = document.getElementById("passwordModal");
+  const passwordModal = document.getElementById("passwordModal");
 
-const newPassInput = document.getElementById("newPassInput");
-const confirmPassInput = document.getElementById("confirmPassInput");
+  const newPassInput = document.getElementById("newPassInput");
+  const confirmPassInput = document.getElementById("confirmPassInput");
 
-const cancelPassBtn = document.getElementById("cancelPassBtn");
-const savePassBtn = document.getElementById("savePassBtn");
+  const cancelPassBtn = document.getElementById("cancelPassBtn");
+  const savePassBtn = document.getElementById("savePassBtn");
 
-if (passwordBtn) {
-  passwordBtn.addEventListener("click", () => {
-    passwordModal.style.display = "flex";
+  if (passwordBtn) {
+    passwordBtn.addEventListener("click", () => {
+      passwordModal.style.display = "flex";
+    });
+  }
+
+  // CLOSE MODAL
+  cancelPassBtn.addEventListener("click", () => {
+    newPassInput.value = "";
+    confirmPassInput.value = "";
+    passwordModal.style.display = "none";
   });
-}
 
-// CLOSE MODAL
-cancelPassBtn.addEventListener("click", () => {
-  newPassInput.value = "";
-  confirmPassInput.value = "";
-  passwordModal.style.display = "none";
-});
+  // SAVE PASSWORD
+  savePassBtn.addEventListener("click", async () => {
+    const newPass = newPassInput.value.trim();
+    const confirmPass = confirmPassInput.value.trim();
 
-// SAVE PASSWORD
-savePassBtn.addEventListener("click", async () => {
-  const newPass = newPassInput.value.trim();
-  const confirmPass = confirmPassInput.value.trim();
-
-  if (newPass === "" || confirmPass === "") {
-    alert("Please fill out both fields.");
-    return;
-  }
-
-  if (newPass !== confirmPass) {
-    alert("Passwords do not match!");
-    return;
-  }
-
-  try {
-    const storedUser = JSON.parse(sessionStorage.getItem("user") || "{}");
-    const res = await fetch(
-      "http://localhost/9468_it313-teamarc_mediko/includes/change_password.php",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: storedUser.user_id,
-          new_password: newPass
-        })
-      }
-    );
-
-    const result = await res.json();
-    if (!result.success) {
-      alert(result.msg || "Failed to change password.");
+    if (newPass === "" || confirmPass === "") {
+      alert("Please fill out both fields.");
       return;
     }
 
-    alert("Password updated successfully.");
-    passwordModal.style.display = "none";
-    newPassInput.value = "";
-    confirmPassInput.value = "";
-  } catch (err) {
-    console.error(err);
-    alert("Error changing password. Please try again.");
-  }
-});
+    if (newPass !== confirmPass) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const storedUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+      const res = await fetch(
+        "http://localhost/9468_it313-teamarc_mediko/includes/change_password.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: storedUser.user_id,
+            new_password: newPass
+          })
+        }
+      );
+
+      const result = await res.json();
+      if (!result.success) {
+        alert(result.msg || "Failed to change password.");
+        return;
+      }
+
+      alert("Password updated successfully.");
+      passwordModal.style.display = "none";
+      newPassInput.value = "";
+      confirmPassInput.value = "";
+    } catch (err) {
+      console.error(err);
+      alert("Error changing password. Please try again.");
+    }
+  });
 
 });

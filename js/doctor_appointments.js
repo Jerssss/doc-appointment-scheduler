@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Check role (handle both new login format and updated format from loadDoctorInfo)
   const userRole = doctor.role || doctor.user_role;
+  const doctorEmail = doctor.user_email;
   if (userRole !== 'doctor') {
     alert("Please log in as a doctor.");
     window.location.href = "login.html";
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   : doctor.user_id;
 
   // Debugging  
+  console.log('Doctor Email : ', doctorEmail);
   console.log('Doctor ID:', doctorId);
   console.log('Doctor role:', userRole);
 

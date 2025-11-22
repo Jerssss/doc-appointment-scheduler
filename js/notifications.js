@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const notifContainer = document.getElementById("notifContainer");
 
-    // Get logged-in user
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user || user.role !== "patient") {
         notifContainer.innerHTML = "<p>Please log in as a patient to see notifications.</p>";
@@ -36,31 +35,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             const div = document.createElement("div");
             div.classList.add("notif-card");
 
-            // ✅ PAID APPOINTMENT CARD
-            if (notif.type === "payment_confirmed") {
-                div.innerHTML = `
-                    <h3>✅ Payment Successful</h3>
-                    <p>${notif.message}</p>
-                    <p><strong>Doctor:</strong> ${notif.doctor_name}</p>
-                    <p><strong>Amount Paid:</strong> ₱${notif.amount || 0}</p>
-                    <small>${new Date(notif.paid_at).toLocaleString()}</small>
-                `;
-                notifContainer.appendChild(div);
-                return;
+            // Determine timestamp
+            let timestamp = notif.accepted_at || notif.time;
+
+            // Paid appointments
+            if (notif.status === "paid") {
+                timestamp = notif.paid_at || notif.time;
             }
 
-            // 🔔 EXISTING APPOINTMENT/BOOKING CARDS
-            const timestamp = notif.accepted_at || notif.time;
+            let title = "";
+            let message = "";
+
+            if (notif.status === "paid") {
+                title = "Payment Confirmed";
+                message = `You have successfully paid ₱${notif.fee || "0.00"} to ${notif.doctor_name || "TBA"}.`;
+            } else if (notif.type === "appointment_accepted") {
+                title = "Appointment Accepted";
+                message = notif.message;
+            } else {
+                title = "Booking Created";
+                message = notif.message;
+            }
 
             div.innerHTML = `
-                <h3>${notif.type === "appointment_accepted" ? "Appointment Accepted" : "Booking Created"}</h3>
-                <p>${notif.message}</p>
+                <h3>${title}</h3>
+                <p>${message}</p>
                 <p><strong>Doctor:</strong> ${notif.doctor_name || "TBA"}</p>
                 <small>${new Date(timestamp).toLocaleString()}</small>
             `;
 
-            // ✅ "Proceed to Payment" button for appointments accepted but not yet paid
-            if (notif.type === "appointment_accepted") {
+            // Add Pay button if appointment accepted and not paid yet
+            if (notif.type === "appointment_accepted" && notif.status !== "paid") {
                 const btn = document.createElement("button");
                 btn.textContent = "Proceed to Payment";
                 btn.classList.add("pay-btn");
@@ -68,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 btn.onclick = () => {
                     sessionStorage.setItem("pending_payment", JSON.stringify({
                         appointment_id: notif.appointment_id,
-                        doctor_name: notif.doctor_name || "TBA",
+                        doctor_name: notif.doctor_name || "TBA", 
                         time: notif.time,
                         mode: notif.mode
                     }));

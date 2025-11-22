@@ -11,7 +11,7 @@ try {
 
     $appointmentsCollection = $client->MediKo->appointments;
     $usersCollection        = $client->MediKo->users;
-    $paymentsCollection     = $client->MediKo->payments; // ✅ added
+    $paymentsCollection     = $client->MediKo->payments;
 
     $input = json_decode(file_get_contents('php://input'), true);
 
@@ -38,7 +38,7 @@ try {
 
     foreach ($appointments as $app) {
 
-        // ✅ CHECK IF PAYMENT EXISTS
+        // Check if payment exists
         $payment = $paymentsCollection->findOne([
             'appointment_id' => $app->_id
         ]);
@@ -47,26 +47,27 @@ try {
             ? $app->accepted_at->toDateTime()->format(DATE_ATOM)
             : null;
 
-        // ✅ Fetch doctor name dynamically
+        // Fetch doctor info
         $doctorName = "TBA";
+        $doctorFee = "0.00";
         if (isset($app->doctor_id)) {
             $doctor = $usersCollection->findOne([
                 'user_id' => $app->doctor_id
             ]);
 
             if ($doctor) {
-                $doctorName = $doctor->personal_info->full_name
-                    ?? $doctor->user_name
-                    ?? "TBA";
+                $doctorName = $doctor->personal_info->full_name ?? $doctor->user_name ?? "TBA";
+                $doctorFee  = $doctor->personal_info->fee ?? "0.00"; // ✅ include fee
             }
         }
 
-        // ✅ PAID NOTIFICATION TYPE
+        // Paid notification
         if ($payment) {
             $results[] = [
                 "appointment_id" => (string)$app->_id,
                 "status"         => "paid",
                 "doctor_name"    => $doctorName,
+                "fee"            => $doctorFee, // ✅ include fee
                 "type"           => "payment_confirmed",
                 "message"        => "Your payment has been successfully processed.",
                 "amount"         => $payment->amount ?? null,
@@ -77,7 +78,7 @@ try {
             continue;
         }
 
-        // ✅ EXISTING (unpaid) notifications
+        // Unpaid notifications
         $results[] = [
             "appointment_id" => (string)$app->_id,
             "status"         => $app->status ?? "unknown",
@@ -88,6 +89,7 @@ try {
                 : null,
             "accepted_at"    => $acceptedAt,
             "doctor_name"    => $doctorName,
+            "fee"            => $doctorFee, // ✅ include fee here too
             "type"           => ($app->status === 'in_progress' || $acceptedAt)
                 ? "appointment_accepted"
                 : "booking_created",

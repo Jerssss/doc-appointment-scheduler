@@ -30,10 +30,26 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
+        notifContainer.innerHTML = "";
+
         notifications.forEach(notif => {
             const div = document.createElement("div");
             div.classList.add("notif-card");
 
+            // ✅ PAID APPOINTMENT CARD
+            if (notif.type === "payment_confirmed") {
+                div.innerHTML = `
+                    <h3>✅ Payment Successful</h3>
+                    <p>${notif.message}</p>
+                    <p><strong>Doctor:</strong> ${notif.doctor_name}</p>
+                    <p><strong>Amount Paid:</strong> ₱${notif.amount || 0}</p>
+                    <small>${new Date(notif.paid_at).toLocaleString()}</small>
+                `;
+                notifContainer.appendChild(div);
+                return;
+            }
+
+            // 🔔 EXISTING APPOINTMENT/BOOKING CARDS
             const timestamp = notif.accepted_at || notif.time;
 
             div.innerHTML = `
@@ -43,16 +59,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <small>${new Date(timestamp).toLocaleString()}</small>
             `;
 
+            // ✅ "Proceed to Payment" button for appointments accepted but not yet paid
             if (notif.type === "appointment_accepted") {
                 const btn = document.createElement("button");
                 btn.textContent = "Proceed to Payment";
                 btn.classList.add("pay-btn");
 
-                // Always include doctor_name in pending_payment
                 btn.onclick = () => {
                     sessionStorage.setItem("pending_payment", JSON.stringify({
                         appointment_id: notif.appointment_id,
-                        doctor_name: notif.doctor_name || "TBA", 
+                        doctor_name: notif.doctor_name || "TBA",
                         time: notif.time,
                         mode: notif.mode
                     }));

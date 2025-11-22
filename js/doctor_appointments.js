@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const patientHeader = document.querySelector(".patient-header");
   const vitalsContainer = document.querySelector(".vitals");
   const searchInput = document.getElementById("searchInput");
+  const acceptBtn = document.querySelector(".accept-btn");
+  const declineBtn = document.querySelector(".decline-btn");
 
   // DOCTOR SESSION CHECK
   const doctor = JSON.parse(sessionStorage.getItem('user'));
@@ -29,6 +31,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const active = appointmentList.querySelector(".appointment-item.active");
     if (!active) return null;
     return active.dataset.patientId || null;
+  };
+
+
+  // Update button states based on appointment status
+  const updateButtonStates = (status) => {
+    if (status === "in_progress") {
+      // Disable Accept and Decline buttons
+      acceptBtn.disabled = true;
+      declineBtn.disabled = true;
+      acceptBtn.style.opacity = "0.5";
+      declineBtn.style.opacity = "0.5";
+      acceptBtn.style.cursor = "not-allowed";
+      declineBtn.style.cursor = "not-allowed";
+    } else if (status === "pending") {
+      // Enable Accept and Decline buttons
+      acceptBtn.disabled = false;
+      declineBtn.disabled = false;
+      acceptBtn.style.opacity = "1";
+      declineBtn.style.opacity = "1";
+      acceptBtn.style.cursor = "pointer";
+      declineBtn.style.cursor = "pointer";
+    } else {
+      // For completed or declined (shouldn't normally show these). Will add just in case for proper validation
+      acceptBtn.disabled = true;
+      declineBtn.disabled = true;
+      acceptBtn.style.opacity = "0.5";
+      declineBtn.style.opacity = "0.5";
+      acceptBtn.style.cursor = "not-allowed";
+      declineBtn.style.cursor = "not-allowed";
+    }
   };
 
   const loadAppointments = async () => {
@@ -112,6 +144,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const loadPatientInfo = (appt) => {
+    // Debug
+    console.log("Appointment data:", appt);
+
     if (!patientHeader) return;
 
     const patientImg = patientHeader.querySelector("img");
@@ -127,8 +162,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const pTags = info.querySelectorAll("p");
       if (pTags.length >= 1) pTags[0].textContent = `${appt.age || "N/A"} years old`;
-      if (pTags.length >= 2) pTags[1].textContent = appt.gender || "";
-      if (pTags.length >= 3) pTags[2].textContent = appt.address || "";
+      if (pTags.length >= 2) pTags[1].textContent = appt.user_email || "";
+      if (pTags.length >= 3) pTags[2].textContent = appt.contact_info || "";
+      if (pTags.length >= 4) pTags[3].textContent = appt.gender || "";
+      if (pTags.length >= 5) pTags[4].textContent = appt.address || "";
     }
 
     if (!vitalsContainer) return;
@@ -140,6 +177,10 @@ document.addEventListener("DOMContentLoaded", () => {
       inputs[2].value = appt.heart_rate || "-";
       inputs[3].value = appt.height_weight || "-";
     }
+
+    // UPDATE BUTTON STATES based on appointment status
+    const status = appt.status || "pending";
+    updateButtonStates(status);
   };
 
   if (patientInfoBtn) {
@@ -152,6 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // DECLINE APPOINTMENT
   document.querySelector(".decline-btn").addEventListener("click", async () => {
+    // Check if button is disabled
+    if (declineBtn.disabled) return;
+    
     const activeItem = document.querySelector(".appointment-item.active");
     if (!activeItem) { alert("No appointment selected to decline."); return; }
 
@@ -191,6 +235,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ACCEPT APPOINTMENT
   document.querySelector(".accept-btn").addEventListener("click", async () => {
+
+    // Check if button is disabled
+    if (acceptBtn.disabled) return;
+
     const activeItem = document.querySelector(".appointment-item.active");
     if (!activeItem) { alert("No appointment selected."); return; }
 

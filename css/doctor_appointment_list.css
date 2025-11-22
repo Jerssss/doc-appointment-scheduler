@@ -270,6 +270,20 @@
 }
 
 
+.accept-btn:disabled,
+.decline-btn:disabled {
+  background-color: #cccccc !important;
+  color: #666666 !important;
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+}
+
+.accept-btn,
+.decline-btn {
+  transition: all 0.3s ease;
+}
+
+
 /* Tablets */
 @media (max-width: 1024px) {
   .sidebar {

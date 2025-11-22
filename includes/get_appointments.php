@@ -32,16 +32,10 @@ try {
         // Match ONLY appointments belonging to this doctor
         [
             '$match' => [
-                'doctor_id' => $doctorObjectId
-            ]
-        ],
-
-        [
-    '$match' => [
-        'doctor_id' => $doctorObjectId,
-        'status' => [ '$ne' => 'declined' ]  // <--- exclude declined
-    ]
-],
+                'doctor_id' => $doctorObjectId,
+                'status' => [ '$ne' => 'declined' ]  // <--- exclude declined
+                ]
+            ],
 
 
         // Ensure patient_id is an ObjectId for proper lookup
@@ -101,6 +95,8 @@ try {
         $gender = "N/A";
         $address = "N/A";
         $age = "N/A";
+        $userEmail = "N/A";
+        $contactInfo = "N/A";
 
 
         // If patient exists, override defaults
@@ -109,6 +105,8 @@ try {
             $patientImage = $patient['profile_image'] ?? "images/default-patient.png";
             $gender = $patient['personal_info']['sex'] ?? "N/A";
             $address = $patient['personal_info']['address'] ?? "N/A";
+            $userEmail = $patient['user_email'] ?? "N/A";
+            $contactInfo = $patient['contact_info']['phone'] ?? "N/A";
 
 
             // Calculate age
@@ -141,6 +139,8 @@ try {
             'age' => $age,
             'gender' => $gender,
             'address' => $address,
+            'user_email' => $userEmail,
+            'contact_info' => $contactInfo,
             'temperature' => $appt['temperature'] ?? '-',
             'blood_pressure' => $appt['blood_pressure'] ?? '-',
             'heart_rate' => $appt['heart_rate'] ?? '-',

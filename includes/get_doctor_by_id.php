@@ -13,25 +13,8 @@ try {
         exit;
     }
 
-    // Try to convert to ObjectId if it's a valid ObjectId string
-    try {
-        $user_id_object = new MongoDB\BSON\ObjectId($user_id);
-        // Try finding by ObjectId first
-        $doctor = $usersCollection->findOne(['user_id' => $user_id_object]);
-    } catch (Exception $e) {
-        // If conversion fails, try as string
-        $doctor = $usersCollection->findOne(['user_id' => $user_id]);
-    }
-
-    // If not found by user_id, try by _id
-    if (!$doctor) {
-        try {
-            $id_object = new MongoDB\BSON\ObjectId($user_id);
-            $doctor = $usersCollection->findOne(['_id' => $id_object]);
-        } catch (Exception $e) {
-            // Ignore conversion error
-        }
-    }
+    // Find doctor by user_id
+    $doctor = $usersCollection->findOne(['user_id' => $user_id]);
 
     if (!$doctor) {
         echo json_encode(["error" => "Doctor not found"]);
@@ -48,9 +31,6 @@ try {
     $out = [
         "user_id"         => $doctor['user_id'] ?? '',
         "user_name"       => $userName,
-        "user_email"      => $doctor['user_email'] ?? '',
-        "role"            => $doctor['role'] ?? 'doctor',
-        "username"        => $userName, // Add alias for compatibility
 
         // Flattened info with fallback
         "full_name"       => $fullName,

@@ -1,64 +1,93 @@
-// STATIC DATA FOR NOW
-const patientData = {
-  "Fred Terre": {
-    pastConditions: "Seasonal allergies",
-    pastSurgeries: "Appendectomy (2019)",
-    currentConditions: "None",
-    lastAppointment: "2024-10-12"
-  },
-  "Den Ferrer": {
-    pastConditions: "Asthma",
-    pastSurgeries: "None",
-    currentConditions: "Mild asthma symptoms",
-    lastAppointment: "2024-09-02"
-  },
-  "Bernard Molina": {
-    pastConditions: "Repeated fractures (sports)",
-    pastSurgeries: "Left shoulder surgery (2023)",
-    currentConditions: "Muscle strain",
-    lastAppointment: "2024-11-01"
-  },
-  "Lorraine Adame": {
-    pastConditions: "None",
-    pastSurgeries: "None",
-    currentConditions: "Migraines",
-    lastAppointment: "2025-01-05"
-  },
-  "Kristy Grabanzor": {
-    pastConditions: "Hypertension",
-    pastSurgeries: "Gallbladder removal (2022)",
-    currentConditions: "High blood pressure",
-    lastAppointment: "2024-12-12"
-  }
-};
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Check user session if doctor is still logged in
+    const user = JSON.parse(sessionStorage.getItem("user"));
+
+    // Debugging
+     const doctorEmail = user.user_email;
+     console.log('Doctor Email : ', doctorEmail);
+
+    if (!user || user.role !== "doctor") {
+        console.log("No doctor session found. Redirecting...");
+        window.location.href = "login.html";
+        return;
+    }
+    
+    const doctorId = user.user_id.$oid || user.user_id;
+    // Debugging
+    console.log("Sending doctor ID:", doctorId);
 
 
+    // Fetch the consultation history
+    fetch(`includes/fetch_consultations.php?doctor_id=${doctorId}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("Consultation data loaded:", data);
+            renderConsultationList(data);
+        })
+        .catch(err => console.error("Fetch error:", err));
+    });
 
-// SELECT UI ELEMENTS 
-const patientCards = document.querySelectorAll(".patient-card");
-const pastConditionsField = document.querySelector(".patient-details textarea:nth-of-type(1)");
-const pastSurgeriesField = document.querySelector(".patient-details textarea:nth-of-type(2)");
-const currentConditionsField = document.querySelector(".patient-details textarea:nth-of-type(3)");
-const lastAppointmentField = document.querySelector(".patient-details input[type='date']");
 
-// UPDATE WHEN A PATIENT IS CLICKED 
-patientCards.forEach(card => {
-  card.addEventListener("click", () => {
-    // Extract the name from the card
-    const name = card.querySelector("span").textContent.trim();
-    const info = patientData[name];
+// Display the list of consultations
+function renderConsultationList(consultations) {
 
-    if (!info) return; // no data found
+    const listContainer = document.querySelector(".patients-list");
+    const patientCardsWrapper = listContainer.querySelector(".patients-list-items");
 
-    // Autofill the right panel
-    pastConditionsField.value = info.pastConditions;
-    pastSurgeriesField.value = info.pastSurgeries;
-    currentConditionsField.value = info.currentConditions;
-    lastAppointmentField.value = info.lastAppointment;
+    // If wrapper doesn't exist in HTML, create it
+    if (!patientCardsWrapper) {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("patients-list-items");
+        listContainer.appendChild(wrapper);
+    }
 
-    // Optional: highlight selected card
-    patientCards.forEach(c => c.classList.remove("active"));
-    card.classList.add("active");
-  });
-});
+    const list = listContainer.querySelector(".patients-list-items");
+    list.innerHTML = ""; // Clear old static items
 
+
+    // Right panel fields
+    const medicalHistoryField = document.querySelector(".patient-details textarea:nth-of-type(1)");
+    const currentConditionsField = document.querySelector(".patient-details textarea:nth-of-type(2)");
+    const consultationNotesField = document.querySelector(".patient-details textarea:nth-of-type(3)");
+    const lastAppointmentField = document.querySelector(".patient-details input[type='date']");
+
+    // Display cards
+    consultations.forEach((c, index) => {
+
+        const card = document.createElement("div");
+        card.classList.add("patient-card");
+        card.dataset.index = index;
+
+        card.innerHTML = `
+            <img src="${c.patient.profile_image}">
+            <span>${c.patient.name}</span>
+        `;
+
+        // Clicking will fill Right Panel
+        card.addEventListener("click", () => {
+            medicalHistoryField.value = c.medical_history;
+            currentConditionsField.value = c.current_conditions;
+            consultationNotesField.value = c.consultation_notes;
+
+            // Handle follow-up date formatting
+            if (c.follow_up_date && typeof c.follow_up_date === "string") {
+                lastAppointmentField.value = c.follow_up_date.split("T")[0];
+            } else {
+                lastAppointmentField.value = "";
+            }
+
+            // Highlight active card
+            document.querySelectorAll(".patient-card").forEach(el => el.classList.remove("active"));
+            card.classList.add("active");
+        });
+
+        list.appendChild(card);
+    });
+
+
+    // Auto-select first patient if available
+    if (consultations.length > 0) {
+        list.children[0].click();
+    }
+}

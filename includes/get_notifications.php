@@ -29,7 +29,7 @@ try {
         $patientId = new MongoDB\BSON\ObjectId($patientId);
     }
 
-    // Fetch all appointments for patient
+    // Fetch appointments for this patient
     $appointments = $appointmentsCollection->find([
         'patient_id' => $patientId
     ]);
@@ -38,14 +38,10 @@ try {
 
     foreach ($appointments as $app) {
 
-        // ✅ SKIP if already paid
-        $paymentExists = $paymentsCollection->findOne([
+        // ✅ CHECK IF PAYMENT EXISTS
+        $payment = $paymentsCollection->findOne([
             'appointment_id' => $app->_id
         ]);
-
-        if ($paymentExists) {
-            continue; // ✅ do not show in notifications
-        }
 
         $acceptedAt = isset($app->accepted_at)
             ? $app->accepted_at->toDateTime()->format(DATE_ATOM)
@@ -57,6 +53,7 @@ try {
             $doctor = $usersCollection->findOne([
                 'user_id' => $app->doctor_id
             ]);
+
             if ($doctor) {
                 $doctorName = $doctor->personal_info->full_name
                     ?? $doctor->user_name
@@ -64,6 +61,23 @@ try {
             }
         }
 
+        // ✅ PAID NOTIFICATION TYPE
+        if ($payment) {
+            $results[] = [
+                "appointment_id" => (string)$app->_id,
+                "status"         => "paid",
+                "doctor_name"    => $doctorName,
+                "type"           => "payment_confirmed",
+                "message"        => "Your payment has been successfully processed.",
+                "amount"         => $payment->amount ?? null,
+                "paid_at"        => isset($payment->timestamp)
+                    ? $payment->timestamp->toDateTime()->format(DATE_ATOM)
+                    : null
+            ];
+            continue;
+        }
+
+        // ✅ EXISTING (unpaid) notifications
         $results[] = [
             "appointment_id" => (string)$app->_id,
             "status"         => $app->status ?? "unknown",

@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
   const acceptBtn = document.querySelector(".accept-btn");
   const declineBtn = document.querySelector(".decline-btn");
+  const startConsultationBtn = document.querySelector(".start-consultation-btn");
 
   // DOCTOR SESSION CHECK
   const doctor = JSON.parse(sessionStorage.getItem('user'));
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Update button states based on appointment status
   const updateButtonStates = (status) => {
-    if (status === "in_progress") {
+    if (status === "in_progress" || status === "completed") {
       // Disable Accept and Decline buttons
       acceptBtn.disabled = true;
       declineBtn.disabled = true;
@@ -60,6 +61,29 @@ document.addEventListener("DOMContentLoaded", () => {
       declineBtn.style.opacity = "0.5";
       acceptBtn.style.cursor = "not-allowed";
       declineBtn.style.cursor = "not-allowed";
+    }
+
+    // Handle the Start Consultation button
+    if(startConsultationBtn) {
+      if (status === "in_progress") {
+        // Enable Start Consultation button
+        startConsultationBtn.disabled = false;
+        startConsultationBtn.style.opacity = "1";
+        startConsultationBtn.style.cursor = "pointer";
+        startConsultationBtn.style.backgroundColor = ""; // Reset to default
+      } else if (status === "completed") {
+        // Disable and gray out for completed appointments
+        startConsultationBtn.disabled = true;
+        startConsultationBtn.style.opacity = "0.4";
+        startConsultationBtn.style.cursor = "not-allowed";
+        startConsultationBtn.style.backgroundColor = "#999999";
+      } else {
+        // Disable for pending or declined appointments
+        startConsultationBtn.disabled = true;
+        startConsultationBtn.style.opacity = "0.4";
+        startConsultationBtn.style.cursor = "not-allowed";
+        startConsultationBtn.style.backgroundColor = "#999999";
+      }
     }
   };
 
@@ -163,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadPatientInfo = (appt) => {
     // Debug
     console.log("Appointment data:", appt);
+    console.log("Appointment status:", appt.status);
 
     if (!patientHeader) return;
 
@@ -283,9 +308,9 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Server error.");
     }
   });
+  
 
   // START CONSULTATION
-  const startConsultationBtn = document.querySelector(".start-consultation-btn");
   if (startConsultationBtn) {
     startConsultationBtn.addEventListener("click", async () => {
       const activeItem = document.querySelector(".appointment-item.active");

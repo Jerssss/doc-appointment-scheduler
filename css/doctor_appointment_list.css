@@ -76,6 +76,26 @@
   color: #777;
 }
 
+.meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.status-label {
+  font-size: 0.75rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: none;
+}
+
+.status-pending { background: #f6b8d0; color: #6b2b3f; }
+.status-in-progress { background: #f7c78a; color: #5a3a10; }
+.status-completed { background: #a6e3a1; color: #184d1f; }
+.status-declined { background: #e4e4e4; color: #6b6b6b; }
+
 /* Back button */
 .back-btn {
   background-color: #c06c91; /* pink button */

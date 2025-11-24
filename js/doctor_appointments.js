@@ -92,6 +92,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const patientName = appt.patient_name || "Unknown Patient";
         const imgSrc = appt.patient_image || "images/default-patient.png";
 
+        const status = (appt.status || 'pending').toString();
+        const statusNormalized = status.replace(/_/g, '-');
+        const statusMap = {
+          pending: 'Pending',
+          in_progress: 'In Progress',
+          inprogress: 'In Progress',
+          'in-progress': 'In Progress',
+          completed: 'Completed',
+          declined: 'Declined'
+        };
+        const statusDisplay = statusMap[status] || statusMap[statusNormalized] || (status.charAt(0).toUpperCase() + status.slice(1));
+
         let displayDate = "No schedule";
         if (appt.time) {
           const dt = new Date(appt.time);
@@ -106,8 +118,13 @@ document.addEventListener("DOMContentLoaded", () => {
             <h4>${escapeHtml(patientName)}</h4>
             <p>${escapeHtml(displayDate)}</p>
           </div>
+          <div class="meta">
+            <span class="status-label status-${escapeHtml(statusNormalized)}">${escapeHtml(statusDisplay)}</span>
+          </div>
         `;
 
+        // expose status on DOM element for later use
+        item.dataset.status = status;
         item._appt = appt;
 
         item.addEventListener("click", () => {

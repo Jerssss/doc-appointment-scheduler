@@ -1,5 +1,6 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
+
 
 use MongoDB\Client;
 use MongoDB\BSON\ObjectId;
@@ -11,11 +12,11 @@ try {
 
     // Required fields
     if (!isset($data['user_id'], $data['user_name'], $data['user_email'], $data['role'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Missing required fields.']);
-    exit;
-}
+        echo json_encode(['status' => 'error', 'message' => 'Missing required fields.']);
+        exit;
+    }
 
-    // Convert user_id string → ObjectId
+    // Convert user_id to ObjectId
     try {
         $objectId = new ObjectId($data['user_id']);
     } catch (Exception $e) {
@@ -27,15 +28,15 @@ try {
     $client = new Client("mongodb://localhost:27017/");
     $users = $client->MediKo->users;
 
-    // Update user fields (only basic fields for now)
+    // Update: match your actual field names
     $updateResult = $users->updateOne(
-    ['user_id' => $objectId],
-    ['$set' => [
-        'username' => $data['user_name'],
-        'email' => $data['user_email'],
-        'role' => $data['role']
-    ]]
-);
+        ['user_id' => $objectId],
+        ['$set' => [
+            'user_name'  => $data['user_name'],
+            'user_email' => $data['user_email'],
+            'role'       => $data['role']
+        ]]
+    );
 
     if ($updateResult->getModifiedCount() > 0) {
         echo json_encode(['status' => 'success', 'message' => 'User updated successfully.']);

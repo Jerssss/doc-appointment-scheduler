@@ -175,81 +175,108 @@ addButton.addEventListener("click", (e) => {
 });
 
 
-/** ------------------ EDIT USERS ------------------ **/
-    editButton.addEventListener("click", async (e) => {
-        e.preventDefault();
-        try {
-            const res = await fetch("includes/get_users.php");
-            const data = await res.json();
-            if (!(data.status === "success" && data.data.length > 0)) {
-                popup.innerHTML = `<div class="popup-content"><h3>No users found.</h3><button class="close-btn">Close</button></div>`;
-                popup.style.display = "flex";
-                popup.querySelector(".close-btn").addEventListener("click", () => popup.style.display = "none");
-                return;
-            }
+//** ------------------ EDIT USERS ------------------ **/
+editButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+        const res = await fetch("includes/get_users.php");
+        const data = await res.json();
 
-            const rows = data.data.map(user => {
-                let uname = user.user_name || user.username || "";
-                let uemail = user.user_email || user.email || "";
-                return `
-                    <tr>
-                        <td>${user.user_id.$oid}</td>
-                        <td><input type="text" class="edit-name" data-id="${user.user_id.$oid}" value="${uname}"></td>
-                        <td><input type="email" class="edit-email" data-id="${user.user_id.$oid}" value="${uemail}"></td>
-                        <td>
-                            <select class="edit-role" data-id="${user.user_id.$oid}">
-                                <option value="admin" ${user.role === "admin" ? "selected" : ""}>Admin</option>
-                                <option value="doctor" ${user.role === "doctor" ? "selected" : ""}>Doctor</option>
-                                <option value="patient" ${user.role === "patient" ? "selected" : ""}>Patient</option>
-                            </select>
-                        </td>
-                        <td><button class="save-user-btn" data-id="${user.user_id.$oid}">Save</button></td>
-                    </tr>
-                `;
-            }).join("");
-
-            popup.innerHTML = `<div class="popup-content">
-                <h3>Edit Users</h3>
-                <table><thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Action</th></tr></thead>
-                <tbody>${rows}</tbody></table>
-                <button class="close-btn">Close</button>
-            </div>`;
+        if (!(data.status === "success" && data.data.length > 0)) {
+            popup.innerHTML = `<div class="popup-content"><h3>No users found.</h3><button class="close-btn">Close</button></div>`;
             popup.style.display = "flex";
-
-            // Save handler
-            popup.querySelectorAll(".save-user-btn").forEach(btn => {
-                btn.addEventListener("click", async () => {
-                    const id = btn.getAttribute("data-id");
-                    const updatedData = {
-                        user_id: id,
-                        user_name: popup.querySelector(`.edit-name[data-id="${id}"]`).value,
-                        user_email: popup.querySelector(`.edit-email[data-id="${id}"]`).value,
-                        role: popup.querySelector(`.edit-role[data-id="${id}"]`).value,
-                    };
-                    if (!confirm("Save changes?")) return;
-                    try {
-                        const res = await fetch("includes/edit_user.php", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(updatedData)
-                        });
-                        const result = await res.json();
-                        alert(result.message);
-                    } catch (err) {
-                        console.error("Error saving user:", err);
-                        alert("Failed to save user.");
-                    }
-                });
-            });
-
             popup.querySelector(".close-btn").addEventListener("click", () => popup.style.display = "none");
-
-        } catch (err) {
-            console.error("Error fetching users:", err);
-            alert("Failed to fetch users.");
+            return;
         }
-    });
 
+        // Build table rows
+        const rows = data.data.map(user => {
+            const uname = user.user_name || "";
+            const uemail = user.user_email || "";
+
+            return `
+                <tr>
+                    <td>${user.user_id.$oid}</td>
+                    <td>
+                        <input type="text" 
+                            class="edit-name" 
+                            data-id="${user.user_id.$oid}" 
+                            value="${uname}">
+                    </td>
+                    <td>
+                        <input type="email" 
+                            class="edit-email" 
+                            data-id="${user.user_id.$oid}" 
+                            value="${uemail}">
+                    </td>
+                    <td>
+                        <select class="edit-role" data-id="${user.user_id.$oid}">
+                            <option value="admin" ${user.role === "admin" ? "selected" : ""}>Admin</option>
+                            <option value="doctor" ${user.role === "doctor" ? "selected" : ""}>Doctor</option>
+                            <option value="patient" ${user.role === "patient" ? "selected" : ""}>Patient</option>
+                        </select>
+                    </td>
+                    <td><button class="save-user-btn" data-id="${user.user_id.$oid}">Save</button></td>
+                </tr>
+            `;
+        }).join("");
+
+        // Popup
+        popup.innerHTML = `
+            <div class="popup-content">
+                <h3>Edit Users</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+                <button class="close-btn">Close</button>
+            </div>
+        `;
+        popup.style.display = "flex";
+
+        /** SAVE HANDLER (MATCHES PHP) **/
+        popup.querySelectorAll(".save-user-btn").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.getAttribute("data-id");
+
+                const updatedData = {
+                    user_id: id,
+                    user_name: popup.querySelector(`.edit-name[data-id="${id}"]`).value,
+                    user_email: popup.querySelector(`.edit-email[data-id="${id}"]`).value,
+                    role: popup.querySelector(`.edit-role[data-id="${id}"]`).value
+                };
+
+                if (!confirm("Save changes?")) return;
+
+                try {
+                    const res = await fetch("includes/edit_user.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(updatedData)
+                    });
+
+                    const result = await res.json();
+                    alert(result.message);
+                } catch (err) {
+                    console.error("Error saving user:", err);
+                    alert("Failed to save user.");
+                }
+            });
+        });
+
+        popup.querySelector(".close-btn").addEventListener("click", () => {
+            popup.style.display = "none";
+        });
+
+    } catch (err) {
+        console.error("Error fetching users:", err);
+        alert("Failed to fetch users.");
+    }
+});
 
   /** ------------------ DELETE USERS ------------------ **/
     deleteButton.addEventListener("click", async (e) => {
